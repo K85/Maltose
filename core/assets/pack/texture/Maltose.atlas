@@ -1,0 +1,139 @@
+
+Maltose.png
+size: 2048, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+itch/gamesupply/space_ship_samples/AngelWing_A_150x100
+  rotate: false
+  xy: 1028, 1474
+  size: 150, 100
+  orig: 150, 100
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/Bug_NightmareWoodLouse_80x80
+  rotate: false
+  xy: 114, 210
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/Buggy_Black_63x69
+  rotate: false
+  xy: 1028, 1299
+  size: 63, 69
+  orig: 63, 69
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/Cruiser2_42x61
+  rotate: false
+  xy: 1028, 1236
+  size: 42, 61
+  orig: 42, 61
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/Cruiser_57x49
+  rotate: false
+  xy: 260, 300
+  size: 57, 49
+  orig: 57, 49
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/Fear_A_Shadow_100x100
+  rotate: false
+  xy: 1180, 1474
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/Flash_10_80x110
+  rotate: false
+  xy: 2, 68
+  size: 80, 110
+  orig: 80, 110
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/Flash_A_71x75
+  rotate: false
+  xy: 260, 351
+  size: 71, 75
+  orig: 71, 75
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/Magicfly_47x65
+  rotate: false
+  xy: 196, 225
+  size: 47, 65
+  orig: 47, 65
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/Scorpion_Evo_112x102
+  rotate: false
+  xy: 1028, 1370
+  size: 112, 102
+  orig: 112, 102
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/Starship_A_96x120
+  rotate: false
+  xy: 260, 428
+  size: 96, 120
+  orig: 96, 120
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/TinyCruiser_Ice_64x64
+  rotate: false
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/Turret_45x60
+  rotate: false
+  xy: 429, 488
+  size: 45, 60
+  orig: 45, 60
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/UFO_PlasmaShield_Pink_69x69
+  rotate: false
+  xy: 358, 479
+  size: 69, 69
+  orig: 69, 69
+  offset: 0, 0
+  index: -1
+itch/gamesupply/space_ship_samples/Z8FreedomFighter_Blade_110x110
+  rotate: false
+  xy: 2, 180
+  size: 110, 110
+  orig: 110, 110
+  offset: 0, 0
+  index: -1
+sakurawald/badlogic
+  rotate: false
+  xy: 2, 292
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+sakurawald/image
+  rotate: false
+  xy: 1142, 1408
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sakurawald/sc_map
+  rotate: false
+  xy: 2, 550
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1
+sakurawald/serviceModeIcon
+  rotate: false
+  xy: 1282, 1510
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
