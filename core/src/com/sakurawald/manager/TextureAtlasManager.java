@@ -11,6 +11,6 @@ import lombok.experimental.UtilityClass;
 public class TextureAtlasManager {
 
     /* Constants */
-    public static final TextureAtlas MALTOSE_ATLAS = new TextureAtlas("pack/texture/Maltose.atlas");
+    public static final TextureAtlas MALTOSE_ATLAS = new TextureAtlas("texture/Maltose.atlas");
 
 }

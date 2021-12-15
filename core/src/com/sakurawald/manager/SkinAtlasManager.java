@@ -13,13 +13,15 @@ public class SkinAtlasManager {
 
 //    public static final AssetDescriptor<Skin> MALTOSE_ATLAS = new AssetDescriptor<Skin>("skin.json",Skin .class,new SkinLoader.SkinParameter("pack/skin/Maltose.atlas"));
 
-    public static final Skin skin = new Skin(Gdx.files.internal("pack/skin.Maltose.json"));
+    public static final Skin skin = new Skin(Gdx.files.internal("skin/Maltose.json"));
     public static final SceneComposerStageBuilder stageBuilder = new SceneComposerStageBuilder();
+    public static final String SCENE_PATH_PREFIX = "skin/scenes/";
 
     public static Stage buildStage(String jsonHandlePath) {
         Stage stage = new Stage(new ScreenViewport());
-        stageBuilder.build(stage, skin, Gdx.files.internal(jsonHandlePath));
+        stageBuilder.build(stage, skin, Gdx.files.internal(SCENE_PATH_PREFIX + jsonHandlePath));
         return stage;
     }
+
 
 }
