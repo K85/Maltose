@@ -32,6 +32,7 @@ public class MainMenuScreen extends Scene2DScreen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("start clieked event !");
                 Maltose.getInstance().setScreen(new GameScreen());
+                dispose();
             }
         });
 
@@ -40,6 +41,7 @@ public class MainMenuScreen extends Scene2DScreen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("about clieked event !");
                 Maltose.getInstance().setScreen(new AboutScreen());
+                dispose();
             }
         });
 

@@ -1,4 +1,4 @@
-package com.sakurawald.data.stage;
+package com.sakurawald.logic.stage;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -11,8 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sakurawald.data.script.PlayerScript;
-
+import com.sakurawald.logic.script.PlayerScript;
 public class HUD extends Stage {
 
     private Label mDiamondsLabel;
@@ -77,7 +76,7 @@ public class HUD extends Stage {
         upButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                mPlayerScript.movePlayer(PlayerScript.JUMP);
+//                mPlayerScript.movePlayer(PlayerScript.JUMP);
             }
         });
         root.add(upButton).expand().right().bottom();

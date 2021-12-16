@@ -1,12 +1,26 @@
 
 pack.png
-size: 128, 128
+size: 256, 128
 format: RGBA8888
 filter: Linear, Linear
 repeat: none
 image
   rotate: false
   xy: 1, 4
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+stealth-bomber
+  rotate: false
+  xy: 67, 4
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+stone-sphere
+  rotate: false
+  xy: 133, 4
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

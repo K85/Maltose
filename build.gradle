@@ -1,10 +1,11 @@
 buildscript {
-    
+
 
     repositories {
         mavenLocal()
         mavenCentral()
         gradlePluginPortal()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         google()
     }
@@ -16,6 +17,7 @@ buildscript {
 
 allprojects {
     apply plugin: "eclipse"
+    apply plugin: "idea"
 
     version = '1.0'
     ext {
@@ -33,11 +35,14 @@ allprojects {
         mavenCentral()
         google()
         gradlePluginPortal()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url 'https://jitpack.io' }
     }
+
 }
+
 
 project(":desktop") {
     apply plugin: "java-library"
@@ -55,7 +60,7 @@ project(":desktop") {
         api "de.tomgrill.gdxfacebook:gdx-facebook-desktop:1.4.1"
         api "de.tomgrill.gdxdialogs:gdx-dialogs-desktop:1.2.5"
         api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:1.0.2"
-        
+
     }
 }
 
@@ -67,7 +72,8 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        api "com.badlogicgames.ashley:ashley:$ashleyVersion"
+//        api "com.badlogicgames.ashley:ashley:$ashleyVersion"
+        api "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
         api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
@@ -83,9 +89,13 @@ project(":core") {
         api "com.github.czyzby:gdx-lml:1.9.1.9.6"
         api "com.github.czyzby:gdx-lml-vis:1.9.1.9.6"
         api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:1.0.2"
-        implementation "games.rednblack.hyperlap2d:runtime-libgdx:0.0.7"
+        implementation "games.rednblack.hyperlap2d:runtime-libgdx:0.0.8-SNAPSHOT"
         implementation "com.github.raeleus:stripe:0.2.0"
         compileOnly("org.projectlombok:lombok:1.18.22")
         annotationProcessor("org.projectlombok:lombok:1.18.22")
+    }
+
+    compileJava {
+        options.incremental = true
     }
 }

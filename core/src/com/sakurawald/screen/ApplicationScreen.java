@@ -1,15 +1,11 @@
 package com.sakurawald.screen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.sakurawald.manager.SkinAtlasManager;
-import lombok.Getter;
 
 
 public abstract class ApplicationScreen implements Screen {
 
+    // TODO: FPS should be used
     protected static final float FPS = 60;
 
     @Override
@@ -34,12 +30,10 @@ public abstract class ApplicationScreen implements Screen {
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override

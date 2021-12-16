@@ -2,13 +2,22 @@ package com.sakurawald.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.sakurawald.manager.SkinAtlasManager;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.ray3k.stripe.scenecomposer.SceneComposerStageBuilder;
+import com.sakurawald.manager.ApplicationAssetManager;
 import lombok.Getter;
 
 public abstract class Scene2DScreen extends ApplicationScreen {
 
+    /* Constants */
+    private static final String SKIN_ROOT_PATH = "skin/";
+    private static final String SCENES_ROOT_PATH = SKIN_ROOT_PATH + "scenes/";
+    private static final SceneComposerStageBuilder stageBuilder = new SceneComposerStageBuilder();
+
     /* Common Props */
+    @Getter
     private final String scene_path;
 
     @Getter
@@ -21,7 +30,7 @@ public abstract class Scene2DScreen extends ApplicationScreen {
      */
     public Scene2DScreen(String scene_path) {
         this.scene_path = scene_path;
-        this.stage = SkinAtlasManager.buildStage(scene_path);
+        this.stage = Scene2DScreen.buildStage(scene_path);
 
         // Initialize the stage
         initializeStage();
@@ -30,6 +39,12 @@ public abstract class Scene2DScreen extends ApplicationScreen {
         registerStageEvents();
     }
 
+    public static Stage buildStage(String jsonHandlePath) {
+        Stage stage = new Stage(new ScreenViewport());
+        Skin skin = ApplicationAssetManager.getInstance().getSkin();
+        stageBuilder.build(stage, skin, Gdx.files.internal(SCENES_ROOT_PATH + jsonHandlePath));
+        return stage;
+    }
 
     public void renderStage() {
         // act and draw the stage

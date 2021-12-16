@@ -1,103 +1,144 @@
 package com.sakurawald.screen;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sakurawald.data.component.DiamondComponent;
-import com.sakurawald.data.component.PlayerComponent;
-import com.sakurawald.data.system.CameraSystem;
+import com.sakurawald.logic.component.DeadlyObstacleComponent;
+import com.sakurawald.logic.component.PlayerComponent;
+import com.sakurawald.logic.entity.Tags;
+import com.sakurawald.logic.script.PlayerScript;
+import com.sakurawald.logic.system.CameraSystem;
 import com.sakurawald.manager.ApplicationAssetManager;
-import com.sakurawald.manager.TextureAtlasManager;
+import games.rednblack.editor.renderer.SceneConfiguration;
 import games.rednblack.editor.renderer.SceneLoader;
-import games.rednblack.editor.renderer.systems.action.ActionSystem;
-import games.rednblack.editor.renderer.systems.action.Actions;
-import games.rednblack.editor.renderer.systems.action.data.ActionData;
+import games.rednblack.editor.renderer.data.CompositeItemVO;
+import games.rednblack.editor.renderer.factory.v2.ComponentFactoryV2;
+import games.rednblack.editor.renderer.factory.v2.EntityFactoryV2;
 import games.rednblack.editor.renderer.utils.ComponentRetriever;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
 
 public class GameScreen extends ApplicationScreen {
 
     /* Constants */
-    // define Box2D 1 unit = 1 meter (we don't use pixels !)
-    private final static float WORLD_SCALE = 1;
-    private final static float MAX_VELOCITY = 100;
+    protected static final float STEP_TIME = 1 / FPS;
+    protected static final float VELOCITY_ITERATIONS = 6;
+    protected static final float POSITION_ITERATIONS = 2;
+    public final static float MAX_VELOCITY = 10;
+
+    private final static float VIRTUAL_RESOLUTION_WIDTH = 1280;
+    private final static float VIRTUAL_RESOLUTION_HEIGHT = 720;
+    private final static float PPMU = 80.0f;
+
+    // define Per Pixel Map Unit
 
     /* Common Props */
     private final SpriteBatch spriteBatch = new SpriteBatch();
-    private final Camera camera = new OrthographicCamera();
-    private final Viewport viewport = new ScreenViewport(camera);
+    private final OrthographicCamera camera = new OrthographicCamera();
+    private Viewport viewport;
+
     private final Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
 
-    Texture texture = TextureAtlasManager.MALTOSE_ATLAS.findRegion("com/sakurawald/badlogic").getTexture();
     private SceneLoader sceneLoader;
+    private SceneConfiguration sceneConfiguration;
+    private ItemWrapper rootItemWrapper;
 
     @Override
     public void show() {
 
+        /* Init the Virtural Environment */
         Box2D.init();
+        viewport = new ExtendViewport(VIRTUAL_RESOLUTION_WIDTH / PPMU, VIRTUAL_RESOLUTION_HEIGHT / PPMU
+                , camera);
+        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
-
-//        /* Add Systems */
-//        CameraSystem cameraSystem = new CameraSystem(5, 50, 5, 6);this.getSceneLoader().getEngine().addSystem(cameraSystem);
-////        this.getSceneLoader().getEngine().addSystem(new PlayerAnimationSystem());
-//
-//        ComponentRetriever.addMapper(PlayerComponent.class);
-//        ComponentRetriever.addMapper(DiamondComponent.class);
 
         /* Load object from .json */
-        ApplicationAssetManager.getInstance().getSceneLoader().loadScene("MainScene", viewport);
+        CameraSystem cameraSystem = new CameraSystem(5, 16, 5, 12);
+        sceneConfiguration = new SceneConfiguration();
+        sceneConfiguration.setResourceRetriever(ApplicationAssetManager.getInstance().getAsyncResourceLoader());
+        sceneConfiguration.addSystem(cameraSystem);
 
-        /* Create BodyDef and Shape */
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(0, 0);
+        sceneLoader = ApplicationAssetManager.getInstance().makeSceneLoader(sceneConfiguration);
+        sceneLoader.loadScene("MainScene", viewport);
+        rootItemWrapper = new ItemWrapper(sceneLoader.getRoot(), sceneLoader.getEngine());
 
-        CircleShape circleShape = new CircleShape();
-        circleShape.setPosition(new Vector2(0, 0));
-        circleShape.setRadius(5f);
+//        /* Add Systems */
+        ComponentRetriever.addMapper(PlayerComponent.class);
+        ComponentRetriever.addMapper(DeadlyObstacleComponent.class);
+        sceneLoader.addComponentByTagName(Tags.DEADLY_OBSTACLE, DeadlyObstacleComponent.class);
+        ComponentRetriever.addMapper(DeadlyObstacleComponent.class);
 
-//        Body body = sceneLoader.getWorld().createBody(bodyDef);
-//        body.createFixture(circleShape, 1);
+        /* Add Scripts */
+        ItemWrapper player = rootItemWrapper.getChild("image_aircraft_default");
+        player.addScript(new PlayerScript());
 
+        cameraSystem.setFocus(player.getEntity());
 
         /* Add Actions */
-        ItemWrapper root = new ItemWrapper(sceneLoader.getRoot());
-        Entity entity = root.getChild("image_mc").getEntity();
+//        Entity entity = rootItemWrapper.getChild("image_mc").getEntity();
+//        ActionData rotation = Actions.sequence(
+//                Actions.delay(2),
+//                Actions.parallel(
+//                        Actions.moveBy(-30, -30, 5, Interpolation.pow2),
+//                        Actions.rotateBy(180, 2, Interpolation.exp5))
+//        );
+//        ActionData repeatData = Actions.forever(rotation);
+//        Actions.addAction(sceneLoader.getEngine(), entity, repeatData);
 
-            ActionData rotation = Actions.sequence(
-                Actions.delay(2),
-                Actions.parallel(
-                        Actions.moveBy(-30, -30, 5, Interpolation.pow2),
-                        Actions.rotateBy(180, 2, Interpolation.exp5))
-        );
-        ActionData repeatData = Actions.forever(rotation);
-        Actions.addAction(sceneLoader.getEngine(), entity, repeatData);
+        float posX = 0;
+        float posY = 0;
+        float posDelta = 1;
+        for (int i = 0; i < 10; i++) {
+            CompositeItemVO library_stone = sceneLoader.loadVoFromLibrary("library_stone");
+            library_stone.layerName= "Default";
+            library_stone.x = posX + i * 1;
+            library_stone.y = posY + i * 1;
+            System.out.printf("tags.length = %d\n", library_stone.tags.length);
+
+            ApplicationAssetManager.loadCompositeFromLib(sceneLoader, "library_stone","Default", posX, posY, DeadlyObstacleComponent.class);
+
+//            int entity = sceneLoader.getEntityFactoryV2().createEntity(rootItemWrapper.getEntity(),
+//                    EntityFactoryV2.COMPOSITE_TYPE, );
+//            sceneLoader.getEntityFactory().initAllChildren(sceneLoader.getEngine(), e, vo.composite);
+//            sceneLoader.getEngine().addEntity(e);
+
+        }
+
+
     }
 
     @Override
     public void render(float delta) {
         Gdx.app.log("GameScreen", "render");
 
-        camera.update();
+        System.out.printf("frame per second: %d", Gdx.graphics.getFramesPerSecond());
         ScreenUtils.clear(1, 1, 1, 1);
 
         viewport.apply();
-        sceneLoader.getEngine().update(Gdx.graphics.getDeltaTime());
+        sceneLoader.getEngine().process();
 
-        System.out.printf("world body count = %d", sceneLoader.getWorld().getBodyCount());
-        System.out.printf("world fixture count = %d", sceneLoader.getWorld().getFixtureCount());
-        System.out.printf("world contact count = %d", sceneLoader.getWorld().getContactCount());
-        System.out.printf("world joint count = %d", sceneLoader.getWorld().getJointCount());
-        System.out.printf("world proxy count = %d", sceneLoader.getWorld().getProxyCount());
+//        System.out.printf("world body count = %d\n", sceneLoader.getWorld().getBodyCount());
+//        System.out.printf("world fixture count = %d\n", sceneLoader.getWorld().getFixtureCount());
+//        System.out.printf("world contact count = %d\n", sceneLoader.getWorld().getContactCount());
+//        System.out.printf("world joint count = %d\n", sceneLoader.getWorld().getJointCount());
+//        System.out.printf("world proxy count = %d\n", sceneLoader.getWorld().getProxyCount());
     }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
+
+        // batch.setProjectionMatrix(camera.combined);
+        if (width != 0 && height != 0) {
+            sceneLoader.resize(width, height);
+        }
+    }
+
 
 }
