@@ -1,34 +1,15 @@
-
 pack.png
-size: 256, 128
-format: RGBA8888
-filter: Linear, Linear
-repeat: none
+	size: 512, 128
+	filter: Linear, Linear
+concentric-crescents
+	bounds: 1, 4, 64, 64
 image
-  rotate: false
-  xy: 1, 4
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
+	bounds: 67, 4, 64, 64
+maze-saw
+	bounds: 133, 4, 64, 64
 stealth-bomber
-  rotate: false
-  xy: 67, 4
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
+	bounds: 199, 4, 64, 64
 stone-sphere
-  rotate: false
-  xy: 133, 4
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
+	bounds: 265, 4, 64, 64
 white-pixel
-  rotate: false
-  xy: 1, 1
-  size: 1, 1
-  orig: 1, 1
-  offset: 0, 0
-  index: -1
+	bounds: 1, 1, 1, 1

@@ -33,7 +33,7 @@ public abstract class Scene2DScreen extends ApplicationScreen {
         this.stage = Scene2DScreen.buildStage(scene_path);
 
         // Initialize the stage
-        initializeStage();
+        initializeStageActors();
 
         // Auto register the events of this stage
         registerStageEvents();
@@ -63,7 +63,19 @@ public abstract class Scene2DScreen extends ApplicationScreen {
         renderStage();
     }
 
-    protected abstract void initializeStage();
+    @Override
+    public void dispose() {
+        // Call the dispose method of the stage. (clear Actions and Listeners)
+        this.getStage().clear();
+    }
+
+    @Override
+    public void hide() {
+        // Let hide equals close !
+        this.dispose();
+    }
+
+    protected abstract void initializeStageActors();
 
     protected abstract void registerStageEvents();
 

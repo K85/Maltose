@@ -18,10 +18,11 @@ public class AboutScreen extends Scene2DScreen {
     }
 
     @Override
-    protected void initializeStage() {
+    protected void initializeStageActors() {
         label_title = getStage().getRoot().findActor("label_title");
         label_title.setText("About");
         textarea_content = getStage().getRoot().findActor("textarea_content");
+        textarea_content.setDisabled(true);
         textarea_content.setText("Hi there, blah blah blah ");
         textbutton_back = getStage().getRoot().findActor("textbutton_back");
         textbutton_back.setText("Back");

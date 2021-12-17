@@ -16,7 +16,7 @@ public class MainMenuScreen extends Scene2DScreen {
     }
 
     @Override
-    protected void initializeStage() {
+    protected void initializeStageActors() {
         textbutton_start =  getStage().getRoot().findActor("textbutton_start");
         textbutton_start.setText("Start");
         textbutton_about = getStage().getRoot().findActor("textbutton_about");
@@ -30,18 +30,14 @@ public class MainMenuScreen extends Scene2DScreen {
         textbutton_start.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("start clieked event !");
                 Maltose.getInstance().setScreen(new GameScreen());
-                dispose();
             }
         });
 
         textbutton_about.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("about clieked event !");
                 Maltose.getInstance().setScreen(new AboutScreen());
-                dispose();
             }
         });
 

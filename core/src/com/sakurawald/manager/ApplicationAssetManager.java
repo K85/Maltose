@@ -1,6 +1,7 @@
 package com.sakurawald.manager;
 
 import com.artemis.PooledComponent;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import games.rednblack.editor.renderer.SceneConfiguration;
@@ -51,17 +52,20 @@ public class ApplicationAssetManager {
     }
 
     // Load Composite Item from HyperLap2D's Library and add component
-    public static <T extends PooledComponent> void loadCompositeFromLib(SceneLoader mSceneLoader, String libraryName, String layer, float posX, float posY, Class<T> componentClass){
-        System.out.println("HelperClass - loadCompositeFromLib");
+    public static <T extends PooledComponent> int loadCompositeFromLibrary(SceneLoader mSceneLoader, String libraryName, String layer, float posX, float posY, Class<T> componentClass) {
+        Gdx.app.log("HelperClass - loadCompositeFromLib", "libraryName: " + libraryName + " layer: " + layer + " posX: " + posX + " posY: " + posY);
 
         CompositeItemVO tmpComposite = mSceneLoader.loadVoFromLibrary(libraryName);
         tmpComposite.layerName = layer;
         tmpComposite.x = posX;
         tmpComposite.y = posY;
 
-        int tmpEntity = mSceneLoader.getEntityFactory().createEntity(mSceneLoader.getRoot(),tmpComposite);
-        mSceneLoader.getEntityFactory().initAllChildren(tmpEntity,tmpComposite.composite);
-        mSceneLoader.getEngine().edit(tmpEntity).create(componentClass);
+        int entityID = mSceneLoader.getEntityFactory().createEntity(mSceneLoader.getRoot(), tmpComposite);
+        mSceneLoader.getEntityFactory().initAllChildren(entityID, tmpComposite.composite);
+
+        // TODO 1 entity multiple components
+        mSceneLoader.getEngine().edit(entityID).create(componentClass);
+        return entityID;
     }
 
 }

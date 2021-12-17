@@ -7,14 +7,17 @@ import com.badlogic.gdx.graphics.Camera;
 
 import games.rednblack.editor.renderer.components.TransformComponent;
 import games.rednblack.editor.renderer.components.ViewPortComponent;
-import games.rednblack.editor.renderer.utils.ComponentRetriever;
+import lombok.Setter;
 
 @All(ViewPortComponent.class)
 public class CameraSystem extends IteratingSystem {
+
+    /* Component Mappers */
     protected ComponentMapper<TransformComponent> transformMapper;
     protected ComponentMapper<ViewPortComponent> viewportMapper;
 
-    private int focus = -1;
+    @Setter
+    private int focusEntityID = -1;
     private final float xMin, xMax, yMin, yMax;
 
     public CameraSystem(float xMin, float xMax, float yMin, float yMax) {
@@ -29,20 +32,14 @@ public class CameraSystem extends IteratingSystem {
         ViewPortComponent viewPortComponent = viewportMapper.get(entity);
         Camera camera = viewPortComponent.viewPort.getCamera();
 
-        if (focus != -1) {
-            TransformComponent transformComponent = transformMapper.get(focus);
-
+        if (focusEntityID != -1) {
+            TransformComponent transformComponent = transformMapper.get(focusEntityID);
             if (transformComponent != null) {
-
                 float x = Math.max(xMin, Math.min(xMax, transformComponent.x));
-                float y = Math.max(yMin, Math.min(yMax, transformComponent.y + 2));
-
+                float y = Math.max(yMin, Math.min(yMax, transformComponent.y));
                 camera.position.set(x, y, 0);
             }
         }
     }
 
-    public void setFocus(int focus) {
-        this.focus = focus;
-    }
 }
