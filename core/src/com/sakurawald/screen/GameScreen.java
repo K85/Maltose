@@ -112,8 +112,6 @@ public class GameScreen extends ApplicationScreen {
         PlayerScript playerScript = new PlayerScript(this);
         player.addScript(playerScript);
 
-        player.addScript(new BoundaryAutoDestroyScript(this));
-
         cameraSystem.setFocusEntityID(player.getEntity());
 
         /* Register Timers */

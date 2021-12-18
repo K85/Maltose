@@ -6,6 +6,7 @@ import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.sakurawald.logic.component.BoundaryComponent;
+import com.sakurawald.logic.entity.Tags;
 import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
 import lombok.Getter;
@@ -15,13 +16,14 @@ import java.util.ArrayList;
 @SuppressWarnings("SuspiciousNameCombination")
 public class BoundaryManager {
 
-    public static final float BOUNDARY_THICKNESS = 0.01f;
+    public static final Float BOUNDARY_THICKNESS = 0.01f;
+    public static final Float BOUNDARY_FLAG = 2048.001f;
 
     @Getter
     private final GameScreen gameScreen;
 
     @Getter
-    private final ArrayList<Long> boundaryBodies = new ArrayList<>();
+    private final ArrayList<Shape> boundaryShapes = new ArrayList<>();
 
     public BoundaryManager(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
@@ -45,7 +47,13 @@ public class BoundaryManager {
             Vector2 startMovedVector = new Vector2(startVector.x + normalVector.x, startVector.y + normalVector.y);
             Vector2 endMovedVector = new Vector2(endVector.x + normalVector.x, endVector.y + normalVector.y);
 
+            boundaryBodyDef.gravityScale = BoundaryManager.BOUNDARY_FLAG;
+            boundaryBodyDef.linearDamping = 0.233f;
+
             Body boundaryBody = gameScreen.getSceneLoader().getWorld().createBody(boundaryBodyDef);
+
+            System.out.printf("boundaryBody address after construct: %d\n", Box2DUtils.getAddr(boundaryBody));
+
             PolygonShape polygonShape = new PolygonShape();
             polygonShape.set(new Vector2[]{
                     startVector,
@@ -56,10 +64,19 @@ public class BoundaryManager {
 
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = polygonShape;
-            boundaryBody.createFixture(fixtureDef);
+            fixtureDef.density = BOUNDARY_FLAG;
+            Fixture fixture = boundaryBody.createFixture(fixtureDef);
+
+            fixture.setDensity(1.233f);
+
+
+            System.out.printf("boundaryBody address after create fixture: %d\n", Box2DUtils.getAddr(boundaryBody));
 
             // Add boundary body instance (Must get the address after all the operations)
-            this.boundaryBodies.add(Box2DUtils.getAddr(boundaryBody));
+            this.boundaryShapes.add(polygonShape);
+
+            // Set UserData
+            boundaryBody.setUserData(Tags.BOUNDARY);
         }
 
     }
@@ -82,7 +99,7 @@ public class BoundaryManager {
             Body body = mapper.get(entityID).body;
 
             // Register to ECS
-            if (boundaryBodies.contains(body)) {
+            if (boundaryShapes.contains(body)) {
                 System.out.println("add boundary ========");
                 gameScreen.getSceneLoader().getEngine().edit(entityID).add(new BoundaryComponent());
             }

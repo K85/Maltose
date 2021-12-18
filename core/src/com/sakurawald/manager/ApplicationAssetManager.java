@@ -11,6 +11,10 @@ import games.rednblack.editor.renderer.resources.AsyncResourceManager;
 import games.rednblack.editor.renderer.resources.ResourceManagerLoader;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ApplicationAssetManager {
 
     /* Constants */
@@ -52,8 +56,9 @@ public class ApplicationAssetManager {
     }
 
     // Load Composite Item from HyperLap2D's Library and add component
-    public static <T extends PooledComponent> int loadCompositeFromLibrary(SceneLoader mSceneLoader, String libraryName, String layer, float posX, float posY, Class<T> componentClass) {
+    public static int loadCompositeFromLibrary(SceneLoader mSceneLoader, String libraryName, String layer, float posX, float posY, ArrayList<Class<?>> componentClasses) {
         Gdx.app.log("HelperClass - loadCompositeFromLib", "libraryName: " + libraryName + " layer: " + layer + " posX: " + posX + " posY: " + posY);
+
 
         CompositeItemVO tmpComposite = mSceneLoader.loadVoFromLibrary(libraryName);
         tmpComposite.layerName = layer;
@@ -63,9 +68,16 @@ public class ApplicationAssetManager {
         int entityID = mSceneLoader.getEntityFactory().createEntity(mSceneLoader.getRoot(), tmpComposite);
         mSceneLoader.getEntityFactory().initAllChildren(entityID, tmpComposite.composite);
 
-        // TODO 1 entity multiple components
-        mSceneLoader.getEngine().edit(entityID).create(componentClass);
+        for (Class componentClass : componentClasses) {
+            mSceneLoader.getEngine().edit(entityID).create(componentClass);
+        }
+
         return entityID;
+    }
+
+
+    public static int loadMagicCompositeFromLibrary(SceneLoader mSceneLoader, String layer, float posX, float posY) {
+        return loadCompositeFromLibrary(mSceneLoader, "library_magic", layer, posX, posY, new ArrayList<Class<?>>());
     }
 
 }

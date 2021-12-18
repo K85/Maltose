@@ -7,9 +7,11 @@ image
 	bounds: 67, 4, 64, 64
 maze-saw
 	bounds: 133, 4, 64, 64
-stealth-bomber
+spotted-bug
 	bounds: 199, 4, 64, 64
-stone-sphere
+stealth-bomber
 	bounds: 265, 4, 64, 64
+stone-sphere
+	bounds: 331, 4, 64, 64
 white-pixel
 	bounds: 1, 1, 1, 1
