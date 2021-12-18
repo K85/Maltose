@@ -8,6 +8,7 @@ import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
 import games.rednblack.editor.renderer.physics.PhysicsContact;
 import games.rednblack.editor.renderer.scripts.BasicScript;
+import games.rednblack.editor.renderer.utils.ItemWrapper;
 import lombok.Getter;
 
 public class BoundaryAutoDestroyScript extends BasicScript implements PhysicsContact {
@@ -35,12 +36,19 @@ public class BoundaryAutoDestroyScript extends BasicScript implements PhysicsCon
 
     @Override
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-        System.out.println("boundary auto destroyed script: begin contact");
 
         /* Collide with: Boundary */
        BoundaryComponent boundaryComponent = boundaryMapper.get(contactEntity);
         if (boundaryComponent != null) {
-            Gdx.app.log("BoundaryAutoDestroyScript", "Boundary destroyed");
+            Gdx.app.log("BoundaryAutoDestroyScript", "Boundary Auto Destroye EntityID: " + this.getEntity());
+
+            ItemWrapper itemWrapper = new ItemWrapper(this.getEntity(), engine);
+
+            // TODO add some particle effect
+
+
+
+
             engine.delete(this.getEntity());
         }
     }

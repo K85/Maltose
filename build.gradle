@@ -89,6 +89,7 @@ project(":core") {
         api "com.github.czyzby:gdx-lml:1.9.1.9.6"
         api "com.github.czyzby:gdx-lml-vis:1.9.1.9.6"
         api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:1.0.2"
+        implementation "com.talosvfx:talos-libgdx:1.4.0"
         implementation "games.rednblack.hyperlap2d:runtime-libgdx:0.0.8-SNAPSHOT"
         implementation "com.github.raeleus:stripe:0.2.0"
         compileOnly("org.projectlombok:lombok:1.18.22")

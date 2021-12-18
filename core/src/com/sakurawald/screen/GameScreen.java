@@ -149,8 +149,6 @@ public class GameScreen extends ApplicationScreen {
         scoreBoard.getViewport().apply();
         scoreBoard.draw();
 
-//        System.out.printf("world width = %.2f, world height = %.2f\n", viewport.getWorldWidth(), viewport.getWorldHeight());
-//        System.out.printf("world ppm = %d\n", sceneLoader.getPixelsPerWU());
     }
 
     @Override
@@ -171,10 +169,13 @@ public class GameScreen extends ApplicationScreen {
     }
 
     public boolean isOutsideWorld(Vector2 position) {
-        Gdx.app.log("isOutsideWorld", "position = " + position);
-        return position.x < 0 || position.x > viewport.getWorldWidth() || position.y < 0 || position.y > viewport.getWorldHeight();
+        return isOutsideWorld(position, 0f);
     }
 
+    public boolean isOutsideWorld(Vector2 position, float delta) {
+        Gdx.app.log("isOutsideWorld", "position = " + position + ", delta = " + delta);
+        return position.x < 0 + delta || position.x > viewport.getWorldWidth() - delta || position.y < 0 + delta || position.y > viewport.getWorldHeight() - delta;
+    }
 //    public static Vector2 getConstantWorldSize() {
 //        Vector2 size = new Vector2();
 //        size.x = WORLD_WIDTH;
