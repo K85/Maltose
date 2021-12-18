@@ -1,14 +1,13 @@
 package com.sakurawald.manager;
 
-import com.artemis.Aspect;
-import com.artemis.ComponentMapper;
-import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.sakurawald.logic.component.BoundaryComponent;
-import com.sakurawald.logic.entity.Tags;
 import com.sakurawald.screen.GameScreen;
-import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
+import games.rednblack.editor.renderer.data.CompositeItemVO;
+import games.rednblack.editor.renderer.data.PhysicsBodyDataVO;
+import games.rednblack.editor.renderer.data.PolygonShapeVO;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -17,13 +16,9 @@ import java.util.ArrayList;
 public class BoundaryManager {
 
     public static final Float BOUNDARY_THICKNESS = 0.01f;
-    public static final Float BOUNDARY_FLAG = 2048.001f;
 
     @Getter
     private final GameScreen gameScreen;
-
-    @Getter
-    private final ArrayList<Shape> boundaryShapes = new ArrayList<>();
 
     public BoundaryManager(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
@@ -31,12 +26,10 @@ public class BoundaryManager {
 
     public void createPolygonBoundary(ArrayList<Vector2> points) {
 
-        /* BodyDef */
-        BodyDef boundaryBodyDef = new BodyDef();
-        boundaryBodyDef.type = BodyDef.BodyType.StaticBody;
-
         /* Foreach all the edges */
         for (int i = 0; i < points.size(); i++) {
+
+            /* Calculate the shape */
             Vector2 startVector = points.get(i);
             Vector2 endVector = points.get((i + 1) % points.size());
 
@@ -47,62 +40,43 @@ public class BoundaryManager {
             Vector2 startMovedVector = new Vector2(startVector.x + normalVector.x, startVector.y + normalVector.y);
             Vector2 endMovedVector = new Vector2(endVector.x + normalVector.x, endVector.y + normalVector.y);
 
-            boundaryBodyDef.gravityScale = BoundaryManager.BOUNDARY_FLAG;
-            boundaryBodyDef.linearDamping = 0.233f;
-
-            Body boundaryBody = gameScreen.getSceneLoader().getWorld().createBody(boundaryBodyDef);
-
-            System.out.printf("boundaryBody address after construct: %d\n", Box2DUtils.getAddr(boundaryBody));
-
             PolygonShape polygonShape = new PolygonShape();
-            polygonShape.set(new Vector2[]{
+            Vector2[] vector2s = {
                     startVector,
                     endVector,
                     endMovedVector,
                     startMovedVector
-            });
+            };
+            polygonShape.set(vector2s);
 
-            FixtureDef fixtureDef = new FixtureDef();
-            fixtureDef.shape = polygonShape;
-            fixtureDef.density = BOUNDARY_FLAG;
-            Fixture fixture = boundaryBody.createFixture(fixtureDef);
+            /* Get a magic entity from the library */
 
-            fixture.setDensity(1.233f);
+            /* Composite: composite_magic */
+            CompositeItemVO tempComposite = getGameScreen().getSceneLoader().loadVoFromLibrary("library_magic");
 
+            // Remove the Image (image_magic) inside the Composite (composite_magic)
+            tempComposite.composite.sImages.clear();
+            tempComposite.layerName = "Default";
+            tempComposite.x = 0;
+            tempComposite.y = 0;
 
-            System.out.printf("boundaryBody address after create fixture: %d\n", Box2DUtils.getAddr(boundaryBody));
+            PhysicsBodyDataVO physicsBodyDataVO = new PhysicsBodyDataVO();
+            physicsBodyDataVO.bodyType = BodyDef.BodyType.StaticBody.getValue();
+            tempComposite.physics = physicsBodyDataVO;
 
-            // Add boundary body instance (Must get the address after all the operations)
-            this.boundaryShapes.add(polygonShape);
+            PolygonShapeVO polygonShapeVO = new PolygonShapeVO();
+            polygonShapeVO.polygons = new Vector2[][]{vector2s};
+            tempComposite.shape = polygonShapeVO;
 
-            // Set UserData
-            boundaryBody.setUserData(Tags.BOUNDARY);
+            ApplicationAssetManager.loadMagicCompositeFromLibrary(getGameScreen().getSceneLoader(),
+                    tempComposite, new ArrayList<Class<?>>() {
+                        {
+                            this.add(BoundaryComponent.class);
+                        }
+                    });
+
         }
 
     }
 
-    @Deprecated
-    public void registerECS() {
-
-        // Call ECS to process.
-        this.gameScreen.getSceneLoader().getEngine().process();
-
-        // Get all the PhysicsBodyComponents
-        ComponentMapper<PhysicsBodyComponent> mapper = gameScreen.getSceneLoader().getEngine().getMapper(PhysicsBodyComponent.class);
-        IntBag entities = getGameScreen().getSceneLoader().getEngine().getAspectSubscriptionManager().get(Aspect.all(PhysicsBodyComponent.class)).getEntities();
-        System.out.println("IntBag Entities: " + entities.size());
-
-        // Do filter and Register to ECS
-        for (int i = 0; i < entities.size(); i++) {
-            int entityID = entities.get(i);
-            System.out.println("Registering to ECS foreach: entityID = " + entityID);
-            Body body = mapper.get(entityID).body;
-
-            // Register to ECS
-            if (boundaryShapes.contains(body)) {
-                System.out.println("add boundary ========");
-                gameScreen.getSceneLoader().getEngine().edit(entityID).add(new BoundaryComponent());
-            }
-        }
-    }
 }

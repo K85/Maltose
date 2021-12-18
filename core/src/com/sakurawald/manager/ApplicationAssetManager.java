@@ -4,6 +4,7 @@ import com.artemis.PooledComponent;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.kotcrab.vis.ui.widget.ListView;
 import games.rednblack.editor.renderer.SceneConfiguration;
 import games.rednblack.editor.renderer.SceneLoader;
 import games.rednblack.editor.renderer.data.CompositeItemVO;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings({"UnusedReturnValue", "rawtypes", "unchecked"})
 public class ApplicationAssetManager {
 
     /* Constants */
@@ -56,28 +58,33 @@ public class ApplicationAssetManager {
     }
 
     // Load Composite Item from HyperLap2D's Library and add component
-    public static int loadCompositeFromLibrary(SceneLoader mSceneLoader, String libraryName, String layer, float posX, float posY, ArrayList<Class<?>> componentClasses) {
+    public static int loadCompositeFromLibrary(SceneLoader sceneLoader, String libraryName, String layer, float posX, float posY, ArrayList<Class<?>> createComponentClasses) {
         Gdx.app.log("HelperClass - loadCompositeFromLib", "libraryName: " + libraryName + " layer: " + layer + " posX: " + posX + " posY: " + posY);
 
-
-        CompositeItemVO tmpComposite = mSceneLoader.loadVoFromLibrary(libraryName);
+        CompositeItemVO tmpComposite = sceneLoader.loadVoFromLibrary(libraryName);
         tmpComposite.layerName = layer;
         tmpComposite.x = posX;
         tmpComposite.y = posY;
 
-        int entityID = mSceneLoader.getEntityFactory().createEntity(mSceneLoader.getRoot(), tmpComposite);
-        mSceneLoader.getEntityFactory().initAllChildren(entityID, tmpComposite.composite);
+        int entityID = sceneLoader.getEntityFactory().createEntity(sceneLoader.getRoot(), tmpComposite);
+        sceneLoader.getEntityFactory().initAllChildren(entityID, tmpComposite.composite);
 
-        for (Class componentClass : componentClasses) {
-            mSceneLoader.getEngine().edit(entityID).create(componentClass);
+        for (Class componentClass : createComponentClasses) {
+            sceneLoader.getEngine().edit(entityID).create(componentClass);
         }
 
         return entityID;
     }
 
+    public static int loadMagicCompositeFromLibrary(SceneLoader sceneLoader, CompositeItemVO compositeItemVO, ArrayList<Class<?>> createComponentClasses) {
 
-    public static int loadMagicCompositeFromLibrary(SceneLoader mSceneLoader, String layer, float posX, float posY) {
-        return loadCompositeFromLibrary(mSceneLoader, "library_magic", layer, posX, posY, new ArrayList<Class<?>>());
+        int entityID = sceneLoader.getEntityFactory().createEntity(sceneLoader.getRoot(), compositeItemVO);
+        sceneLoader.getEntityFactory().initAllChildren(entityID, compositeItemVO.composite);
+
+        for (Class componentClass : createComponentClasses) {
+            sceneLoader.getEngine().edit(entityID).create(componentClass);
+        }
+
+        return entityID;
     }
-
 }

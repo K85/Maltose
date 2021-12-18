@@ -137,7 +137,7 @@ public class GameScreen extends ApplicationScreen {
     public void render(float delta) {
         Gdx.app.log("GameScreen", "render");
 
-        System.out.printf("frame per second: %d", Gdx.graphics.getFramesPerSecond());
+//        System.out.printf("frame per second: %d", Gdx.graphics.getFramesPerSecond());
         ScreenUtils.clear(1, 1, 1, 1);
 
         /* Render -> Box2D World */
@@ -149,8 +149,8 @@ public class GameScreen extends ApplicationScreen {
         scoreBoard.getViewport().apply();
         scoreBoard.draw();
 
-        System.out.printf("world width = %.2f, world height = %.2f\n", viewport.getWorldWidth(), viewport.getWorldHeight());
-        System.out.printf("world ppm = %d\n", sceneLoader.getPixelsPerWU());
+//        System.out.printf("world width = %.2f, world height = %.2f\n", viewport.getWorldWidth(), viewport.getWorldHeight());
+//        System.out.printf("world ppm = %d\n", sceneLoader.getPixelsPerWU());
     }
 
     @Override
@@ -163,7 +163,6 @@ public class GameScreen extends ApplicationScreen {
         }
     }
 
-    // TODO: get real-time world size
     public Vector2 getWorldSize() {
         Vector2 size = new Vector2();
         size.x = viewport.getWorldWidth();
@@ -172,8 +171,7 @@ public class GameScreen extends ApplicationScreen {
     }
 
     public boolean isOutsideWorld(Vector2 position) {
-        System.out.println("position:" + position);
-        System.out.println("viewport:" + viewport.getWorldWidth() + "," + viewport.getWorldHeight());
+        Gdx.app.log("isOutsideWorld", "position = " + position);
         return position.x < 0 || position.x > viewport.getWorldWidth() || position.y < 0 || position.y > viewport.getWorldHeight();
     }
 

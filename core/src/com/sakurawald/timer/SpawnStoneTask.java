@@ -14,7 +14,6 @@ import com.sakurawald.screen.GameScreen;
 import com.sakurawald.util.MathUtils;
 import games.rednblack.editor.renderer.SceneLoader;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
-import games.rednblack.editor.renderer.utils.ComponentRetriever;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
 import lombok.Getter;
 
@@ -47,7 +46,11 @@ public class SpawnStoneTask extends SpawnEntityTask {
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
 
         // Apply random velocity
-        int entityID = ApplicationAssetManager.loadCompositeFromLibrary(sceneLoader, "library_stone","Default", randomPosition.x, randomPosition.y, DeadlyObstacleComponent.class);
+        int entityID = ApplicationAssetManager.loadCompositeFromLibrary(sceneLoader, "library_stone","Default", randomPosition.x, randomPosition.y, new ArrayList<Class<?>>(){
+            {
+                this.add(DeadlyObstacleComponent.class);
+            }
+        });
 
         // Add Scripts
         ItemWrapper itemWrapper = new ItemWrapper(entityID, sceneLoader.getEngine());

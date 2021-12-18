@@ -9,6 +9,8 @@ import com.sakurawald.util.MathUtils;
 import games.rednblack.editor.renderer.SceneLoader;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
 
+import java.util.ArrayList;
+
 public class SpawnTokenTask extends SpawnEntityTask {
 
     public SpawnTokenTask(GameScreen gameScreen) {
@@ -35,7 +37,12 @@ public class SpawnTokenTask extends SpawnEntityTask {
 
         // Create new token
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
-        ApplicationAssetManager.loadCompositeFromLibrary(sceneLoader, "library_token", "Default", randomPosition.x, randomPosition.y, TokenComponent.class);
+        ApplicationAssetManager.loadCompositeFromLibrary(sceneLoader, "library_token", "Default", randomPosition.x, randomPosition.y, new ArrayList<Class<?>>(
+        ){
+            {
+                this.add(TokenComponent.class);
+            }
+        });
         sceneLoader.getEngine().process();
     }
 }
