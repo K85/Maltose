@@ -8,5 +8,6 @@ public class Tags {
     public static final String ENEMY = "enemy";
     public static final String SPOILS = "spoils";
     public static final String CHECK_POINT = "checkpoint";
+    public static final String BOUNDARY = "boundary";
 
 }

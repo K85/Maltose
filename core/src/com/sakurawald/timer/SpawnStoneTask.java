@@ -8,12 +8,14 @@ import com.badlogic.gdx.utils.Timer;
 import com.github.czyzby.lml.vis.parser.impl.attribute.table.UseCellDefaultsLmlAttribute;
 import com.sakurawald.logic.component.DeadlyObstacleComponent;
 import com.sakurawald.logic.component.StoneComponent;
+import com.sakurawald.logic.script.BoundaryAutoDestroyScript;
 import com.sakurawald.manager.ApplicationAssetManager;
 import com.sakurawald.screen.GameScreen;
 import com.sakurawald.util.MathUtils;
 import games.rednblack.editor.renderer.SceneLoader;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
 import games.rednblack.editor.renderer.utils.ComponentRetriever;
+import games.rednblack.editor.renderer.utils.ItemWrapper;
 import lombok.Getter;
 
 import java.net.Inet4Address;
@@ -31,16 +33,25 @@ public class SpawnStoneTask extends SpawnEntityTask {
     @Override
     public void spawnEntity() {
         // Generate random position and random velocity
-        Vector2 randomPosition = MathUtils.getRandomPositionInWorld();
+        Vector2 randomPosition = MathUtils.getRandomPositionInWorld(this.getGameScreen());
         Vector2 randomVelocity = MathUtils.getRandomVelocity(STONE_MAX_VELOCITY);
         Gdx.app.log("SpawnStoneTask", "Spawning stone at " + randomPosition);
         Gdx.app.log("SpawnStoneTask", "Spawning stone with velocity " + randomVelocity);
 
+        // Cancel spawn if outside of world bounds
+        if (getGameScreen().isOutsideWorld(randomPosition)) {
+            return;
+        }
+
         // Create new stone
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
 
-        // Give random velocity
+        // Apply random velocity
         int entityID = ApplicationAssetManager.loadCompositeFromLibrary(sceneLoader, "library_stone","Default", randomPosition.x, randomPosition.y, DeadlyObstacleComponent.class);
+
+        // Add Scripts
+        ItemWrapper itemWrapper = new ItemWrapper(entityID, sceneLoader.getEngine());
+        itemWrapper.addScript(new BoundaryAutoDestroyScript(this.getGameScreen()));
 
         // Call ECS system to process
         sceneLoader.getEngine().process();
@@ -51,6 +62,5 @@ public class SpawnStoneTask extends SpawnEntityTask {
             physicsBodyComponent.body.applyLinearImpulse(randomVelocity, physicsBodyComponent.body.getWorldCenter(), true);
         }
     }
-
 
 }

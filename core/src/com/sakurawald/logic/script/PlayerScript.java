@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.sakurawald.logic.component.DeadlyObstacleComponent;
 import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.logic.component.TokenComponent;
+import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.components.DimensionsComponent;
 import games.rednblack.editor.renderer.components.MainItemComponent;
 import games.rednblack.editor.renderer.components.TransformComponent;
@@ -25,6 +26,11 @@ public class PlayerScript extends BasicScript implements PhysicsContact {
     public static final int RIGHT = 2;
     public static final int UP = 3;
     public static final int DOWN = 4;
+    public static final float RESET_POSITION_X = 5;
+    public static final float RESET_POSITION_Y = 5;
+
+    /* GameScreen */
+    private GameScreen gameScreen;
 
     /* Engine */
     protected com.artemis.World engine;
@@ -42,6 +48,10 @@ public class PlayerScript extends BasicScript implements PhysicsContact {
     protected ComponentMapper<DeadlyObstacleComponent> deadlyObstacleMapper;
     protected ComponentMapper<TokenComponent> tokenMapper;
     protected ComponentMapper<DimensionsComponent> dimensionsMapper;
+
+    public PlayerScript(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
 
     @Override
     public void init(int entity) {
@@ -77,11 +87,13 @@ public class PlayerScript extends BasicScript implements PhysicsContact {
         Gdx.app.log("PlayerScript", "movePlayer: currentPosition = " + body.getPosition() + ", currentVelocity = " + body.getLinearVelocity());
 
         /* Check map boundary */
-//        Vector2 position = body.getPosition();
-//        if (position.x < 0 || position.y < 0 || position.x > GameScreen.WORLD_WIDTH || position.y > GameScreen.WORLD_HEIGHT) {
-//            Vector2 velocity = body.getLinearVelocity();
-//            velocity.set(-velocity.x, -velocity.y);
-//            body.setLinearVelocity(velocity);
+//        if (gameScreen.isOutsideWorld(body.getPosition())) {
+//            Vector2 playerPosition = body.getPosition();
+//            Vector2 targetPosition = new Vector2(RESET_POSITION_X, RESET_POSITION_Y);
+//            targetPosition.sub(playerPosition);
+//            targetPosition.set(targetPosition.x * -1, targetPosition.y * -1);
+//            body.setTransform(targetPosition, body.getAngle());
+//
 //            return;
 //        }
 

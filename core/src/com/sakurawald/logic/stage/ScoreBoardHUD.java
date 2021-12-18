@@ -10,6 +10,7 @@ import lombok.Getter;
 
 import java.util.Calendar;
 
+// TODO fix max icon bug.
 public class ScoreBoardHUD extends Stage {
 
     @Getter

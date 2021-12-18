@@ -2,21 +2,20 @@ package com.sakurawald.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sakurawald.logic.component.DeadlyObstacleComponent;
-import com.sakurawald.logic.component.PlayerComponent;
-import com.sakurawald.logic.component.StoneComponent;
-import com.sakurawald.logic.component.TokenComponent;
+import com.sakurawald.logic.component.*;
 import com.sakurawald.logic.entity.Tags;
+import com.sakurawald.logic.script.BoundaryAutoDestroyScript;
 import com.sakurawald.logic.script.PlayerScript;
 import com.sakurawald.logic.stage.ScoreBoardHUD;
 import com.sakurawald.logic.system.CameraSystem;
 import com.sakurawald.manager.ApplicationAssetManager;
+import com.sakurawald.manager.BoundaryManager;
 import com.sakurawald.timer.SpawnStoneTask;
 import com.sakurawald.timer.SpawnTokenTask;
 import games.rednblack.editor.renderer.SceneConfiguration;
@@ -24,6 +23,8 @@ import games.rednblack.editor.renderer.SceneLoader;
 import games.rednblack.editor.renderer.utils.ComponentRetriever;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
 import lombok.Getter;
+
+import java.util.ArrayList;
 
 public class GameScreen extends ApplicationScreen {
 
@@ -49,9 +50,14 @@ public class GameScreen extends ApplicationScreen {
     @Getter
     private Viewport viewport;
 
+    /* Graphics */
+    @Getter
+    private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+
     /* Box2D */
     @Getter
     private final Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
+
     @Getter
     private SceneLoader sceneLoader;
     @Getter
@@ -63,6 +69,10 @@ public class GameScreen extends ApplicationScreen {
 
     /* ScoreBoard */
     private ScoreBoardHUD scoreBoard;
+
+    /* BoundaryManager */
+    @Getter
+    BoundaryManager boundaryManager = new BoundaryManager(this);
 
     @Override
     public void show() {
@@ -93,13 +103,16 @@ public class GameScreen extends ApplicationScreen {
         ComponentRetriever.addMapper(DeadlyObstacleComponent.class);
         sceneLoader.addComponentByTagName(Tags.DEADLY_OBSTACLE, DeadlyObstacleComponent.class);
         sceneLoader.addComponentByTagName(Tags.STONE, StoneComponent.class);
+        sceneLoader.addComponentByTagName(Tags.BOUNDARY, BoundaryComponent.class);
 
         ComponentRetriever.addMapper(TokenComponent.class);
         sceneLoader.addComponentByTagName(Tags.TOKEN, TokenComponent.class);
 
         /* Add Scripts */
-        PlayerScript playerScript = new PlayerScript();
+        PlayerScript playerScript = new PlayerScript(this);
         player.addScript(playerScript);
+
+        player.addScript(new BoundaryAutoDestroyScript(this));
 
         cameraSystem.setFocusEntityID(player.getEntity());
 
@@ -109,6 +122,17 @@ public class GameScreen extends ApplicationScreen {
 
         /* Add Other Stages */
         scoreBoard = new ScoreBoardHUD(playerScript.getPlayerComponent(), new ExtendViewport(768, 576), sceneLoader);
+
+        /* Add Rectangle Boundary */
+        boundaryManager.createPolygonBoundary(new ArrayList<Vector2>() {
+            {
+                this.add(new Vector2(0, 0));
+                this.add(new Vector2(0, WORLD_HEIGHT));
+                this.add(new Vector2(WORLD_WIDTH, WORLD_HEIGHT));
+                this.add(new Vector2(WORLD_WIDTH, 0));
+            }
+        });
+
     }
 
     @Override
@@ -149,12 +173,18 @@ public class GameScreen extends ApplicationScreen {
         return size;
     }
 
-    public static Vector2 getConstantWorldSize() {
-        Vector2 size = new Vector2();
-        size.x = WORLD_WIDTH;
-        size.y = WORLD_HEIGHT;
-        return size;
+    public boolean isOutsideWorld(Vector2 position) {
+        System.out.println("position:" + position);
+        System.out.println("viewport:" + viewport.getWorldWidth() + "," + viewport.getWorldHeight());
+        return position.x < 0 || position.x > viewport.getWorldWidth() || position.y < 0 || position.y > viewport.getWorldHeight();
     }
+
+//    public static Vector2 getConstantWorldSize() {
+//        Vector2 size = new Vector2();
+//        size.x = WORLD_WIDTH;
+//        size.y = WORLD_HEIGHT;
+//        return size;
+//    }
 
     public ItemWrapper getPlayer() {
         return rootItemWrapper.getChild("image_aircraft_default");

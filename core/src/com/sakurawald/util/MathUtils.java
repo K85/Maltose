@@ -16,9 +16,9 @@ public class MathUtils {
         return random.nextFloat() * (max - min) + min;
     }
 
-    public static Vector2 getRandomPositionInWorld() {
+    public static Vector2 getRandomPositionInWorld(GameScreen gameScreen) {
         Vector2 position = new Vector2();
-        Vector2 world_size = GameScreen.getConstantWorldSize();
+        Vector2 world_size = gameScreen.getWorldSize();
         position.x = getRandomNumber(0, world_size.x);
         position.y = getRandomNumber(0, world_size.y);
         return position;
