@@ -65,7 +65,7 @@ public class BoundaryManager {
             placeholderComposite.shape = polygonShapeVO;
 
             /* Create the Entity */
-            ApplicationAssetManager.createEntityFromCompositeVO(getGameScreen().getSceneLoader(),
+            ApplicationAssetManager.getInstance().createEntityFromCompositeVO(getGameScreen().getSceneLoader(),
                     placeholderComposite, new ArrayList<>() {
                         {
                             this.add(BoundaryComponent.class);

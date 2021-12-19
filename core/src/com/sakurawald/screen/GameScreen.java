@@ -2,9 +2,15 @@ package com.sakurawald.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.PolygonSprite;
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.bullet.collision._btMprSimplex_t;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -15,8 +21,12 @@ import com.sakurawald.logic.stage.ScoreBoardHUD;
 import com.sakurawald.logic.system.CameraSystem;
 import com.sakurawald.manager.ApplicationAssetManager;
 import com.sakurawald.manager.BoundaryManager;
+import com.sakurawald.manager.PlayerManager;
 import com.sakurawald.timer.SpawnStoneTask;
 import com.sakurawald.timer.SpawnTokenTask;
+import com.talosvfx.talos.runtime.ParticleEffectDescriptor;
+import com.talosvfx.talos.runtime.ParticleEffectInstance;
+import com.talosvfx.talos.runtime.render.SpriteBatchParticleRenderer;
 import games.rednblack.editor.renderer.SceneConfiguration;
 import games.rednblack.editor.renderer.SceneLoader;
 import games.rednblack.editor.renderer.utils.ComponentRetriever;
@@ -28,7 +38,7 @@ import java.util.ArrayList;
 public class GameScreen extends ApplicationScreen {
 
     /* Constants */
-    protected static final float STEP_TIME = 1 / FPS;
+//    protected static final float STEP_TIME = 1 / FPS;
     protected static final float VELOCITY_ITERATIONS = 6;
     protected static final float POSITION_ITERATIONS = 2;
     public final static float MAX_VELOCITY = 10;
@@ -68,9 +78,21 @@ public class GameScreen extends ApplicationScreen {
     /* ScoreBoard */
     private ScoreBoardHUD scoreBoard;
 
+    /* PlayerManager */
+    @Getter
+    private final PlayerManager playerManager = new PlayerManager(this);
+
     /* BoundaryManager */
     @Getter
-    BoundaryManager boundaryManager = new BoundaryManager(this);
+    private final BoundaryManager boundaryManager = new BoundaryManager(this);
+
+    /* Talos */
+    private final PolygonSpriteBatch polygonSpriteBatch = new PolygonSpriteBatch();
+    private final SpriteBatchParticleRenderer spriteBatchParticleRenderer = new SpriteBatchParticleRenderer();
+
+    private ParticleEffect particleEffect;
+    private ParticleEffectInstance effectInstance;
+
 
     @Override
     public void show() {
@@ -90,16 +112,16 @@ public class GameScreen extends ApplicationScreen {
         sceneConfiguration.setResourceRetriever(ApplicationAssetManager.getInstance().getAsyncResourceLoader());
         sceneConfiguration.addSystem(cameraSystem);
 
-        sceneLoader = ApplicationAssetManager.buildSceneLoader(sceneConfiguration);
+        sceneLoader = ApplicationAssetManager.getInstance().buildSceneLoader(sceneConfiguration);
         sceneLoader.loadScene("MainScene", viewport);
+
         rootItemWrapper = new ItemWrapper(sceneLoader.getRoot(), sceneLoader.getEngine());
 
         /* Add Components */
-        ItemWrapper player = this.getPlayer();
 
         // PlayerComponent
         ComponentRetriever.addMapper(PlayerComponent.class);
-        ComponentRetriever.create(player.getEntity(), PlayerComponent.class, sceneLoader.getEngine());
+        sceneLoader.addComponentByTagName(Tags.PLAYER, PlayerComponent.class);
 
         // DeadlyObstacleComponent
         ComponentRetriever.addMapper(DeadlyObstacleComponent.class);
@@ -114,16 +136,17 @@ public class GameScreen extends ApplicationScreen {
         /* Add Scripts */
 
         // PlayerScript
+        ItemWrapper player = this.getPlayerManager().createPlayer();
         PlayerScript playerScript = new PlayerScript(this);
         player.addScript(playerScript);
 
         cameraSystem.setFocusEntityID(player.getEntity());
 
         /* Add Stages */
-        scoreBoard = new ScoreBoardHUD(playerScript.getPlayerComponent(), new ExtendViewport(768, 576), sceneLoader);
+        scoreBoard = new ScoreBoardHUD(this, new ExtendViewport(768, 576));
 
         /* Add Rectangle Boundary */
-        boundaryManager.createPolygonBoundary(new ArrayList<Vector2>() {
+        boundaryManager.createPolygonBoundary(new ArrayList<>() {
             {
                 this.add(new Vector2(0, 0));
                 this.add(new Vector2(0, WORLD_HEIGHT));
@@ -135,16 +158,33 @@ public class GameScreen extends ApplicationScreen {
         /* Register Timers */
         new SpawnStoneTask(this).scheduleSelf();
         new SpawnTokenTask(this).scheduleSelf();
+
+
+        /* Test Particle */
+        ParticleEffectDescriptor particleEffectDescriptor = new ParticleEffectDescriptor(Gdx.files.internal("particle/fire.p"), ApplicationAssetManager.getInstance().getTextureAtlas());
+        effectInstance = particleEffectDescriptor.createEffectInstance();
+        effectInstance.setPosition(0,0);
     }
 
     @Override
     public void render(float delta) {
+//        effectInstance.update(Gdx.graphics.getDeltaTime());
+
         Gdx.app.getApplicationLogger().debug("GameScreen", "render");
         ScreenUtils.clear(1, 1, 1, 1);
 
         /* Render -> Box2D World */
         viewport.apply();
         sceneLoader.getEngine().process();
+
+        /* Render -> Particle */
+//        polygonSpriteBatch.setProjectionMatrix(viewport.getCamera().projection);
+//        polygonSpriteBatch.begin();
+//
+//        spriteBatchParticleRenderer.setBatch(polygonSpriteBatch);
+//        effectInstance.render(spriteBatchParticleRenderer);
+//
+//        polygonSpriteBatch.end();
 
         /* Render -> ScoreBoard */
         scoreBoard.act(Gdx.graphics.getDeltaTime());
@@ -183,7 +223,4 @@ public class GameScreen extends ApplicationScreen {
         return position.x < 0 + delta || position.x > viewport.getWorldWidth() - delta || position.y < 0 + delta || position.y > viewport.getWorldHeight() - delta;
     }
 
-    public ItemWrapper getPlayer() {
-        return rootItemWrapper.getChild("image_aircraft_default");
-    }
 }

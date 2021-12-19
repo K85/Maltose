@@ -12,5 +12,6 @@ public class Tags {
     public static final String SPOILS = "spoils";
     public static final String CHECK_POINT = "checkpoint";
     public static final String BOUNDARY = "boundary";
+    public static final String PLAYER = "player";
 
 }

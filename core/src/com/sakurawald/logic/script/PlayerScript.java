@@ -1,5 +1,6 @@
 package com.sakurawald.logic.script;
 
+import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -14,7 +15,6 @@ import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.components.DimensionsComponent;
 import games.rednblack.editor.renderer.components.MainItemComponent;
 import games.rednblack.editor.renderer.components.TransformComponent;
-import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
 import games.rednblack.editor.renderer.physics.PhysicsContact;
 
 public class PlayerScript extends ApplicationScript implements PhysicsContact {
@@ -113,10 +113,16 @@ public class PlayerScript extends ApplicationScript implements PhysicsContact {
 
     @Override
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
+
+        Gdx.app.getApplicationLogger().log("beginContact", "beginContact: contactEntity = " + contactEntity + ", contactFixture = " + contactFixture.getBody().getPosition() + ", ownFixture = " + ownFixture.getBody().getPosition());
+
 //        MainItemComponent mainItemComponent = mainItemMapper.get(contactEntity);
 //        PlayerComponent playerComponent = playerMapper.get();
 //        if (mainItemComponent.tags.contains("platform"))
 //            playerComponent.touchedPlatforms++;
+
+
+        // TODO fix player composite multiple collision bug: multiple fixtures
 
         /* Collide with: DeadlyObstacle */
         DeadlyObstacleComponent deadlyObstacleComponent = deadlyObstacleMapper.get(contactEntity);

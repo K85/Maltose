@@ -28,6 +28,13 @@ public class MathUtils {
         return position;
     }
 
+    public static Vector2 getCenterPosition(GameScreen gameScreen) {
+        Vector2 position = new Vector2();
+        position.x = gameScreen.getWorldSize().x / 2;
+        position.y = gameScreen.getWorldSize().y / 2;
+        return position;
+    }
+
     public static Vector2 getRandomVelocity(float max_velocity) {
         Vector2 velocity = new Vector2();
         velocity.x = getRandomNumber(-max_velocity, max_velocity);

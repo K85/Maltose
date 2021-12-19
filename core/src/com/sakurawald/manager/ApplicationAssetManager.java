@@ -2,6 +2,7 @@ package com.sakurawald.manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import games.rednblack.editor.renderer.SceneConfiguration;
 import games.rednblack.editor.renderer.SceneLoader;
@@ -9,11 +10,14 @@ import games.rednblack.editor.renderer.data.CompositeItemVO;
 import games.rednblack.editor.renderer.resources.AsyncResourceManager;
 import games.rednblack.editor.renderer.resources.ResourceManagerLoader;
 import lombok.Getter;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 @SuppressWarnings({"UnusedReturnValue", "rawtypes", "unchecked"})
 public class ApplicationAssetManager {
+
+    // TODO refactor ApplicationAssetManager singleton ?
 
     /* Static */
     private static final String SKIN_JSON_PATH = "skin/skin.json";
@@ -26,6 +30,8 @@ public class ApplicationAssetManager {
     private final AssetManager assetManager;
     @Getter
     private final AsyncResourceManager asyncResourceLoader;
+    @Getter
+    private final TextureAtlas textureAtlas;
     @Getter
     private final Skin skin;
     @Getter
@@ -44,16 +50,20 @@ public class ApplicationAssetManager {
         /* Create ResourceManager */
         this.asyncResourceLoader = this.assetManager.get("project.dt", AsyncResourceManager.class);
 
+        /* Load TextureAtlas */
+        textureAtlas = new TextureAtlas(Gdx.files.internal("orig/pack.atlas"));
+
         /* Load Skin */
         this.skin = this.assetManager.get(SKIN_JSON_PATH);
     }
 
-    public static SceneLoader buildSceneLoader(SceneConfiguration sceneConfiguration) {
+    public SceneLoader buildSceneLoader(SceneConfiguration sceneConfiguration) {
         return new SceneLoader(sceneConfiguration);
     }
 
+
     // Load Composite Item from HyperLap2D's Library and add component
-    public static int createEntityFromLibrary(SceneLoader sceneLoader, String libraryName, String layer, float posX, float posY, ArrayList<Class<?>> createComponentClasses) {
+    public int createEntityFromLibrary(SceneLoader sceneLoader, String libraryName, String layer, float posX, float posY, ArrayList<Class<?>> createComponentClasses) {
         Gdx.app.getApplicationLogger().debug("ApplicationAssetManager", "Creating Entity from Library: " + libraryName + " Layer: " + layer);
         /* Load Composite from Library */
         CompositeItemVO tmpComposite = sceneLoader.loadVoFromLibrary(libraryName);
@@ -63,7 +73,7 @@ public class ApplicationAssetManager {
         return createEntityFromCompositeVO(sceneLoader, tmpComposite, createComponentClasses);
     }
 
-    public static int createEntityFromCompositeVO(SceneLoader sceneLoader, CompositeItemVO compositeItemVO, ArrayList<Class<?>> createComponentClasses) {
+    public int createEntityFromCompositeVO(SceneLoader sceneLoader, CompositeItemVO compositeItemVO, ArrayList<Class<?>> createComponentClasses) {
         /* Create the Entity */
         int entityID = sceneLoader.getEntityFactory().createEntity(sceneLoader.getRoot(), compositeItemVO);
         sceneLoader.getEntityFactory().initAllChildren(entityID, compositeItemVO.composite);

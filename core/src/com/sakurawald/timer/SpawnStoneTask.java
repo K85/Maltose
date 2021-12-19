@@ -39,7 +39,7 @@ public class SpawnStoneTask extends SpawnEntityTask {
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
 
         // Apply random velocity
-        int entityID = ApplicationAssetManager.createEntityFromLibrary(sceneLoader, "library_stone","Default", randomPosition.x, randomPosition.y, new ArrayList<Class<?>>(){
+        int entityID = ApplicationAssetManager.getInstance().createEntityFromLibrary(sceneLoader, "library_stone","Default", randomPosition.x, randomPosition.y, new ArrayList<Class<?>>(){
             {
                 this.add(DeadlyObstacleComponent.class);
             }

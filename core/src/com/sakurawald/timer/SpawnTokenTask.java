@@ -21,7 +21,7 @@ public class SpawnTokenTask extends SpawnEntityTask {
     public void spawnEntity() {
         // Generate random position and random velocity
         Vector2 randomPosition = MathUtils.getRandomPositionInWorld(this.getGameScreen());
-        Vector2 playerPosition = getGameScreen().getPlayer().getComponent(PhysicsBodyComponent.class).body.getPosition();
+        Vector2 playerPosition = getGameScreen().getPlayerManager().getSolePlayer().getComponent(PhysicsBodyComponent.class).body.getPosition();
 
         // Cancel spawn if outside the world
         if (getGameScreen().isOutsideWorld(randomPosition)) {
@@ -37,7 +37,7 @@ public class SpawnTokenTask extends SpawnEntityTask {
 
         // Create new token
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
-        ApplicationAssetManager.createEntityFromLibrary(sceneLoader, "library_token", "Default", randomPosition.x, randomPosition.y, new ArrayList<Class<?>>(
+        ApplicationAssetManager.getInstance().createEntityFromLibrary(sceneLoader, "library_token", "Default", randomPosition.x, randomPosition.y, new ArrayList<Class<?>>(
         ){
             {
                 this.add(TokenComponent.class);
