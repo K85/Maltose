@@ -1,12 +1,12 @@
 package com.sakurawald.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 
 public abstract class ApplicationScreen implements Screen {
 
-    // TODO: FPS should be used
-    protected static final float FPS = 60;
+//    protected static final float FPS = 60;
 
     @Override
     public void show() {

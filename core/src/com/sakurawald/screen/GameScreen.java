@@ -90,7 +90,7 @@ public class GameScreen extends ApplicationScreen {
         sceneConfiguration.setResourceRetriever(ApplicationAssetManager.getInstance().getAsyncResourceLoader());
         sceneConfiguration.addSystem(cameraSystem);
 
-        sceneLoader = ApplicationAssetManager.getInstance().makeSceneLoader(sceneConfiguration);
+        sceneLoader = ApplicationAssetManager.buildSceneLoader(sceneConfiguration);
         sceneLoader.loadScene("MainScene", viewport);
         rootItemWrapper = new ItemWrapper(sceneLoader.getRoot(), sceneLoader.getEngine());
 

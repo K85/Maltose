@@ -10,17 +10,19 @@ public abstract class ApplicationScript extends BasicScript {
 
     /* GameScreen */
     @Getter
-    protected GameScreen gameScreen;
+    private final GameScreen gameScreen;
 
     /* Engines */
     @Getter
-    protected com.artemis.World engine;
+    private com.artemis.World engine;
 
     /* Mappers */
-    protected ComponentMapper<PhysicsBodyComponent> physicsBodyMapper;
+    @Getter
+    private ComponentMapper<PhysicsBodyComponent> physicsBodyMapper;
 
     /* Components */
-    protected PhysicsBodyComponent physicsBodyComponent;
+    @Getter
+    private PhysicsBodyComponent physicsBodyComponent;
 
     public ApplicationScript(GameScreen gameScreen) {
         this.gameScreen = gameScreen;

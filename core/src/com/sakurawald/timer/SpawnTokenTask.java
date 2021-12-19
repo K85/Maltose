@@ -37,7 +37,7 @@ public class SpawnTokenTask extends SpawnEntityTask {
 
         // Create new token
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
-        ApplicationAssetManager.loadCompositeFromLibrary(sceneLoader, "library_token", "Default", randomPosition.x, randomPosition.y, new ArrayList<Class<?>>(
+        ApplicationAssetManager.createEntityFromLibrary(sceneLoader, "library_token", "Default", randomPosition.x, randomPosition.y, new ArrayList<Class<?>>(
         ){
             {
                 this.add(TokenComponent.class);

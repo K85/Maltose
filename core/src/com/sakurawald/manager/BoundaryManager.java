@@ -8,15 +8,14 @@ import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.data.CompositeItemVO;
 import games.rednblack.editor.renderer.data.PhysicsBodyDataVO;
 import games.rednblack.editor.renderer.data.PolygonShapeVO;
-import games.rednblack.editor.renderer.utils.ComponentRetriever;
 import lombok.Getter;
 
 import java.util.ArrayList;
 
-@SuppressWarnings("SuspiciousNameCombination")
+@SuppressWarnings({"SuspiciousNameCombination", "ClassCanBeRecord"})
 public class BoundaryManager {
 
-    public static final Float BOUNDARY_THICKNESS = 0.01f;
+    private static final Float BOUNDARY_THICKNESS = 0.01f;
 
     @Getter
     private final GameScreen gameScreen;
@@ -50,36 +49,29 @@ public class BoundaryManager {
             };
             polygonShape.set(vector2s);
 
-            /* Get a magic entity from the library */
-
-            /* Composite: composite_magic */
-            CompositeItemVO tempComposite = getGameScreen().getSceneLoader().loadVoFromLibrary("library_magic");
-
-            tempComposite = new CompositeItemVO();
-
-            // Remove the Image (image_magic) inside the Composite (composite_magic)
-            tempComposite.composite.sImages.clear();
-            tempComposite.layerName = "Default";
-            tempComposite.x = 0;
-            tempComposite.y = 0;
+            /* Define the Composite */
+            CompositeItemVO placeholderComposite = new CompositeItemVO();
+            placeholderComposite.layerName = "Default";
+            placeholderComposite.x = 0;
+            placeholderComposite.y = 0;
 
             PhysicsBodyDataVO physicsBodyDataVO = new PhysicsBodyDataVO();
             physicsBodyDataVO.bodyType = BodyDef.BodyType.StaticBody.getValue();
-            tempComposite.physics = physicsBodyDataVO;
+            physicsBodyDataVO.restitution = 0.5f;
+            placeholderComposite.physics = physicsBodyDataVO;
 
             PolygonShapeVO polygonShapeVO = new PolygonShapeVO();
             polygonShapeVO.polygons = new Vector2[][]{vector2s};
-            tempComposite.shape = polygonShapeVO;
+            placeholderComposite.shape = polygonShapeVO;
 
-            ApplicationAssetManager.loadMagicCompositeFromLibrary(getGameScreen().getSceneLoader(),
-                    tempComposite, new ArrayList<Class<?>>() {
+            /* Create the Entity */
+            ApplicationAssetManager.createEntityFromCompositeVO(getGameScreen().getSceneLoader(),
+                    placeholderComposite, new ArrayList<>() {
                         {
                             this.add(BoundaryComponent.class);
                         }
                     });
-
         }
-
     }
 
 }

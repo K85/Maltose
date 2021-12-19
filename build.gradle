@@ -35,18 +35,24 @@ allprojects {
         mavenCentral()
         google()
         gradlePluginPortal()
-        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        maven {
+            url "http://maven.aliyun.com/nexus/content/groups/public/"
+            allowInsecureProtocol = true
+        }
+
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url 'https://jitpack.io' }
     }
 
+    tasks.withType( JavaCompile ).configureEach {
+        options.forkOptions.jvmArgs.addAll( ['--add-opens', 'jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED'] )
+    }
 }
 
 
 project(":desktop") {
     apply plugin: "java-library"
-
 
     dependencies {
         implementation project(":core")

@@ -15,7 +15,6 @@ public class DestroyedByBoundary extends ApplicationScript implements PhysicsCon
 
     public DestroyedByBoundary(GameScreen gameScreen) {
         super(gameScreen);
-        this.gameScreen = gameScreen;
     }
 
 
@@ -32,11 +31,11 @@ public class DestroyedByBoundary extends ApplicationScript implements PhysicsCon
         if (boundaryComponent != null) {
             Gdx.app.getApplicationLogger().debug("BoundaryAutoDestroyScript", "Boundary Auto Destroy EntityID: " + this.getEntity());
 
-            ItemWrapper itemWrapper = new ItemWrapper(this.getEntity(), engine);
+            ItemWrapper itemWrapper = new ItemWrapper(this.getEntity(), this.getEngine());
 
             // TODO add some particle effect
 
-            engine.delete(this.getEntity());
+            this.getEngine().delete(this.getEntity());
         }
     }
 

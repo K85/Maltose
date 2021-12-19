@@ -1,17 +1,79 @@
 pack.png
-	size: 512, 128
+	size: 1024, 256
 	filter: Linear, Linear
+andromeda-chain
+	bounds: 203, 140, 64, 64
+artillery-shell
+	bounds: 203, 74, 64, 64
+black-hole-bolas
+	bounds: 269, 140, 64, 64
+burning-meteor
+	bounds: 203, 8, 64, 64
+calculator (1)
+	bounds: 1, 4, 200, 200
+cardboard-box-closed
+	bounds: 269, 74, 64, 64
 concentric-crescents
-	bounds: 1, 4, 64, 64
+	bounds: 335, 140, 64, 64
+crosshair
+	bounds: 269, 8, 64, 64
+death-star
+	bounds: 335, 74, 64, 64
+dial-padlock
+	bounds: 401, 140, 64, 64
+emerald
+	bounds: 335, 8, 64, 64
+extra-time
+	bounds: 401, 74, 64, 64
+falling-blob
+	bounds: 467, 140, 64, 64
+heart-bottle
+	bounds: 401, 8, 64, 64
+hypersonic-bolt
+	bounds: 467, 74, 64, 64
 image
-	bounds: 67, 4, 64, 64
+	bounds: 533, 140, 64, 64
+knocked-out-stars
+	bounds: 467, 8, 64, 64
+mason-jar
+	bounds: 533, 74, 64, 64
 maze-saw
-	bounds: 133, 4, 64, 64
+	bounds: 599, 140, 64, 64
+minerals
+	bounds: 533, 8, 64, 64
+night-sky
+	bounds: 599, 74, 64, 64
+open-treasure-chest
+	bounds: 665, 140, 64, 64
+orbital-rays
+	bounds: 599, 8, 64, 64
+ore
+	bounds: 665, 74, 64, 64
+plain-square
+	bounds: 731, 140, 64, 64
+radar-sweep (1)
+	bounds: 665, 8, 64, 64
+radar-sweep
+	bounds: 665, 8, 64, 64
+rub-el-hizb
+	bounds: 731, 74, 64, 64
+rupee
+	bounds: 797, 140, 64, 64
+sinusoidal-beam
+	bounds: 731, 8, 64, 64
 spotted-bug
-	bounds: 199, 4, 64, 64
+	bounds: 797, 74, 64, 64
+stack
+	bounds: 863, 140, 64, 64
 stealth-bomber
-	bounds: 265, 4, 64, 64
+	bounds: 797, 8, 64, 64
 stone-sphere
-	bounds: 331, 4, 64, 64
+	bounds: 863, 74, 64, 64
+transportation-rings
+	bounds: 929, 140, 64, 64
+uncertainty
+	bounds: 863, 8, 64, 64
+unlit-bomb
+	bounds: 929, 74, 64, 64
 white-pixel
 	bounds: 1, 1, 1, 1
