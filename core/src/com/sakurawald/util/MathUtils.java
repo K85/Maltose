@@ -2,10 +2,14 @@ package com.sakurawald.util;
 
 import com.badlogic.gdx.math.Vector2;
 import com.sakurawald.screen.GameScreen;
+import lombok.Builder;
+import lombok.experimental.UtilityClass;
 
 import java.util.Random;
 
+@UtilityClass
 public class MathUtils {
+
     private static final Random random = new Random();
 
     public static int getRandomNumber(int min, int max) {

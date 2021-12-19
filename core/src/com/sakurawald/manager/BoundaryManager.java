@@ -8,6 +8,7 @@ import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.data.CompositeItemVO;
 import games.rednblack.editor.renderer.data.PhysicsBodyDataVO;
 import games.rednblack.editor.renderer.data.PolygonShapeVO;
+import games.rednblack.editor.renderer.utils.ComponentRetriever;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -53,6 +54,8 @@ public class BoundaryManager {
 
             /* Composite: composite_magic */
             CompositeItemVO tempComposite = getGameScreen().getSceneLoader().loadVoFromLibrary("library_magic");
+
+            tempComposite = new CompositeItemVO();
 
             // Remove the Image (image_magic) inside the Composite (composite_magic)
             tempComposite.composite.sImages.clear();

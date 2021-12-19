@@ -1,5 +1,6 @@
 package com.sakurawald.logic.stage;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -10,7 +11,6 @@ import lombok.Getter;
 
 import java.util.Calendar;
 
-// TODO fix max icon bug.
 public class ScoreBoardHUD extends Stage {
 
     @Getter
@@ -74,4 +74,5 @@ public class ScoreBoardHUD extends Stage {
             label_play_time_seconds.setText("Play Time: " + play_time_seconds + "s");
         }
     }
+
 }

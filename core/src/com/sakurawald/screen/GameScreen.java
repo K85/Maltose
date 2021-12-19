@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sakurawald.logic.component.*;
 import com.sakurawald.logic.entity.Tags;
-import com.sakurawald.logic.script.BoundaryAutoDestroyScript;
 import com.sakurawald.logic.script.PlayerScript;
 import com.sakurawald.logic.stage.ScoreBoardHUD;
 import com.sakurawald.logic.system.CameraSystem;
@@ -43,7 +42,6 @@ public class GameScreen extends ApplicationScreen {
 
     /* Common Props */
 //    private final SpriteBatch spriteBatch = new SpriteBatch();
-//    @Getter
 
     /* Camera and Viewport */
     private final OrthographicCamera camera = new OrthographicCamera();
@@ -58,12 +56,12 @@ public class GameScreen extends ApplicationScreen {
     @Getter
     private final Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
 
+    /* HyperLap2D */
     @Getter
     private SceneLoader sceneLoader;
     @Getter
     private SceneConfiguration sceneConfiguration;
 
-    /* Artemis */
     @Getter
     private ItemWrapper rootItemWrapper;
 
@@ -83,9 +81,10 @@ public class GameScreen extends ApplicationScreen {
         /* Camera and Viewport */
         viewport = new ExtendViewport(VIRTUAL_RESOLUTION_WIDTH / PPWU, VIRTUAL_RESOLUTION_HEIGHT / PPWU
                 , camera);
+
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
-        /* Load MainScene */
+        /* Add System and Load Scene */
         CameraSystem cameraSystem = new CameraSystem(5, 16, 5, 12);
         sceneConfiguration = new SceneConfiguration();
         sceneConfiguration.setResourceRetriever(ApplicationAssetManager.getInstance().getAsyncResourceLoader());
@@ -97,28 +96,30 @@ public class GameScreen extends ApplicationScreen {
 
         /* Add Components */
         ItemWrapper player = this.getPlayer();
+
+        // PlayerComponent
         ComponentRetriever.addMapper(PlayerComponent.class);
         ComponentRetriever.create(player.getEntity(), PlayerComponent.class, sceneLoader.getEngine());
 
+        // DeadlyObstacleComponent
         ComponentRetriever.addMapper(DeadlyObstacleComponent.class);
         sceneLoader.addComponentByTagName(Tags.DEADLY_OBSTACLE, DeadlyObstacleComponent.class);
         sceneLoader.addComponentByTagName(Tags.STONE, StoneComponent.class);
         sceneLoader.addComponentByTagName(Tags.BOUNDARY, BoundaryComponent.class);
 
+        // TokenComponent
         ComponentRetriever.addMapper(TokenComponent.class);
         sceneLoader.addComponentByTagName(Tags.TOKEN, TokenComponent.class);
 
         /* Add Scripts */
+
+        // PlayerScript
         PlayerScript playerScript = new PlayerScript(this);
         player.addScript(playerScript);
 
         cameraSystem.setFocusEntityID(player.getEntity());
 
-        /* Register Timers */
-        new SpawnStoneTask(this).scheduleSelf();
-        new SpawnTokenTask(this).scheduleSelf();
-
-        /* Add Other Stages */
+        /* Add Stages */
         scoreBoard = new ScoreBoardHUD(playerScript.getPlayerComponent(), new ExtendViewport(768, 576), sceneLoader);
 
         /* Add Rectangle Boundary */
@@ -131,13 +132,14 @@ public class GameScreen extends ApplicationScreen {
             }
         });
 
+        /* Register Timers */
+        new SpawnStoneTask(this).scheduleSelf();
+        new SpawnTokenTask(this).scheduleSelf();
     }
 
     @Override
     public void render(float delta) {
-        Gdx.app.log("GameScreen", "render");
-
-//        System.out.printf("frame per second: %d", Gdx.graphics.getFramesPerSecond());
+        Gdx.app.getApplicationLogger().debug("GameScreen", "render");
         ScreenUtils.clear(1, 1, 1, 1);
 
         /* Render -> Box2D World */
@@ -148,13 +150,17 @@ public class GameScreen extends ApplicationScreen {
         scoreBoard.act(Gdx.graphics.getDeltaTime());
         scoreBoard.getViewport().apply();
         scoreBoard.draw();
-
     }
 
     @Override
     public void resize(int width, int height) {
+        // Update -> the viewport of GameScreen's camerr
         viewport.update(width, height, true);
 
+        // Update -> the viewport of HUDs
+        scoreBoard.getViewport().update(width, height, true);
+
+        // Update -> SceneLoader (notify the FBO to resize)
         // batch.setProjectionMatrix(camera.combined);
         if (width != 0 && height != 0) {
             sceneLoader.resize(width, height);
@@ -173,15 +179,9 @@ public class GameScreen extends ApplicationScreen {
     }
 
     public boolean isOutsideWorld(Vector2 position, float delta) {
-        Gdx.app.log("isOutsideWorld", "position = " + position + ", delta = " + delta);
+        Gdx.app.getApplicationLogger().debug("isOutsideWorld", "position = " + position + ", delta = " + delta);
         return position.x < 0 + delta || position.x > viewport.getWorldWidth() - delta || position.y < 0 + delta || position.y > viewport.getWorldHeight() - delta;
     }
-//    public static Vector2 getConstantWorldSize() {
-//        Vector2 size = new Vector2();
-//        size.x = WORLD_WIDTH;
-//        size.y = WORLD_HEIGHT;
-//        return size;
-//    }
 
     public ItemWrapper getPlayer() {
         return rootItemWrapper.getChild("image_aircraft_default");

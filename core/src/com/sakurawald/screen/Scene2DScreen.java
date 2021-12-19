@@ -17,7 +17,6 @@ public abstract class Scene2DScreen extends ApplicationScreen {
     private static final SceneComposerStageBuilder stageBuilder = new SceneComposerStageBuilder();
 
     /* Common Props */
-    @Getter
     private final String scene_path;
 
     @Getter
@@ -58,7 +57,6 @@ public abstract class Scene2DScreen extends ApplicationScreen {
     @Override
     public void render(float delta) {
         Gdx.app.log("Scene2DScreen", "render");
-
         ScreenUtils.clear(1, 1, 1, 1);
         renderStage();
     }
@@ -70,6 +68,12 @@ public abstract class Scene2DScreen extends ApplicationScreen {
     }
 
     @Override
+    public void resize(int width, int height) {
+        // Update the viewport after resize. (or the Scene2D Screen may be stretched)
+        this.getStage().getViewport().update(width, height, true);
+    }
+
+    @Override
     public void hide() {
         // Let hide equals close !
         this.dispose();
@@ -78,5 +82,4 @@ public abstract class Scene2DScreen extends ApplicationScreen {
     protected abstract void initializeStageActors();
 
     protected abstract void registerStageEvents();
-
 }

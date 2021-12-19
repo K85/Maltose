@@ -11,14 +11,12 @@ import com.sakurawald.logic.component.DeadlyObstacleComponent;
 import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.logic.component.TokenComponent;
 import com.sakurawald.screen.GameScreen;
-import games.rednblack.editor.renderer.components.DimensionsComponent;
 import games.rednblack.editor.renderer.components.MainItemComponent;
 import games.rednblack.editor.renderer.components.TransformComponent;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
 import games.rednblack.editor.renderer.physics.PhysicsContact;
-import games.rednblack.editor.renderer.scripts.BasicScript;
 
-public class PlayerScript extends BasicScript implements PhysicsContact {
+public class PlayerScript extends ApplicationScript implements PhysicsContact {
 
     /* Constants */
     public static final float PLAYER_MAX_VELOCITY = 1;
@@ -26,42 +24,28 @@ public class PlayerScript extends BasicScript implements PhysicsContact {
     public static final int RIGHT = 2;
     public static final int UP = 3;
     public static final int DOWN = 4;
-    public static final float RESET_POSITION_X = 5;
-    public static final float RESET_POSITION_Y = 5;
 
-    /* GameScreen */
-    private GameScreen gameScreen;
 
-    /* Engine */
-    protected com.artemis.World engine;
-
-    /* Player */
+    /* Entities */
 //    private int animEntity;
-    private int playerEntity;
-    private PhysicsBodyComponent mPhysicsBodyComponent;
 
     /* Mappers */
-    protected ComponentMapper<PhysicsBodyComponent> physicsMapper;
     protected ComponentMapper<TransformComponent> transformMapper;
     protected ComponentMapper<PlayerComponent> playerMapper;
     protected ComponentMapper<MainItemComponent> mainItemMapper;
     protected ComponentMapper<DeadlyObstacleComponent> deadlyObstacleMapper;
     protected ComponentMapper<TokenComponent> tokenMapper;
-    protected ComponentMapper<DimensionsComponent> dimensionsMapper;
+//    protected ComponentMapper<DimensionsComponent> dimensionsMapper;
 
     public PlayerScript(GameScreen gameScreen) {
+        super(gameScreen);
         this.gameScreen = gameScreen;
     }
 
     @Override
-    public void init(int entity) {
-        // Entity this script is attached to
-        super.init(entity);
-
+    public void doInit(int attachedEntityID) {
 //        ItemWrapper itemWrapper = new ItemWrapper(entity, mEngine);
 //        animEntity = itemWrapper.getChild("player-anim").getEntity();
-        playerEntity = entity;
-        mPhysicsBodyComponent = physicsMapper.get(entity);
     }
 
     @Override
@@ -83,8 +67,8 @@ public class PlayerScript extends BasicScript implements PhysicsContact {
     }
 
     public void movePlayer(int direction) {
-        Body body = mPhysicsBodyComponent.body;
-        Gdx.app.log("PlayerScript", "movePlayer: currentPosition = " + body.getPosition() + ", currentVelocity = " + body.getLinearVelocity());
+        Body body = physicsBodyComponent.body;
+        Gdx.app.getApplicationLogger().debug("PlayerScript", "movePlayer: currentPosition = " + body.getPosition() + ", currentVelocity = " + body.getLinearVelocity());
 
         /* Check map boundary */
 //        if (gameScreen.isOutsideWorld(body.getPosition())) {
@@ -124,7 +108,7 @@ public class PlayerScript extends BasicScript implements PhysicsContact {
 
     public PlayerComponent getPlayerComponent() {
 //        return playerMapper.get(animEntity);
-        return playerMapper.get(playerEntity);
+        return playerMapper.get(this.getEntity());
     }
 
     @Override
@@ -143,7 +127,7 @@ public class PlayerScript extends BasicScript implements PhysicsContact {
         /* Collide with: DeadlyObstacle */
         DeadlyObstacleComponent deadlyObstacleComponent = deadlyObstacleMapper.get(contactEntity);
         if (deadlyObstacleComponent != null) {
-            Gdx.app.log("PlayerScript", "beginContact: deadlyObstacleComponent = " + deadlyObstacleComponent);
+            Gdx.app.getApplicationLogger().debug("PlayerScript", "beginContact: deadlyObstacleComponent = " + deadlyObstacleComponent);
             engine.delete(contactEntity);
             this.getPlayerComponent().leftLives--;
         }
@@ -151,7 +135,7 @@ public class PlayerScript extends BasicScript implements PhysicsContact {
         /* Collide With: Token */
         TokenComponent tokenComponent = tokenMapper.get(contactEntity);
         if (tokenComponent != null) {
-            Gdx.app.log("PlayerScript", "Collide with token: " + getPlayerComponent().tokenCollected);
+            Gdx.app.getApplicationLogger().debug("PlayerScript", "Collide with token: " + getPlayerComponent().tokenCollected);
             engine.delete(contactEntity);
             this.getPlayerComponent().tokenCollected += tokenComponent.value;
         }
@@ -185,4 +169,5 @@ public class PlayerScript extends BasicScript implements PhysicsContact {
     public void postSolve(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
 
     }
+
 }

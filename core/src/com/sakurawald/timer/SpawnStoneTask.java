@@ -1,25 +1,18 @@
 package com.sakurawald.timer;
 
-import com.artemis.BaseComponentMapper;
-import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Timer;
-import com.github.czyzby.lml.vis.parser.impl.attribute.table.UseCellDefaultsLmlAttribute;
 import com.sakurawald.logic.component.DeadlyObstacleComponent;
 import com.sakurawald.logic.component.StoneComponent;
-import com.sakurawald.logic.script.BoundaryAutoDestroyScript;
+import com.sakurawald.logic.script.DestroyedByBoundary;
 import com.sakurawald.manager.ApplicationAssetManager;
 import com.sakurawald.screen.GameScreen;
 import com.sakurawald.util.MathUtils;
 import games.rednblack.editor.renderer.SceneLoader;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
-import lombok.Getter;
 
-import java.net.Inet4Address;
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class SpawnStoneTask extends SpawnEntityTask {
 
@@ -54,7 +47,7 @@ public class SpawnStoneTask extends SpawnEntityTask {
 
         // Add Scripts
         ItemWrapper itemWrapper = new ItemWrapper(entityID, sceneLoader.getEngine());
-        itemWrapper.addScript(new BoundaryAutoDestroyScript(this.getGameScreen()));
+        itemWrapper.addScript(new DestroyedByBoundary(this.getGameScreen()));
 
         // Call ECS system to process
         sceneLoader.getEngine().process();

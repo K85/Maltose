@@ -1,5 +1,8 @@
 package com.sakurawald.logic.entity;
 
+/**
+ * Constant strings for HyperLap2D tags.
+ */
 public class Tags {
 
     public static final String DEADLY_OBSTACLE = "deadly_obstacle";
