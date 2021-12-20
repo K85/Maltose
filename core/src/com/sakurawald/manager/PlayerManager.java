@@ -34,7 +34,9 @@ public class PlayerManager {
                 , position.x
                 , position.y
                 , new ArrayList<>(){
-                    {}
+                    {
+                        this.add(PlayerComponent.class);
+                    }
                 });
 
         // Call ECS system to process

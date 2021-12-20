@@ -3,14 +3,10 @@ package com.sakurawald.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.PolygonSprite;
-import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.bullet.collision._btMprSimplex_t;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -21,12 +17,12 @@ import com.sakurawald.logic.stage.ScoreBoardHUD;
 import com.sakurawald.logic.system.CameraSystem;
 import com.sakurawald.manager.ApplicationAssetManager;
 import com.sakurawald.manager.BoundaryManager;
+import com.sakurawald.manager.ParticleManager;
 import com.sakurawald.manager.PlayerManager;
 import com.sakurawald.timer.SpawnStoneTask;
 import com.sakurawald.timer.SpawnTokenTask;
 import com.talosvfx.talos.runtime.ParticleEffectDescriptor;
 import com.talosvfx.talos.runtime.ParticleEffectInstance;
-import com.talosvfx.talos.runtime.render.SpriteBatchParticleRenderer;
 import games.rednblack.editor.renderer.SceneConfiguration;
 import games.rednblack.editor.renderer.SceneLoader;
 import games.rednblack.editor.renderer.utils.ComponentRetriever;
@@ -87,11 +83,8 @@ public class GameScreen extends ApplicationScreen {
     private final BoundaryManager boundaryManager = new BoundaryManager(this);
 
     /* Talos */
-    private final PolygonSpriteBatch polygonSpriteBatch = new PolygonSpriteBatch();
-    private final SpriteBatchParticleRenderer spriteBatchParticleRenderer = new SpriteBatchParticleRenderer();
-
-    private ParticleEffect particleEffect;
-    private ParticleEffectInstance effectInstance;
+    @Getter
+    private final ParticleManager particleManager = new ParticleManager(this);
 
 
     @Override
@@ -126,7 +119,13 @@ public class GameScreen extends ApplicationScreen {
         // DeadlyObstacleComponent
         ComponentRetriever.addMapper(DeadlyObstacleComponent.class);
         sceneLoader.addComponentByTagName(Tags.DEADLY_OBSTACLE, DeadlyObstacleComponent.class);
+
+        // StoneComponent
+        ComponentRetriever.addMapper(StoneComponent.class);
         sceneLoader.addComponentByTagName(Tags.STONE, StoneComponent.class);
+
+        // BoundaryComponent
+        ComponentRetriever.addMapper(BoundaryComponent.class);
         sceneLoader.addComponentByTagName(Tags.BOUNDARY, BoundaryComponent.class);
 
         // TokenComponent
@@ -159,46 +158,34 @@ public class GameScreen extends ApplicationScreen {
         new SpawnStoneTask(this).scheduleSelf();
         new SpawnTokenTask(this).scheduleSelf();
 
-
-        /* Test Particle */
-        ParticleEffectDescriptor particleEffectDescriptor = new ParticleEffectDescriptor(Gdx.files.internal("particle/fire.p"), ApplicationAssetManager.getInstance().getTextureAtlas());
-        effectInstance = particleEffectDescriptor.createEffectInstance();
-        effectInstance.setPosition(0,0);
     }
 
     @Override
     public void render(float delta) {
-//        effectInstance.update(Gdx.graphics.getDeltaTime());
-
         Gdx.app.getApplicationLogger().debug("GameScreen", "render");
         ScreenUtils.clear(1, 1, 1, 1);
 
+        /* Render -> Particle */
+        particleManager.handle(delta);
+
         /* Render -> Box2D World */
-        viewport.apply();
+        this.viewport.apply();
         sceneLoader.getEngine().process();
 
-        /* Render -> Particle */
-//        polygonSpriteBatch.setProjectionMatrix(viewport.getCamera().projection);
-//        polygonSpriteBatch.begin();
-//
-//        spriteBatchParticleRenderer.setBatch(polygonSpriteBatch);
-//        effectInstance.render(spriteBatchParticleRenderer);
-//
-//        polygonSpriteBatch.end();
 
         /* Render -> ScoreBoard */
-        scoreBoard.act(Gdx.graphics.getDeltaTime());
-        scoreBoard.getViewport().apply();
-        scoreBoard.draw();
+        this.scoreBoard.act(delta);
+        this.scoreBoard.getViewport().apply();
+        this.scoreBoard.draw();
     }
 
     @Override
     public void resize(int width, int height) {
         // Update -> the viewport of GameScreen's camerr
-        viewport.update(width, height, true);
+        this.viewport.update(width, height, true);
 
         // Update -> the viewport of HUDs
-        scoreBoard.getViewport().update(width, height, true);
+        this.scoreBoard.getViewport().update(width, height, true);
 
         // Update -> SceneLoader (notify the FBO to resize)
         // batch.setProjectionMatrix(camera.combined);

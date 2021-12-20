@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.sakurawald.logic.component.DeadlyObstacleComponent;
 import com.sakurawald.logic.component.StoneComponent;
 import com.sakurawald.logic.script.DestroyedByBoundary;
+import com.sakurawald.logic.script.StoneParticleScript;
 import com.sakurawald.manager.ApplicationAssetManager;
 import com.sakurawald.screen.GameScreen;
 import com.sakurawald.util.MathUtils;
@@ -42,12 +43,14 @@ public class SpawnStoneTask extends SpawnEntityTask {
         int entityID = ApplicationAssetManager.getInstance().createEntityFromLibrary(sceneLoader, "library_stone","Default", randomPosition.x, randomPosition.y, new ArrayList<Class<?>>(){
             {
                 this.add(DeadlyObstacleComponent.class);
+                this.add(StoneComponent.class);
             }
         });
 
         // Add Scripts
         ItemWrapper itemWrapper = new ItemWrapper(entityID, sceneLoader.getEngine());
         itemWrapper.addScript(new DestroyedByBoundary(this.getGameScreen()));
+        itemWrapper.addScript(new StoneParticleScript(this.getGameScreen()));
 
         // Call ECS system to process
         sceneLoader.getEngine().process();

@@ -3,10 +3,15 @@ package com.sakurawald.logic.component;
 import com.artemis.PooledComponent;
 import lombok.Data;
 
-@Data
 public abstract class ApplicationComponent extends PooledComponent {
 
-    private int value;
-    private boolean ignored;
+    public int value;
+    public boolean ignored;
+
+    @Override
+    protected void reset() {
+        value = 0;
+        ignored = false;
+    }
 
 }

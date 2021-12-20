@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.sakurawald.logic.component.DeadlyObstacleComponent;
 import com.sakurawald.logic.component.PlayerComponent;
+import com.sakurawald.logic.component.StoneComponent;
 import com.sakurawald.logic.component.TokenComponent;
 import com.sakurawald.logic.enums.PlayerControls;
 import com.sakurawald.screen.GameScreen;
@@ -30,6 +31,7 @@ public class PlayerScript extends ApplicationScript implements PhysicsContact {
     protected ComponentMapper<PlayerComponent> playerMapper;
     protected ComponentMapper<MainItemComponent> mainItemMapper;
     protected ComponentMapper<DeadlyObstacleComponent> deadlyObstacleMapper;
+    protected ComponentMapper<StoneComponent> stoneComponentMapper;
     protected ComponentMapper<TokenComponent> tokenMapper;
     protected ComponentMapper<DimensionsComponent> dimensionsMapper;
 
@@ -103,7 +105,6 @@ public class PlayerScript extends ApplicationScript implements PhysicsContact {
     }
 
     public PlayerComponent getPlayerComponent() {
-//        return playerMapper.get(animEntity);
         return playerMapper.get(this.getEntity());
     }
 
@@ -120,20 +121,20 @@ public class PlayerScript extends ApplicationScript implements PhysicsContact {
 //        if (mainItemComponent.tags.contains("platform"))
 //            playerComponent.touchedPlatforms++;
 
-        /* Collide with: DeadlyObstacle */
-        DeadlyObstacleComponent deadlyObstacleComponent = deadlyObstacleMapper.get(contactEntity);
-        if (deadlyObstacleComponent != null && !deadlyObstacleComponent.isIgnored()) {
-            Gdx.app.getApplicationLogger().debug("PlayerScript", "beginContact: deadlyObstacleComponent = " + deadlyObstacleComponent);
-            deadlyObstacleComponent.setIgnored(true);
+        /* Collide with: StoneComponent */
+        StoneComponent stoneComponent = stoneComponentMapper.get(contactEntity);
+        if (stoneComponent != null && !stoneComponent.ignored) {
+            Gdx.app.getApplicationLogger().debug("PlayerScript", "beginContact: stone = " + stoneComponent);
+            stoneComponent.ignored = true;
             this.getEngine().delete(contactEntity);
             this.getPlayerComponent().leftLives--;
         }
 
         /* Collide With: Token */
         TokenComponent tokenComponent = tokenMapper.get(contactEntity);
-        if (tokenComponent != null && !tokenComponent.isIgnored()) {
+        if (tokenComponent != null && !tokenComponent.ignored) {
             Gdx.app.getApplicationLogger().debug("PlayerScript", "Collide with token: " + getPlayerComponent().tokenCollected);
-            tokenComponent.setIgnored(true);
+            tokenComponent.ignored = true;
             this.getEngine().delete(contactEntity);
             this.getPlayerComponent().tokenCollected += tokenComponent.value;
         }

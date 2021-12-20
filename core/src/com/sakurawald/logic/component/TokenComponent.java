@@ -5,10 +5,8 @@ import com.badlogic.gdx.utils.Pool;
 
 public class TokenComponent extends ApplicationComponent {
 
-    public int value = 1;
-
     @Override
     protected void reset() {
-        value = 1;
+        this.value = 1;
     }
 }

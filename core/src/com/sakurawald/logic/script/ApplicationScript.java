@@ -31,8 +31,8 @@ public abstract class ApplicationScript extends BasicScript {
     @Override
     public final void init(int attachedEntityID) {
         super.init(attachedEntityID);
-        physicsBodyComponent = physicsBodyMapper.get(attachedEntityID);
-        doInit(attachedEntityID);
+        this.physicsBodyComponent = this.physicsBodyMapper.get(attachedEntityID);
+        this.doInit(attachedEntityID);
     }
 
 

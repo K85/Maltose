@@ -61,23 +61,24 @@ public class ApplicationAssetManager {
 
 
     // Load Composite Item from HyperLap2D's Library and add component
-    public int createEntityFromLibrary(SceneLoader sceneLoader, String libraryName, String layer, float posX, float posY, ArrayList<Class<?>> extraCreateComponents) {
+    public int createEntityFromLibrary(SceneLoader sceneLoader, String libraryName, String layer, float posX, float posY, ArrayList<Class<?>> initComponents) {
         Gdx.app.getApplicationLogger().debug("ApplicationAssetManager", "Creating Entity from Library: " + libraryName + " Layer: " + layer);
         /* Load Composite from Library */
-        CompositeItemVO tmpComposite = sceneLoader.loadVoFromLibrary(libraryName);
-        tmpComposite.layerName = layer;
-        tmpComposite.x = posX;
-        tmpComposite.y = posY;
-        return createEntityFromCompositeVO(sceneLoader, tmpComposite, extraCreateComponents);
+        CompositeItemVO compositeItemVO = sceneLoader.loadVoFromLibrary(libraryName);
+        compositeItemVO.layerName = layer;
+        compositeItemVO.x = posX;
+        compositeItemVO.y = posY;
+        return createEntityFromCompositeVO(sceneLoader, compositeItemVO, initComponents);
     }
 
-    public int createEntityFromCompositeVO(SceneLoader sceneLoader, CompositeItemVO compositeItemVO, ArrayList<Class<?>> extraCreateComponents) {
+    public int createEntityFromCompositeVO(SceneLoader sceneLoader, CompositeItemVO compositeItemVO, ArrayList<Class<?>> initComponents) {
         /* Create the Entity */
         int entityID = sceneLoader.getEntityFactory().createEntity(sceneLoader.getRoot(), compositeItemVO);
         sceneLoader.getEntityFactory().initAllChildren(entityID, compositeItemVO.composite);
 
         /* Create Components (Unchecked Generics can't use forEach() method) */
-        for (Class componentClass : extraCreateComponents) {
+        // if wo don't manually add the components for the entity, the entity will not have the components
+        for (Class componentClass : initComponents) {
             sceneLoader.getEngine().edit(entityID).create(componentClass);
         }
         return entityID;
