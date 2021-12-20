@@ -27,7 +27,7 @@ public class PlayerManager {
     public ItemWrapper createPlayer() {
         /* Create player entity */
         Vector2 position = MathUtils.getCenterPosition(this.gameScreen);
-        int entityID = ApplicationAssetManager.getInstance().createEntityFromLibrary(
+        int entityID = ApplicationAssetManager.createEntityFromLibrary(
                 this.gameScreen.getSceneLoader()
                 , PLAYER_LIBRARY_ID
                 , "Default"

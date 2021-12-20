@@ -40,7 +40,7 @@ public abstract class Scene2DScreen extends ApplicationScreen {
 
     public static Stage buildStage(String jsonHandlePath) {
         Stage stage = new Stage(new ScreenViewport());
-        Skin skin = ApplicationAssetManager.getInstance().getSkin();
+        Skin skin = ApplicationAssetManager.getSkin();
         stageBuilder.build(stage, skin, Gdx.files.internal(SCENES_ROOT_PATH + jsonHandlePath));
         return stage;
     }

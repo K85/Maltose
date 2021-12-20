@@ -1,6 +1,7 @@
 package com.sakurawald.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -102,10 +103,10 @@ public class GameScreen extends ApplicationScreen {
         /* Add System and Load Scene */
         CameraSystem cameraSystem = new CameraSystem(5, 16, 5, 12);
         sceneConfiguration = new SceneConfiguration();
-        sceneConfiguration.setResourceRetriever(ApplicationAssetManager.getInstance().getAsyncResourceLoader());
+        sceneConfiguration.setResourceRetriever(ApplicationAssetManager.getAsyncResourceLoader());
         sceneConfiguration.addSystem(cameraSystem);
 
-        sceneLoader = ApplicationAssetManager.getInstance().buildSceneLoader(sceneConfiguration);
+        sceneLoader = ApplicationAssetManager.buildSceneLoader(sceneConfiguration);
         sceneLoader.loadScene("MainScene", viewport);
 
         rootItemWrapper = new ItemWrapper(sceneLoader.getRoot(), sceneLoader.getEngine());
@@ -164,14 +165,14 @@ public class GameScreen extends ApplicationScreen {
     public void render(float delta) {
         Gdx.app.getApplicationLogger().debug("GameScreen", "render");
         ScreenUtils.clear(1, 1, 1, 1);
-
-        /* Render -> Particle */
-        particleManager.handle(delta);
+//        ScreenUtils.clear(0, 0, 0, 1);
 
         /* Render -> Box2D World */
         this.viewport.apply();
         sceneLoader.getEngine().process();
 
+        /* Render -> Particle */
+        particleManager.handle(delta);
 
         /* Render -> ScoreBoard */
         this.scoreBoard.act(delta);

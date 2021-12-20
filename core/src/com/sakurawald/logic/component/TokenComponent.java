@@ -8,5 +8,6 @@ public class TokenComponent extends ApplicationComponent {
     @Override
     protected void reset() {
         this.value = 1;
+        this.ignored = false;
     }
 }

@@ -38,13 +38,13 @@ public class ScoreBoardHUD extends Stage {
         table.top();
         table.setFillParent(true);
 
-        label_left_lives = new Label(null, ApplicationAssetManager.getInstance().getSkin());
+        label_left_lives = new Label(null, ApplicationAssetManager.getSkin());
         table.add(label_left_lives).expandX().padTop(5);
 
-        label_collected_tokens = new Label(null, ApplicationAssetManager.getInstance().getSkin());
+        label_collected_tokens = new Label(null, ApplicationAssetManager.getSkin());
         table.add(label_collected_tokens).expandX().padTop(10);
 
-        label_play_time_seconds = new Label(null ,ApplicationAssetManager.getInstance().getSkin());
+        label_play_time_seconds = new Label(null ,ApplicationAssetManager.getSkin());
         table.add(label_play_time_seconds).expandX().padTop(10);
 
         this.addActor(table);
