@@ -1,6 +1,5 @@
 package com.sakurawald.logic.script;
 
-import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.sakurawald.logic.component.DeadlyObstacleComponent;
 import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.logic.component.TokenComponent;
+import com.sakurawald.logic.enums.PlayerControls;
 import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.components.DimensionsComponent;
 import games.rednblack.editor.renderer.components.MainItemComponent;
@@ -37,6 +37,7 @@ public class PlayerScript extends ApplicationScript implements PhysicsContact {
         super(gameScreen);
     }
 
+
     @Override
     public void doInit(int attachedEntityID) {
 //        ItemWrapper itemWrapper = new ItemWrapper(entity, mEngine);
@@ -47,21 +48,21 @@ public class PlayerScript extends ApplicationScript implements PhysicsContact {
     public void act(float delta) {
         /* Handle inputs */
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            movePlayer(Input.Keys.LEFT);
+            movePlayer(PlayerControls.MOVE_LEFT);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            movePlayer(Input.Keys.RIGHT);
+            movePlayer(PlayerControls.MOVE_RIGHT);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            movePlayer(Input.Keys.UP);
+            movePlayer(PlayerControls.MOVE_UP);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-            movePlayer(Input.Keys.DOWN);
+            movePlayer(PlayerControls.MOVE_DOWN);
         }
 
     }
 
-    public void movePlayer(int direction) {
+    public void movePlayer(PlayerControls playerControls) {
         Body body = this.getPhysicsBodyComponent().body;
         Gdx.app.getApplicationLogger().debug("PlayerScript", "movePlayer: currentPosition = " + body.getPosition() + ", currentVelocity = " + body.getLinearVelocity());
 
@@ -77,23 +78,23 @@ public class PlayerScript extends ApplicationScript implements PhysicsContact {
 //        }
 
         /* Apply impulse */
-        switch (direction) {
-            case Input.Keys.LEFT:
+        switch (playerControls) {
+            case MOVE_LEFT:
                 if (body.getLinearVelocity().x > -PLAYER_MAX_VELOCITY) {
                     body.applyLinearImpulse(new Vector2(-PLAYER_MAX_VELOCITY, 0), body.getWorldCenter(), true);
                 }
                 break;
-            case Input.Keys.RIGHT:
+            case MOVE_RIGHT:
                 if (body.getLinearVelocity().x < PLAYER_MAX_VELOCITY) {
                     body.applyLinearImpulse(new Vector2(PLAYER_MAX_VELOCITY, 0), body.getWorldCenter(), true);
                 }
                 break;
-            case Input.Keys.UP:
+            case MOVE_UP:
                 if (body.getLinearVelocity().y < PLAYER_MAX_VELOCITY) {
                     body.applyLinearImpulse(new Vector2(0, PLAYER_MAX_VELOCITY), body.getWorldCenter(), true);
                 }
                 break;
-            case Input.Keys.DOWN:
+            case MOVE_DOWN:
                 if (body.getLinearVelocity().y > -PLAYER_MAX_VELOCITY) {
                     body.applyLinearImpulse(new Vector2(0, -PLAYER_MAX_VELOCITY), body.getWorldCenter(), true);
                 }
@@ -108,12 +109,10 @@ public class PlayerScript extends ApplicationScript implements PhysicsContact {
 
     @Override
     public void dispose() {
-
     }
 
     @Override
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-
         Gdx.app.getApplicationLogger().log("beginContact", "beginContact: contactEntity = " + contactEntity + ", contactFixture = " + contactFixture.getBody().getPosition() + ", ownFixture = " + ownFixture.getBody().getPosition());
 
 //        MainItemComponent mainItemComponent = mainItemMapper.get(contactEntity);
@@ -121,21 +120,20 @@ public class PlayerScript extends ApplicationScript implements PhysicsContact {
 //        if (mainItemComponent.tags.contains("platform"))
 //            playerComponent.touchedPlatforms++;
 
-
-        // TODO fix player composite multiple collision bug: multiple fixtures
-
         /* Collide with: DeadlyObstacle */
         DeadlyObstacleComponent deadlyObstacleComponent = deadlyObstacleMapper.get(contactEntity);
-        if (deadlyObstacleComponent != null) {
+        if (deadlyObstacleComponent != null && !deadlyObstacleComponent.isIgnored()) {
             Gdx.app.getApplicationLogger().debug("PlayerScript", "beginContact: deadlyObstacleComponent = " + deadlyObstacleComponent);
+            deadlyObstacleComponent.setIgnored(true);
             this.getEngine().delete(contactEntity);
             this.getPlayerComponent().leftLives--;
         }
 
         /* Collide With: Token */
         TokenComponent tokenComponent = tokenMapper.get(contactEntity);
-        if (tokenComponent != null) {
+        if (tokenComponent != null && !tokenComponent.isIgnored()) {
             Gdx.app.getApplicationLogger().debug("PlayerScript", "Collide with token: " + getPlayerComponent().tokenCollected);
+            tokenComponent.setIgnored(true);
             this.getEngine().delete(contactEntity);
             this.getPlayerComponent().tokenCollected += tokenComponent.value;
         }
@@ -153,6 +151,8 @@ public class PlayerScript extends ApplicationScript implements PhysicsContact {
 
     @Override
     public void preSolve(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
+
+
 //        TransformComponent transformComponent = transformMapper.get(this.entity);
 //
 //        TransformComponent colliderTransform = transformMapper.get(contactEntity);

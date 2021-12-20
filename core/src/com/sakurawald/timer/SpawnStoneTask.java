@@ -19,7 +19,7 @@ public class SpawnStoneTask extends SpawnEntityTask {
     public static final float STONE_MAX_VELOCITY = 5;
 
     public SpawnStoneTask(GameScreen gameScreen) {
-        super(gameScreen, StoneComponent.class, 30,1);
+        super(gameScreen, StoneComponent.class, 1,30);
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class SpawnTokenTask extends SpawnEntityTask {
 
     public SpawnTokenTask(GameScreen gameScreen) {
-        super(gameScreen, TokenComponent.class, 30, 5);
+        super(gameScreen, TokenComponent.class, 10, 15);
     }
 
     @Override

@@ -9,37 +9,32 @@ import com.sakurawald.screen.GameScreen;
 import lombok.Getter;
 import lombok.Setter;
 
-public abstract class SpawnEntityTask<T extends Component> extends Timer.Task {
+public abstract class SpawnEntityTask<T extends Component> extends ApplicationTimerTask {
 
     @Getter
-    private GameScreen gameScreen;
+    private final GameScreen gameScreen;
     @Getter
-    private Class<T> classType;
-    @Getter
-    private int taskIntervalSeconds;
+    private final Class<T> classType;
     @Getter
     @Setter
     private int maxSpawnedEntityAmount;
 
-    public SpawnEntityTask(GameScreen gameScreen, Class<T> classType, int maxSpawnedEntityAmount, int taskIntervalSeconds) {
+    public SpawnEntityTask(GameScreen gameScreen, Class<T> classType, int taskDoIntervalSeconds, int maxSpawnedEntityAmount) {
+        super(gameScreen, 1, taskDoIntervalSeconds);
         this.gameScreen = gameScreen;
         this.classType = classType;
         this.maxSpawnedEntityAmount = maxSpawnedEntityAmount;
-        this.taskIntervalSeconds = taskIntervalSeconds;
+        this.taskDoIntervalSeconds = taskDoIntervalSeconds;
     }
 
     @Override
-    public void run() {
+    public void doRun() {
         Gdx.app.log("SpawnEntityTask", "Spawning entity: classType = " + classType.getSimpleName());
 
         // Cancel task if max amount of spawned entities is reached
         if (getSpawnedTypeEntities().size() < maxSpawnedEntityAmount) {
             spawnEntity();
         }
-    }
-
-    public void scheduleSelf() {
-        Timer.instance().scheduleTask(this, taskIntervalSeconds, taskIntervalSeconds);
     }
 
     public IntBag getSpawnedTypeEntities() {

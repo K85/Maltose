@@ -35,6 +35,7 @@ public class DestroyedByBoundary extends ApplicationScript implements PhysicsCon
 
             // TODO add some particle effect
 
+
             this.getEngine().delete(this.getEntity());
         }
     }

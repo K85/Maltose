@@ -3,7 +3,7 @@ package com.sakurawald.logic.component;
 import com.artemis.PooledComponent;
 import com.badlogic.gdx.utils.Pool;
 
-public class TokenComponent extends PooledComponent {
+public class TokenComponent extends ApplicationComponent {
 
     public int value = 1;
 

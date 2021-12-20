@@ -24,7 +24,6 @@ public class PlayerManager {
     }
 
 
-    // TODO modify the player's mass to 0.0f
     public ItemWrapper createPlayer() {
         /* Create player entity */
         Vector2 position = MathUtils.getCenterPosition(this.gameScreen);
@@ -35,12 +34,8 @@ public class PlayerManager {
                 , position.x
                 , position.y
                 , new ArrayList<>(){
-                    {
-                        this.add(PlayerComponent.class);
-                    }
+                    {}
                 });
-
-        // TODO addComponentByTag
 
         // Call ECS system to process
         this.getGameScreen().getSceneLoader().getEngine().process();
