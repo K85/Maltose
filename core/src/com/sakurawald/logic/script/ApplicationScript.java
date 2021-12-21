@@ -24,6 +24,7 @@ public abstract class ApplicationScript extends BasicScript {
 
     /* Components */
     @Getter
+    // the physicsBodyComponent may be null in init() method, but is non-null in act() method
     private PhysicsBodyComponent physicsBodyComponent;
 
     public ApplicationScript(GameScreen gameScreen) {
@@ -39,12 +40,47 @@ public abstract class ApplicationScript extends BasicScript {
         else this.isInit = true;
 
         /* Do init */
-        this.physicsBodyComponent = this.physicsBodyMapper.get(attachedEntityID);
+//        this.physicsBodyComponent = this.physicsBodyMapper.get(attachedEntityID);
+//        this.physicsBodyComponent = getGameScreen().getSceneLoader().getEngine().getEntity(this.entity).getComponent(PhysicsBodyComponent.class);
         this.doInit(attachedEntityID);
     }
 
 
     public void doInit(int attachedEntityID) {
+        // do nothing
+    }
 
+    @Override
+    public final void act(float delta) {
+        // physicsBodyComponent and physicsBodyComponent.body are not always set to non-null value at the same time.
+        if (this.physicsBodyComponent == null || this.physicsBodyComponent.body == null) {
+            this.trySetPhysicsBodyComponent();
+            if (this.physicsBodyComponent != null && this.physicsBodyComponent.body != null) {
+                this.physicsBodyComponentInitialized();
+            }
+        }
+        // Do act
+        this.doAct(delta);
+    }
+
+    public void doAct(float delta) {
+        // do nothing
+    }
+
+    public void physicsBodyComponentInitialized() {
+        // do nothing.
+    }
+
+    /**
+     * this method will set PhysicsBodyComponent to non-null value after act() method
+     */
+    public final void trySetPhysicsBodyComponent() {
+        this.physicsBodyComponent = this.physicsBodyMapper.get(this.entity);
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        System.out.println("WARNING ApplicationScript reset() is called !");
     }
 }

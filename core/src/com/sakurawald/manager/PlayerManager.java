@@ -1,12 +1,14 @@
 package com.sakurawald.manager;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.sakurawald.logic.bean.Player;
 import com.sakurawald.logic.bean.PlayerControllerListener;
 import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.logic.entity.Libraries;
+import com.sakurawald.logic.enums.GroupIndexes;
+import com.sakurawald.logic.enums.PlayerInstruction;
 import com.sakurawald.screen.GameScreen;
 import com.sakurawald.util.MathUtils;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
@@ -16,8 +18,6 @@ import java.util.ArrayList;
 
 public class PlayerManager {
 
-    private static final String PLAYER_LIBRARY_ID = Libraries.PLAYER;
-
     @Getter
     private final GameScreen gameScreen;
 
@@ -25,16 +25,16 @@ public class PlayerManager {
     private final ArrayList<Player> players = new ArrayList<>();
 
     public PlayerManager(GameScreen gameScreen) {
+        /* Set fields */
         this.gameScreen = gameScreen;
     }
-
 
     public Player createPlayer() {
         /* Create player entity */
         Vector2 position = MathUtils.getCenterPosition(this.gameScreen);
         int entityID = ApplicationAssetManager.createEntityFromLibrary(
                 this.gameScreen.getSceneLoader()
-                , PLAYER_LIBRARY_ID
+                , Libraries.PLAYER
                 , "Default"
                 , position.x
                 , position.y
@@ -52,13 +52,42 @@ public class PlayerManager {
         Player player = new Player(this, itemWrapper);
         this.players.add(player);
 
-        /* Add InputProcessor */
-        Gdx.input.setInputProcessor(new PlayerControllerListener(player));
-
-
         return player;
     }
 
+
+    public void process(float delta) {
+        processInstruction();
+    }
+
+    public void processInstruction() {
+        /* Select Instruction */
+        PlayerInstruction instruction = null;
+        if (PlayerControllerListener.pressedKeys.getOrDefault(Input.Keys.LEFT, false)) {
+            this.distributeInstruction(PlayerInstruction.MOVE_LEFT);
+        }
+        if (PlayerControllerListener.pressedKeys.getOrDefault(Input.Keys.RIGHT, false)) {
+            this.distributeInstruction(PlayerInstruction.MOVE_RIGHT);
+        }
+        if (PlayerControllerListener.pressedKeys.getOrDefault(Input.Keys.UP, false)) {
+            this.distributeInstruction(PlayerInstruction.MOVE_UP);
+        }
+        if (PlayerControllerListener.pressedKeys.getOrDefault(Input.Keys.DOWN, false)) {
+            this.distributeInstruction(PlayerInstruction.MOVE_DOWN);
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            this.distributeInstruction(PlayerInstruction.SHOOT);
+        }
+
+    }
+
+    public void distributeInstruction(PlayerInstruction instruction) {
+        /* Distribute the instruction */
+        Gdx.app.getApplicationLogger().debug("PlayerManager", "distributeInstruction = " + instruction);
+        for (Player player : this.players) {
+            player.sendInstruction(instruction);
+        }
+    }
 
     public Player getSolePlayer() {
         return this.players.get(0);

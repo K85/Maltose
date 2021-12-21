@@ -3,12 +3,14 @@ package com.sakurawald.logic.script;
 import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.sakurawald.logic.adapter.PhysicsContactAdapter;
 import com.sakurawald.logic.component.DeadlyObstacleComponent;
 import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.logic.component.StoneComponent;
 import com.sakurawald.logic.component.TokenComponent;
+import com.sakurawald.logic.enums.GroupIndexes;
 import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.components.DimensionsComponent;
 import games.rednblack.editor.renderer.components.MainItemComponent;
@@ -30,8 +32,11 @@ public class PlayerScript extends ApplicationScript implements PhysicsContactAda
     }
 
     @Override
-    public void act(float delta) {
-
+    public void physicsBodyComponentInitialized() {
+        /* Set the player's collision filter */
+        Filter filter = new Filter();
+        filter.groupIndex = GroupIndexes.PLAYER_ALLIANCE_NEGATIVE;
+        this.getPhysicsBodyComponent().body.getFixtureList().forEach(fixture -> fixture.setFilterData(filter));
     }
 
     public PlayerComponent getPlayerComponent() {

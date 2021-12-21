@@ -1,15 +1,23 @@
 package com.sakurawald.logic.stage;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sakurawald.Maltose;
 import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.manager.ApplicationAssetManager;
 import com.sakurawald.screen.GameScreen;
+import com.sakurawald.screen.MainMenuScreen;
 import lombok.Getter;
 
 import java.util.Calendar;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class ScoreBoardHUD extends Stage {
 
     @Getter
@@ -18,6 +26,7 @@ public class ScoreBoardHUD extends Stage {
     @Getter
     private final Viewport viewport;
 
+    private final TextButton textbutton_back;
     private final Label label_collected_tokens;
     private final Label label_play_time_seconds;
     private final Label label_left_lives;
@@ -34,19 +43,27 @@ public class ScoreBoardHUD extends Stage {
         this.viewport = viewport;
 
         /* Init Table UI */
-
-        //TODO add back button
         Table table = new Table();
         table.top();
         table.setFillParent(true);
 
-        label_left_lives = new Label(null, ApplicationAssetManager.getSkin());
-        table.add(label_left_lives).expandX().padTop(5);
+        Skin skin = ApplicationAssetManager.getSkin();
+        textbutton_back = new TextButton("Back", skin);
+        textbutton_back.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Maltose.getInstance().setScreen(new MainMenuScreen());
+            }
+        });
+        table.add(textbutton_back).padLeft(10).padTop(10);
 
-        label_collected_tokens = new Label(null, ApplicationAssetManager.getSkin());
+        label_left_lives = new Label(null, skin);
+        table.add(label_left_lives).expandX().padTop(10);
+
+        label_collected_tokens = new Label(null, skin);
         table.add(label_collected_tokens).expandX().padTop(10);
 
-        label_play_time_seconds = new Label(null ,ApplicationAssetManager.getSkin());
+        label_play_time_seconds = new Label(null, skin);
         table.add(label_play_time_seconds).expandX().padTop(10);
 
         this.addActor(table);
@@ -57,10 +74,10 @@ public class ScoreBoardHUD extends Stage {
         super.act(delta);
 
         /* Check Component */
-       PlayerComponent playerComponent = gameScreen.getPlayerManager().getSolePlayer().getPlayerItemWrapper().getComponent(PlayerComponent.class);
+        PlayerComponent playerComponent = gameScreen.getPlayerManager().getSolePlayer().getPlayerItemWrapper().getComponent(PlayerComponent.class);
 
-       if (playerComponent == null)
-           return;
+        if (playerComponent == null)
+            return;
 
         /* Render the actors of the stage */
         if (left_lives != playerComponent.leftLives) {

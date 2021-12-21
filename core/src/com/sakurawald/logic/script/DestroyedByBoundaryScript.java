@@ -35,10 +35,6 @@ public class DestroyedByBoundaryScript extends ApplicationScript implements Phys
 
     }
 
-    @Override
-    public void act(float delta) {
-
-    }
 
     @Override
     public void dispose() {

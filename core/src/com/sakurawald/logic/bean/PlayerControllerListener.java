@@ -5,38 +5,22 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.sakurawald.logic.enums.PlayerInstruction;
 
+import java.util.HashMap;
+
 public class PlayerControllerListener extends InputAdapter {
 
-    // TODO key pressed masks
+    public static final HashMap<Integer, Boolean> pressedKeys = new HashMap<Integer, Boolean>();
 
-    private final Player player;
-
-    public PlayerControllerListener(Player player) {
-        this.player = player;
+    @Override
+    public boolean keyDown(int keycode) {
+        PlayerControllerListener.pressedKeys.put(keycode, true);
+        return false;
     }
 
     @Override
-    public boolean keyTyped(char character) {
-
-        Gdx.app.log("PlayerControllerListener", "keyTyped: " + character);
-        /* Handle inputs */
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            this.player.sendInstruction(PlayerInstruction.MOVE_LEFT);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            this.player.sendInstruction(PlayerInstruction.MOVE_RIGHT);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            this.player.sendInstruction(PlayerInstruction.MOVE_UP);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            this.player.sendInstruction(PlayerInstruction.MOVE_DOWN);
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            this.player.sendInstruction(PlayerInstruction.SHOOT);
-        }
-
-        return true;
+    public boolean keyUp(int keycode) {
+        PlayerControllerListener.pressedKeys.put(keycode, false);
+        return false;
     }
 
 }

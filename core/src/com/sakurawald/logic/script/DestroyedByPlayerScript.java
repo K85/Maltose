@@ -33,11 +33,6 @@ public class DestroyedByPlayerScript extends ApplicationScript implements Physic
     }
 
     @Override
-    public void act(float delta) {
-
-    }
-
-    @Override
     public void dispose() {
 
     }

@@ -1,6 +1,7 @@
 package com.sakurawald.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sakurawald.logic.bean.Player;
+import com.sakurawald.logic.bean.PlayerControllerListener;
 import com.sakurawald.logic.component.*;
 import com.sakurawald.logic.entity.Tags;
 import com.sakurawald.logic.script.PlayerScript;
@@ -168,6 +170,9 @@ public class GameScreen extends ApplicationScreen {
 //        particleEffect = ParticleManager.buildParticleEffect("fire");
 //        particleEffect.setPosition(1,1);
 //        particleEffect.start();
+
+        /* Set InputProcessor */
+        Gdx.input.setInputProcessor(new InputMultiplexer(new PlayerControllerListener(), scoreBoard));
     }
 
     @Override
@@ -181,6 +186,9 @@ public class GameScreen extends ApplicationScreen {
         /* Render -> Box2D World */
         this.viewport.apply();
         sceneLoader.getEngine().process();
+
+        /* Render -> PlayerManager */
+        this.playerManager.process(delta);
 
         /* Render -> Particle */
         particleManager.process(delta);

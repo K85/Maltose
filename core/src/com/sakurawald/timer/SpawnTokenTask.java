@@ -3,6 +3,7 @@ package com.sakurawald.timer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.sakurawald.logic.component.TokenComponent;
+import com.sakurawald.logic.entity.Libraries;
 import com.sakurawald.manager.ApplicationAssetManager;
 import com.sakurawald.screen.GameScreen;
 import com.sakurawald.util.MathUtils;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class SpawnTokenTask extends SpawnEntityTask {
 
     public SpawnTokenTask(GameScreen gameScreen) {
-        super(gameScreen, TokenComponent.class, 10, 15);
+        super(gameScreen, TokenComponent.class, 10, 1, 15);
     }
 
     @Override
@@ -37,8 +38,8 @@ public class SpawnTokenTask extends SpawnEntityTask {
 
         // Create new token
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
-        ApplicationAssetManager.createEntityFromLibrary(sceneLoader, "library_token", "Default", randomPosition.x, randomPosition.y, new ArrayList<Class<?>>(
-        ){
+        ApplicationAssetManager.createEntityFromLibrary(sceneLoader, Libraries.TOKEN, "Default", randomPosition.x, randomPosition.y, new ArrayList<>(
+        ) {
             {
                 this.add(TokenComponent.class);
             }

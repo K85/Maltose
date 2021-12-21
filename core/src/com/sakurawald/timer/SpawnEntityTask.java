@@ -16,13 +16,17 @@ public abstract class SpawnEntityTask<T extends Component> extends ApplicationTi
     private final Class<T> classType;
     @Getter
     @Setter
+    private int quantityPerGeneration;
+    @Getter
+    @Setter
     private int maxSpawnedEntityAmount;
 
-    public SpawnEntityTask(GameScreen gameScreen, Class<T> classType, int taskDoIntervalSeconds, int maxSpawnedEntityAmount) {
+    public SpawnEntityTask(GameScreen gameScreen, Class<T> classType, int taskDoIntervalSeconds, int quantityPerGeneration, int maxSpawnedEntityAmount) {
         super(gameScreen, 1, taskDoIntervalSeconds);
         this.gameScreen = gameScreen;
         this.classType = classType;
         this.taskDoIntervalSeconds = taskDoIntervalSeconds;
+        this.quantityPerGeneration = quantityPerGeneration;
         this.maxSpawnedEntityAmount = maxSpawnedEntityAmount;
     }
 
@@ -34,7 +38,9 @@ public abstract class SpawnEntityTask<T extends Component> extends ApplicationTi
 
         // Cancel task if max amount of spawned entities is reached
         if (spawnedEntityAmount < maxSpawnedEntityAmount) {
-            spawnEntity();
+            for (int i = 0; i < this.quantityPerGeneration; i++) {
+                spawnEntity();
+            }
         }
     }
 

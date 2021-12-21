@@ -2,14 +2,18 @@ package com.sakurawald.logic.script;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.sakurawald.manager.ParticleManager;
 import com.sakurawald.screen.GameScreen;
+import com.sakurawald.util.MathUtils;
 import com.talosvfx.talos.runtime.ParticleEffectDescriptor;
 import com.talosvfx.talos.runtime.ParticleEffectInstance;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
 import lombok.Getter;
 
-public class StoneParticleScript extends ApplicationScript {
+public class StoneScript extends ApplicationScript {
+
+    public static final float STONE_MAX_VELOCITY = 5;
 
     @Getter
     private static final ParticleEffectDescriptor fireParticleEffectDescriptor = ParticleManager.buildParticleEffectDescriptor("fire.p");
@@ -17,13 +21,22 @@ public class StoneParticleScript extends ApplicationScript {
     @Getter
     private ParticleEffectInstance particleEffectInstance;
 
-    public StoneParticleScript(GameScreen gameScreen) {
+    public StoneScript(GameScreen gameScreen) {
         super(gameScreen);
     }
 
     @Override
-    public void doInit(int attachedEntityID) {
+    public void physicsBodyComponentInitialized() {
+        Body stoneBody = this.getPhysicsBodyComponent().body;
 
+        /* Apply random velocity */
+        Vector2 randomVelocity = MathUtils.getRandomVelocity(STONE_MAX_VELOCITY);
+        Gdx.app.log("SpawnStoneTask", "Apply stone with velocity " + randomVelocity);
+        stoneBody.applyLinearImpulse(randomVelocity, stoneBody.getWorldCenter(), true);
+    }
+
+    @Override
+    public void doInit(int attachedEntityID) {
         // Construct the particle instance
         particleEffectInstance = fireParticleEffectDescriptor.createEffectInstance();
         particleEffectInstance.loopable = true;
@@ -34,7 +47,7 @@ public class StoneParticleScript extends ApplicationScript {
     }
 
     @Override
-    public void act(float delta) {
+    public void doAct(float delta) {
 
         /* Get the position of the stone */
         PhysicsBodyComponent physicsBodyComponent = this.getPhysicsBodyComponent();
