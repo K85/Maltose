@@ -35,10 +35,4 @@ public class DestroyedByBoundaryScript extends ApplicationScript implements Phys
 
     }
 
-
-    @Override
-    public void dispose() {
-
-    }
-
 }

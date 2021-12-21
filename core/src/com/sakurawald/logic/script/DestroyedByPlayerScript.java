@@ -20,7 +20,6 @@ public class DestroyedByPlayerScript extends ApplicationScript implements Physic
         super(gameScreen);
     }
 
-
     @Override
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
 
@@ -32,9 +31,5 @@ public class DestroyedByPlayerScript extends ApplicationScript implements Physic
         }
     }
 
-    @Override
-    public void dispose() {
-
-    }
 
 }

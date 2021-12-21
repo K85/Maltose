@@ -44,10 +44,6 @@ public class PlayerScript extends ApplicationScript implements PhysicsContactAda
     }
 
     @Override
-    public void dispose() {
-    }
-
-    @Override
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
         Gdx.app.getApplicationLogger().log("beginContact", "beginContact: contactEntity = " + contactEntity + ", contactFixture = " + contactFixture.getBody().getPosition() + ", ownFixture = " + ownFixture.getBody().getPosition());
 
@@ -61,7 +57,6 @@ public class PlayerScript extends ApplicationScript implements PhysicsContactAda
         if (stoneComponent != null && !stoneComponent.ignored) {
             Gdx.app.getApplicationLogger().debug("PlayerScript", "beginContact: stone = " + stoneComponent);
             stoneComponent.ignored = true;
-            this.getEngine().delete(contactEntity);
             this.getPlayerComponent().leftLives--;
         }
 
@@ -70,7 +65,6 @@ public class PlayerScript extends ApplicationScript implements PhysicsContactAda
         if (tokenComponent != null && !tokenComponent.ignored) {
             Gdx.app.getApplicationLogger().debug("PlayerScript", "Collide with token: " + getPlayerComponent().tokenCollected);
             tokenComponent.ignored = true;
-            this.getEngine().delete(contactEntity);
             this.getPlayerComponent().tokenCollected += tokenComponent.value;
         }
     }

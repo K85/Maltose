@@ -2,25 +2,18 @@ package com.sakurawald.manager;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Filter;
 import com.sakurawald.logic.component.BulletComponent;
+import com.sakurawald.logic.component.StoneComponent;
 import com.sakurawald.logic.entity.Libraries;
-import com.sakurawald.logic.enums.FilterBits;
-import com.sakurawald.logic.enums.GroupIndexes;
 import com.sakurawald.logic.script.BulletScript;
+import com.sakurawald.logic.script.CollisionDestroyeScript;
 import com.sakurawald.logic.script.DestroyedByBoundaryScript;
 import com.sakurawald.screen.GameScreen;
-import com.uwsoft.editor.renderer.actor.CompositeItem;
-import com.uwsoft.editor.renderer.data.CompositeItemVO;
-import com.uwsoft.editor.renderer.data.CompositeVO;
-import com.uwsoft.editor.renderer.data.PhysicsBodyDataVO;
 import games.rednblack.editor.renderer.SceneLoader;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
-import games.rednblack.editor.renderer.data.PolygonShapeVO;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
 import lombok.Getter;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class BulletManager {
@@ -54,6 +47,7 @@ public class BulletManager {
         /* Add scripts */
         ItemWrapper itemWrapper = new ItemWrapper(entityID, sceneLoader.getEngine());
         itemWrapper.addScript(new DestroyedByBoundaryScript(this.getGameScreen()));
+        itemWrapper.addScript(new CollisionDestroyeScript(this.getGameScreen(), StoneComponent.class, false, true));
         itemWrapper.addScript(new BulletScript(this.getGameScreen()));
     }
 }

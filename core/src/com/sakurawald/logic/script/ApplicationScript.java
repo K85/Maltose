@@ -83,4 +83,9 @@ public abstract class ApplicationScript extends BasicScript {
         super.reset();
         System.out.println("WARNING ApplicationScript reset() is called !");
     }
+
+    @Override
+    public void dispose() {
+        // do nothing
+    }
 }
