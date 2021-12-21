@@ -17,6 +17,8 @@ public class BoundaryManager {
 
     private static final Float BOUNDARY_THICKNESS = 0.01f;
 
+    public float boundaryRestitution = 0.5f;
+
     @Getter
     private final GameScreen gameScreen;
 
@@ -51,13 +53,14 @@ public class BoundaryManager {
 
             /* Define the Composite */
             CompositeItemVO placeholderComposite = new CompositeItemVO();
+            // all the Boundary Objects are located in (0,0)
             placeholderComposite.layerName = "Default";
             placeholderComposite.x = 0;
             placeholderComposite.y = 0;
 
             PhysicsBodyDataVO physicsBodyDataVO = new PhysicsBodyDataVO();
             physicsBodyDataVO.bodyType = BodyDef.BodyType.StaticBody.getValue();
-            physicsBodyDataVO.restitution = 0.5f;
+            physicsBodyDataVO.restitution = this.boundaryRestitution;
             placeholderComposite.physics = physicsBodyDataVO;
 
             PolygonShapeVO polygonShapeVO = new PolygonShapeVO();

@@ -34,6 +34,8 @@ public class ScoreBoardHUD extends Stage {
         this.viewport = viewport;
 
         /* Init Table UI */
+
+        //TODO add back button
         Table table = new Table();
         table.top();
         table.setFillParent(true);
@@ -55,7 +57,7 @@ public class ScoreBoardHUD extends Stage {
         super.act(delta);
 
         /* Check Component */
-       PlayerComponent playerComponent = gameScreen.getPlayerManager().getSolePlayer().getComponent(PlayerComponent.class);
+       PlayerComponent playerComponent = gameScreen.getPlayerManager().getSolePlayer().getPlayerItemWrapper().getComponent(PlayerComponent.class);
 
        if (playerComponent == null)
            return;

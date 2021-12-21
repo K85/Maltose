@@ -25,7 +25,7 @@ public class BulletManager {
     public void createBullet() {
 
         /* Get player body */
-        ItemWrapper playerItemWrapper = this.getGameScreen().getPlayerManager().getSolePlayer();
+        ItemWrapper playerItemWrapper = this.getGameScreen().getPlayerManager().getSolePlayer().getPlayerItemWrapper();
         PhysicsBodyComponent playerPhysicsBodyComponent = playerItemWrapper.getComponent(PhysicsBodyComponent.class);
         Body playerBody = playerPhysicsBodyComponent.body;
         Vector2 playerPosition = playerBody.getPosition();

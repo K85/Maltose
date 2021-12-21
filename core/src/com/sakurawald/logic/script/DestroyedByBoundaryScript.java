@@ -4,23 +4,19 @@ import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.sakurawald.logic.adapter.PhysicsContactAdapter;
 import com.sakurawald.logic.component.BoundaryComponent;
 import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.physics.PhysicsContact;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
 
-public class DestroyedByBoundaryScript extends ApplicationScript implements PhysicsContact {
+// TODO refactor destryoed by entity
+public class DestroyedByBoundaryScript extends ApplicationScript implements PhysicsContactAdapter {
 
     protected ComponentMapper<BoundaryComponent> boundaryMapper;
 
     public DestroyedByBoundaryScript(GameScreen gameScreen) {
         super(gameScreen);
-    }
-
-
-    @Override
-    public void doInit(int attachedEntityID) {
-
     }
 
     @Override
@@ -36,21 +32,6 @@ public class DestroyedByBoundaryScript extends ApplicationScript implements Phys
 //             TODO add some particle effect
             this.getEngine().delete(this.getEntity());
         }
-
-    }
-
-    @Override
-    public void endContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-
-    }
-
-    @Override
-    public void preSolve(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-
-    }
-
-    @Override
-    public void postSolve(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
 
     }
 

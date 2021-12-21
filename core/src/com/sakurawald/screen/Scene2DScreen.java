@@ -50,7 +50,7 @@ public abstract class Scene2DScreen extends ApplicationScreen {
         this.stage.act(Gdx.graphics.getDeltaTime());
         this.stage.draw();
 
-        // set the input processor of gdx
+        // set this Screen's Stage as the input processor of gdx
         Gdx.input.setInputProcessor(this.stage);
     }
 

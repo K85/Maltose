@@ -51,11 +51,9 @@ public class ParticleManager {
         /* Render -> All the ParticleEffectInstance */
         Gdx.app.getApplicationLogger().debug("ParticleManager", "ParticleManager.process() -> particleEffectInstances.size() = " + particleEffectInstances.size());
         for (ParticleEffectInstance particleEffectInstance : getParticleEffectInstances()) {
-            Gdx.app.getApplicationLogger().debug("ParticleManager", "rendering particle effect: " + particleEffectInstance);
-            System.out.println("isCompleted: " + particleEffectInstance.isComplete());
+            Gdx.app.getApplicationLogger().debug("ParticleManager", "rendering particle effect: " + particleEffectInstance + ", isComplete = " + particleEffectInstance.isComplete());
             particleEffectInstance.render(spriteBatchParticleRenderer);
         }
-
         polygonSpriteBatch.end();
     }
 

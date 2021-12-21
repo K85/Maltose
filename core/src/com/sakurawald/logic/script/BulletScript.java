@@ -2,11 +2,12 @@ package com.sakurawald.logic.script;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.sakurawald.logic.adapter.PhysicsContactAdapter;
 import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.physics.PhysicsContact;
 import games.rednblack.editor.renderer.scripts.IScript;
 
-public class BulletScript extends ApplicationScript implements PhysicsContact {
+public class BulletScript extends ApplicationScript implements PhysicsContactAdapter {
 
     public BulletScript(GameScreen gameScreen) {
         super(gameScreen);
@@ -32,18 +33,4 @@ public class BulletScript extends ApplicationScript implements PhysicsContact {
 
     }
 
-    @Override
-    public void endContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-
-    }
-
-    @Override
-    public void preSolve(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-
-    }
-
-    @Override
-    public void postSolve(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-
-    }
 }

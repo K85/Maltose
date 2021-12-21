@@ -5,13 +5,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.bullet.collision._btMprSimplex_t;
+import com.sakurawald.logic.adapter.PhysicsContactAdapter;
 import com.sakurawald.logic.component.BoundaryComponent;
 import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.physics.PhysicsContact;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
 
-public class DestroyedByPlayerScript extends ApplicationScript implements PhysicsContact {
+public class DestroyedByPlayerScript extends ApplicationScript implements PhysicsContactAdapter {
 
     protected ComponentMapper<PlayerComponent> playerMapper;
 
@@ -19,10 +20,6 @@ public class DestroyedByPlayerScript extends ApplicationScript implements Physic
         super(gameScreen);
     }
 
-    @Override
-    public void doInit(int attachedEntityID) {
-
-    }
 
     @Override
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
@@ -33,22 +30,6 @@ public class DestroyedByPlayerScript extends ApplicationScript implements Physic
             Gdx.app.getApplicationLogger().debug("PlayerAutoDestroyScript", "Player Auto Destroy EntityID: " + this.getEntity());
             this.getEngine().delete(this.getEntity());
         }
-    }
-
-
-    @Override
-    public void endContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-
-    }
-
-    @Override
-    public void preSolve(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-
-    }
-
-    @Override
-    public void postSolve(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.sakurawald.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sakurawald.logic.bean.Player;
 import com.sakurawald.logic.component.*;
 import com.sakurawald.logic.entity.Tags;
 import com.sakurawald.logic.script.PlayerScript;
@@ -41,8 +43,8 @@ public class GameScreen extends ApplicationScreen {
     public final static float WORLD_WIDTH = VIRTUAL_RESOLUTION_WIDTH / PPWU;
     public final static float WORLD_HEIGHT = VIRTUAL_RESOLUTION_HEIGHT / PPWU;
 
-    /* Common Props */
-//    private final SpriteBatch spriteBatch = new SpriteBatch();
+    /* SpriteBatch */
+    private final SpriteBatch spriteBatch = new SpriteBatch();
 
     /* Camera and Viewport */
     private final OrthographicCamera camera = new OrthographicCamera();
@@ -139,11 +141,12 @@ public class GameScreen extends ApplicationScreen {
         /* Add Scripts */
 
         // PlayerScript
-        ItemWrapper player = this.getPlayerManager().createPlayer();
+        Player player = this.getPlayerManager().createPlayer();
+        ItemWrapper playerItemWrapper = player.getPlayerItemWrapper();
         PlayerScript playerScript = new PlayerScript(this);
-        player.addScript(playerScript);
+        playerItemWrapper.addScript(playerScript);
 
-        cameraSystem.setFocusEntityID(player.getEntity());
+        cameraSystem.setFocusEntityID(playerItemWrapper.getEntity());
 
         /* Add Stages */
         scoreBoard = new ScoreBoardHUD(this, new ExtendViewport(768, 576));
@@ -169,11 +172,11 @@ public class GameScreen extends ApplicationScreen {
 
     @Override
     public void render(float delta) {
+        System.out.println("input processor:" + Gdx.input.getInputProcessor());
+
         Gdx.app.getApplicationLogger().debug("GameScreen", "render");
         ScreenUtils.clear(1, 1, 1, 1);
 //        ScreenUtils.clear(0, 0, 0, 1);
-
-//        System.out.println("is compolete -> " + particleEffect.isComplete());
 
         /* Render -> Box2D World */
         this.viewport.apply();

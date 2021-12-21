@@ -21,7 +21,7 @@ public class SpawnTokenTask extends SpawnEntityTask {
     public void spawnEntity() {
         // Generate random position and random velocity
         Vector2 randomPosition = MathUtils.getRandomPositionInWorld(this.getGameScreen());
-        Vector2 playerPosition = getGameScreen().getPlayerManager().getSolePlayer().getComponent(PhysicsBodyComponent.class).body.getPosition();
+        Vector2 playerPosition = getGameScreen().getPlayerManager().getSolePlayer().getPlayerItemWrapper().getComponent(PhysicsBodyComponent.class).body.getPosition();
 
         // Cancel spawn if outside the world
         if (getGameScreen().isOutsideWorld(randomPosition)) {

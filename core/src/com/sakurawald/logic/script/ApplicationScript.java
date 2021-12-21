@@ -44,5 +44,7 @@ public abstract class ApplicationScript extends BasicScript {
     }
 
 
-    public abstract void doInit(int attachedEntityID);
+    public void doInit(int attachedEntityID) {
+
+    }
 }
