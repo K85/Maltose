@@ -25,6 +25,7 @@ public class ApplicationAssetManager {
     @Getter
     public static final AssetManager assetManager;
     @Getter
+    @Deprecated
     public static final AsyncResourceManager asyncResourceLoader;
     @Getter
     public static final TextureAtlas textureAtlas;

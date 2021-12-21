@@ -1,7 +1,6 @@
 package com.sakurawald.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -16,14 +15,9 @@ import com.sakurawald.logic.entity.Tags;
 import com.sakurawald.logic.script.PlayerScript;
 import com.sakurawald.logic.stage.ScoreBoardHUD;
 import com.sakurawald.logic.system.CameraSystem;
-import com.sakurawald.manager.ApplicationAssetManager;
-import com.sakurawald.manager.BoundaryManager;
-import com.sakurawald.manager.ParticleManager;
-import com.sakurawald.manager.PlayerManager;
+import com.sakurawald.manager.*;
 import com.sakurawald.timer.SpawnStoneTask;
 import com.sakurawald.timer.SpawnTokenTask;
-import com.talosvfx.talos.runtime.ParticleEffectDescriptor;
-import com.talosvfx.talos.runtime.ParticleEffectInstance;
 import games.rednblack.editor.renderer.SceneConfiguration;
 import games.rednblack.editor.renderer.SceneLoader;
 import games.rednblack.editor.renderer.utils.ComponentRetriever;
@@ -79,6 +73,10 @@ public class GameScreen extends ApplicationScreen {
     @Getter
     private final PlayerManager playerManager = new PlayerManager(this);
 
+    /* BulletManager */
+    @Getter
+    private final BulletManager bulletManager = new BulletManager(this);
+
     /* BoundaryManager */
     @Getter
     private final BoundaryManager boundaryManager = new BoundaryManager(this);
@@ -86,6 +84,7 @@ public class GameScreen extends ApplicationScreen {
     /* Talos */
     @Getter
     private final ParticleManager particleManager = new ParticleManager(this);
+    private ParticleEffect particleEffect;
 
 
     @Override
@@ -116,6 +115,10 @@ public class GameScreen extends ApplicationScreen {
         // PlayerComponent
         ComponentRetriever.addMapper(PlayerComponent.class);
         sceneLoader.addComponentByTagName(Tags.PLAYER, PlayerComponent.class);
+
+        // BulletComponent
+        ComponentRetriever.addMapper(BulletComponent.class);
+        sceneLoader.addComponentByTagName(Tags.BULLET, BulletComponent.class);
 
         // DeadlyObstacleComponent
         ComponentRetriever.addMapper(DeadlyObstacleComponent.class);
@@ -159,6 +162,9 @@ public class GameScreen extends ApplicationScreen {
         new SpawnStoneTask(this).scheduleSelf();
         new SpawnTokenTask(this).scheduleSelf();
 
+//        particleEffect = ParticleManager.buildParticleEffect("fire");
+//        particleEffect.setPosition(1,1);
+//        particleEffect.start();
     }
 
     @Override
@@ -167,12 +173,14 @@ public class GameScreen extends ApplicationScreen {
         ScreenUtils.clear(1, 1, 1, 1);
 //        ScreenUtils.clear(0, 0, 0, 1);
 
+//        System.out.println("is compolete -> " + particleEffect.isComplete());
+
         /* Render -> Box2D World */
         this.viewport.apply();
         sceneLoader.getEngine().process();
 
         /* Render -> Particle */
-        particleManager.handle(delta);
+        particleManager.process(delta);
 
         /* Render -> ScoreBoard */
         this.scoreBoard.act(delta);

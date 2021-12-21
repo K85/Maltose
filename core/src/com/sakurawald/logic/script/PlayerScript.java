@@ -12,6 +12,7 @@ import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.logic.component.StoneComponent;
 import com.sakurawald.logic.component.TokenComponent;
 import com.sakurawald.logic.enums.PlayerControls;
+import com.sakurawald.manager.ApplicationAssetManager;
 import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.components.DimensionsComponent;
 import games.rednblack.editor.renderer.components.MainItemComponent;
@@ -48,36 +49,32 @@ public class PlayerScript extends ApplicationScript implements PhysicsContact {
 
     @Override
     public void act(float delta) {
+
+        // TODO player control
+
         /* Handle inputs */
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            movePlayer(PlayerControls.MOVE_LEFT);
+            controlPlayer(PlayerControls.MOVE_LEFT);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            movePlayer(PlayerControls.MOVE_RIGHT);
+            controlPlayer(PlayerControls.MOVE_RIGHT);
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            movePlayer(PlayerControls.MOVE_UP);
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            controlPlayer(PlayerControls.MOVE_UP);
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-            movePlayer(PlayerControls.MOVE_DOWN);
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            controlPlayer(PlayerControls.MOVE_DOWN);
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            Gdx.app.getApplicationLogger().debug("Debug", "==============Space pressed==========");
+            controlPlayer(PlayerControls.SHOOT);
         }
 
     }
 
-    public void movePlayer(PlayerControls playerControls) {
+    public void controlPlayer(PlayerControls playerControls) {
         Body body = this.getPhysicsBodyComponent().body;
         Gdx.app.getApplicationLogger().debug("PlayerScript", "movePlayer: currentPosition = " + body.getPosition() + ", currentVelocity = " + body.getLinearVelocity());
-
-        /* Check map boundary */
-//        if (gameScreen.isOutsideWorld(body.getPosition())) {
-//            Vector2 playerPosition = body.getPosition();
-//            Vector2 targetPosition = new Vector2(RESET_POSITION_X, RESET_POSITION_Y);
-//            targetPosition.sub(playerPosition);
-//            targetPosition.set(targetPosition.x * -1, targetPosition.y * -1);
-//            body.setTransform(targetPosition, body.getAngle());
-//
-//            return;
-//        }
 
         /* Apply impulse */
         switch (playerControls) {
@@ -101,7 +98,12 @@ public class PlayerScript extends ApplicationScript implements PhysicsContact {
                     body.applyLinearImpulse(new Vector2(0, -PLAYER_MAX_VELOCITY), body.getWorldCenter(), true);
                 }
                 break;
+            case SHOOT:
+                this.getGameScreen().getBulletManager().createBullet();
+                break;
+
         }
+//        getGameScreen().getSceneLoader().getWorld().clear
     }
 
     public PlayerComponent getPlayerComponent() {

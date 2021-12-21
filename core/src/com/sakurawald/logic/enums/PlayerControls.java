@@ -2,7 +2,7 @@ package com.sakurawald.logic.enums;
 
 public enum PlayerControls {
 
-    MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT,
+    MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, SHOOT
     ;
 
 

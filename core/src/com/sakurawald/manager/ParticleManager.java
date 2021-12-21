@@ -2,6 +2,7 @@ package com.sakurawald.manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.sakurawald.screen.GameScreen;
@@ -30,11 +31,17 @@ public class ParticleManager {
 
     public static ParticleEffectDescriptor buildParticleEffectDescriptor(String particlePath) {
         FileHandle fileHandle = Gdx.files.internal(ApplicationAssetManager.PARTICLE_JSON_PATH + particlePath);
+//        FileHandle fileHandle = ApplicationAssetManager.getAsyncResourceLoader().getTalosVFX(particlePath);
         TextureAtlas textureAtlas = ApplicationAssetManager.getTextureAtlas();
         return new ParticleEffectDescriptor(fileHandle, textureAtlas);
     }
 
-    public void handle(float delta) {
+    // TODO libgdx native particle system (use reset() to remove particle effect instance
+    public static ParticleEffect buildParticleEffect() {
+        throw new RuntimeException("Not implemented");
+    }
+
+    public void process(float delta) {
 
         polygonSpriteBatch.setProjectionMatrix(getGameScreen().getViewport().getCamera().combined);
 
@@ -42,6 +49,7 @@ public class ParticleManager {
         this.spriteBatchParticleRenderer.setBatch(polygonSpriteBatch);
 
         /* Render -> All the ParticleEffectInstance */
+        Gdx.app.getApplicationLogger().debug("ParticleManager", "ParticleManager.process() -> particleEffectInstances.size() = " + particleEffectInstances.size());
         for (ParticleEffectInstance particleEffectInstance : getParticleEffectInstances()) {
             Gdx.app.getApplicationLogger().debug("ParticleManager", "rendering particle effect: " + particleEffectInstance);
             System.out.println("isCompleted: " + particleEffectInstance.isComplete());

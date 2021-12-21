@@ -13,5 +13,6 @@ public class Tags {
     public static final String CHECK_POINT = "checkpoint";
     public static final String BOUNDARY = "boundary";
     public static final String PLAYER = "player";
+    public static final String BULLET = "bullet";
 
 }

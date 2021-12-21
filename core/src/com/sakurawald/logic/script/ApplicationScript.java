@@ -8,6 +8,8 @@ import lombok.Getter;
 
 public abstract class ApplicationScript extends BasicScript {
 
+    private boolean isInit = false;
+
     /* GameScreen */
     @Getter
     private final GameScreen gameScreen;
@@ -31,6 +33,12 @@ public abstract class ApplicationScript extends BasicScript {
     @Override
     public final void init(int attachedEntityID) {
         super.init(attachedEntityID);
+
+        /* Avoid Multiple Calls (the ScriptSystem in HyperLap2D may call Script#init more than once) */
+        if (this.isInit) return;
+        else this.isInit = true;
+
+        /* Do init */
         this.physicsBodyComponent = this.physicsBodyMapper.get(attachedEntityID);
         this.doInit(attachedEntityID);
     }

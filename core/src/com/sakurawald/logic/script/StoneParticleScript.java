@@ -2,7 +2,6 @@ package com.sakurawald.logic.script;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.sakurawald.manager.ApplicationAssetManager;
 import com.sakurawald.manager.ParticleManager;
 import com.sakurawald.screen.GameScreen;
 import com.talosvfx.talos.runtime.ParticleEffectDescriptor;
@@ -28,9 +27,9 @@ public class StoneParticleScript extends ApplicationScript {
         // Construct the particle instance
         particleEffectInstance = fireParticleEffectDescriptor.createEffectInstance();
         particleEffectInstance.loopable = true;
-        particleEffectInstance.allowCompletion();
 
         // Add the particle effect to the particle manager
+        Gdx.app.log("StoneParticleScript", "Adding particle effect instance: " + particleEffectInstance);
         this.getGameScreen().getParticleManager().getParticleEffectInstances().add(particleEffectInstance);
     }
 
@@ -46,16 +45,13 @@ public class StoneParticleScript extends ApplicationScript {
         /* Set the fire particle to the stone */
         particleEffectInstance.setPosition(position.x, position.y);
         particleEffectInstance.update(delta);
-
     }
 
     @Override
     public void dispose() {
-        // TODO particle manager free particle
         particleEffectInstance.allowCompletion();
         Gdx.app.getApplicationLogger().debug("StoneParticleScript", "Disposing particle effect instance: " + particleEffectInstance);
         this.getGameScreen().getParticleManager().getParticleEffectInstances().remove(this.particleEffectInstance);
     }
-
 
 }

@@ -8,16 +8,18 @@ import lombok.Setter;
 public abstract class ApplicationTimerTask extends Timer.Task {
 
     @Getter
-    protected final GameScreen gameScreen;
+    private final GameScreen gameScreen;
 
     @Getter
-    protected final int taskScheduledIntervalSecond;
+    private int accumulateSeconds;
+
+    @Getter
+    private final int taskScheduledIntervalSecond;
 
     @Getter
     @Setter
     protected int taskDoIntervalSeconds;
 
-    private int accumulateSeconds;
 
     public ApplicationTimerTask(GameScreen gameScreen, int taskScheduledIntervalSecond, int taskDoIntervalSecond) {
         this.gameScreen = gameScreen;

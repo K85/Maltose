@@ -1,81 +1,83 @@
 pack.png
-	size: 1024, 256
+	size: 512, 512
 	filter: Linear, Linear
 andromeda-chain
-	bounds: 203, 67, 64, 64
+	bounds: 203, 408, 64, 64
 artillery-shell
-	bounds: 276, 140, 64, 64
+	bounds: 1, 133, 64, 64
 black-hole-bolas
-	bounds: 342, 140, 64, 64
+	bounds: 74, 206, 64, 64
+bullet
+	bounds: 203, 342, 64, 64
 burning-meteor
-	bounds: 408, 140, 64, 64
+	bounds: 269, 408, 64, 64
 calculator (1)
-	bounds: 1, 4, 200, 200
+	bounds: 1, 272, 200, 200
 cardboard-box-closed
-	bounds: 474, 140, 64, 64
+	bounds: 1, 67, 64, 64
 concentric-crescents
-	bounds: 540, 140, 64, 64
+	bounds: 203, 276, 64, 64
 crosshair
-	bounds: 606, 140, 64, 64
+	bounds: 269, 342, 64, 64
 death-star
-	bounds: 672, 140, 64, 64
+	bounds: 335, 408, 64, 64
 dial-padlock
-	bounds: 738, 140, 64, 64
+	bounds: 1, 1, 64, 64
 emerald
-	bounds: 804, 140, 64, 64
+	bounds: 269, 276, 64, 64
 extra-time
-	bounds: 870, 140, 64, 64
+	bounds: 335, 342, 64, 64
 falling-blob
-	bounds: 936, 140, 64, 64
+	bounds: 401, 408, 64, 64
 fire
-	bounds: 203, 133, 71, 71
+	bounds: 1, 199, 71, 71
 heart-bottle
-	bounds: 203, 1, 64, 64
+	bounds: 335, 276, 64, 64
 hypersonic-bolt
-	bounds: 269, 67, 64, 64
+	bounds: 401, 342, 64, 64
 image
-	bounds: 269, 1, 64, 64
+	bounds: 401, 276, 64, 64
 knocked-out-stars
-	bounds: 335, 74, 64, 64
+	bounds: 140, 206, 64, 64
 mason-jar
-	bounds: 335, 8, 64, 64
+	bounds: 206, 210, 64, 64
 maze-saw
-	bounds: 401, 74, 64, 64
+	bounds: 272, 210, 64, 64
 minerals
-	bounds: 401, 8, 64, 64
+	bounds: 338, 210, 64, 64
 night-sky
-	bounds: 467, 74, 64, 64
+	bounds: 404, 210, 64, 64
 open-treasure-chest
-	bounds: 467, 8, 64, 64
+	bounds: 67, 133, 64, 64
 orbital-rays
-	bounds: 533, 74, 64, 64
+	bounds: 67, 67, 64, 64
 ore
-	bounds: 533, 8, 64, 64
+	bounds: 67, 1, 64, 64
 plain-square
-	bounds: 599, 74, 64, 64
+	bounds: 133, 140, 64, 64
 radar-sweep (1)
-	bounds: 599, 8, 64, 64
+	bounds: 133, 74, 64, 64
 radar-sweep
-	bounds: 599, 8, 64, 64
+	bounds: 133, 74, 64, 64
 rub-el-hizb
-	bounds: 665, 74, 64, 64
+	bounds: 133, 8, 64, 64
 rupee
-	bounds: 665, 8, 64, 64
+	bounds: 199, 140, 64, 64
 sinusoidal-beam
-	bounds: 731, 74, 64, 64
+	bounds: 199, 74, 64, 64
 spotted-bug
-	bounds: 731, 8, 64, 64
+	bounds: 199, 8, 64, 64
 stack
-	bounds: 797, 74, 64, 64
+	bounds: 265, 144, 64, 64
 stealth-bomber
-	bounds: 797, 8, 64, 64
+	bounds: 265, 78, 64, 64
 stone-sphere
-	bounds: 863, 74, 64, 64
+	bounds: 331, 144, 64, 64
 transportation-rings
-	bounds: 863, 8, 64, 64
+	bounds: 265, 12, 64, 64
 uncertainty
-	bounds: 929, 74, 64, 64
+	bounds: 331, 78, 64, 64
 unlit-bomb
-	bounds: 929, 8, 64, 64
+	bounds: 397, 144, 64, 64
 white-pixel
-	bounds: 1002, 203, 1, 1
+	bounds: 203, 273, 1, 1

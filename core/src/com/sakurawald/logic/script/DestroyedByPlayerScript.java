@@ -4,19 +4,20 @@ import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.bullet.collision._btMprSimplex_t;
 import com.sakurawald.logic.component.BoundaryComponent;
+import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.physics.PhysicsContact;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
 
-public class DestroyedByBoundary extends ApplicationScript implements PhysicsContact {
+public class DestroyedByPlayerScript extends ApplicationScript implements PhysicsContact {
 
-    protected ComponentMapper<BoundaryComponent> boundaryMapper;
+    protected ComponentMapper<PlayerComponent> playerMapper;
 
-    public DestroyedByBoundary(GameScreen gameScreen) {
+    public DestroyedByPlayerScript(GameScreen gameScreen) {
         super(gameScreen);
     }
-
 
     @Override
     public void doInit(int attachedEntityID) {
@@ -27,20 +28,13 @@ public class DestroyedByBoundary extends ApplicationScript implements PhysicsCon
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
 
         /* Collide with: Boundary */
-        BoundaryComponent boundaryComponent = boundaryMapper.get(contactEntity);
-        if (boundaryComponent != null) {
-            Gdx.app.getApplicationLogger().debug("BoundaryAutoDestroyScript", "Boundary Auto Destroy EntityID: " + this.getEntity());
-
-            ItemWrapper itemWrapper = new ItemWrapper(this.getEntity(), this.getEngine());
-
-            // TODO add some particle effect
-
-
-
-
+        PlayerComponent playerComponent = playerMapper.get(contactEntity);
+        if (playerComponent != null) {
+            Gdx.app.getApplicationLogger().debug("PlayerAutoDestroyScript", "Player Auto Destroy EntityID: " + this.getEntity());
             this.getEngine().delete(this.getEntity());
         }
     }
+
 
     @Override
     public void endContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {

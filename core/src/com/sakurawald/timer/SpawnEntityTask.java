@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.Component;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Timer;
 import com.sakurawald.screen.GameScreen;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,16 +22,18 @@ public abstract class SpawnEntityTask<T extends Component> extends ApplicationTi
         super(gameScreen, 1, taskDoIntervalSeconds);
         this.gameScreen = gameScreen;
         this.classType = classType;
-        this.maxSpawnedEntityAmount = maxSpawnedEntityAmount;
         this.taskDoIntervalSeconds = taskDoIntervalSeconds;
+        this.maxSpawnedEntityAmount = maxSpawnedEntityAmount;
     }
 
     @Override
     public void doRun() {
-        Gdx.app.log("SpawnEntityTask", "Spawning entity: classType = " + classType.getSimpleName());
+        int spawnedEntityAmount = this.getSpawnedTypeEntities().size();
+        int maxSpawnedEntityAmount = this.getMaxSpawnedEntityAmount();
+        Gdx.app.log("SpawnEntityTask", "Spawning entity: classType = " + classType.getSimpleName() + ", maxSpawnedEntityAmount = " + maxSpawnedEntityAmount + ", spawnedEntityAmount = " + spawnedEntityAmount);
 
         // Cancel task if max amount of spawned entities is reached
-        if (getSpawnedTypeEntities().size() < maxSpawnedEntityAmount) {
+        if (spawnedEntityAmount < maxSpawnedEntityAmount) {
             spawnEntity();
         }
     }
