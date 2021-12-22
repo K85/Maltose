@@ -82,6 +82,10 @@ public class GameScreen extends ApplicationScreen {
     @Getter
     private final BoundaryManager boundaryManager = new BoundaryManager(this);
 
+    /* TimerManager */
+    @Getter
+    private final TimerManager timerManager = new TimerManager(this);
+
     /* ParticleManager: Talos */
     @Getter
     private final ParticleManager particleManager = new ParticleManager(this);
@@ -171,8 +175,8 @@ public class GameScreen extends ApplicationScreen {
         });
 
         /* Register Timers */
-        new SpawnStoneTask(this).scheduleSelf();
-        new SpawnTokenTask(this).scheduleSelf();
+        this.timerManager.scheduleTask(new SpawnStoneTask(this));
+        this.timerManager.scheduleTask(new SpawnTokenTask(this));
 
         /* Set InputProcessor */
         Gdx.input.setInputProcessor(new InputMultiplexer(new PlayerControllerListener(), scoreBoard));
@@ -213,6 +217,14 @@ public class GameScreen extends ApplicationScreen {
         }
     }
 
+    @Override
+    public void dispose() {
+        Gdx.app.getApplicationLogger().debug("GameScreen", "dispose");
+
+        /* Cancel all tasks */
+        Gdx.app.getApplicationLogger().debug("GameScreen", "dispose: Cancel all tasks");
+        this.timerManager.cancelAllTasks();
+    }
 
     public boolean isOutsideWorld(Vector2 position) {
         return isOutsideWorld(position, 0f);

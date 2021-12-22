@@ -6,8 +6,6 @@ import com.badlogic.gdx.Screen;
 
 public abstract class ApplicationScreen implements Screen {
 
-//    protected static final float FPS = 60;
-
     @Override
     public void show() {
 
@@ -34,6 +32,8 @@ public abstract class ApplicationScreen implements Screen {
 
     @Override
     public void hide() {
+        // the default hide() method means dispose() the screen
+        this.dispose();
     }
 
     @Override

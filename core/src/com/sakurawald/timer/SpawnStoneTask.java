@@ -38,7 +38,7 @@ public class SpawnStoneTask extends SpawnEntityTask {
         // Cancel spawn if player is too close
         Vector2 playerPosition = getGameScreen().getPlayerManager().getSolePlayer().getPlayerItemWrapper().getComponent(PhysicsBodyComponent.class).body.getPosition();
         // Please Note that if the safe distance is too large, no stones will be generated if the player is at the right place.
-        if (randomPosition.dst(playerPosition) < 1) {
+        if (randomPosition.dst(playerPosition) < 4) {
             return;
         }
 

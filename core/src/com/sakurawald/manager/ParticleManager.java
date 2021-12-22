@@ -43,9 +43,8 @@ public class ParticleManager {
         this.particleEffectInstances.remove(particleEffectInstance);
     }
 
+    @Deprecated
     public static ParticleEffect buildParticleEffect() {
-
-
         throw new RuntimeException("Not implemented");
     }
 

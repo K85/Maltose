@@ -89,21 +89,12 @@ public abstract class Scene2DScreen extends ApplicationScreen {
     @Override
     public void resize(int width, int height) {
         // Update the viewport after resize. (or the Scene2D Screen may be stretched)
-        System.out.println("scene2d screen resize() ==================");
-
         this.stage.getViewport().update(width, height, true);
-    }
-
-    @Override
-    public void hide() {
-        // Let hide equals close() !
-        this.dispose();
     }
 
     public Skin getSkin() {
         return ApplicationAssetManager.getSkin();
     }
-
 
     protected abstract void initializeStageActors();
 

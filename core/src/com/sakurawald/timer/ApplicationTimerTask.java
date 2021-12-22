@@ -39,8 +39,8 @@ public abstract class ApplicationTimerTask extends Timer.Task {
         }
     }
 
-    public void scheduleSelf() {
-        Timer.instance().scheduleTask(this, taskScheduledIntervalSecond, taskScheduledIntervalSecond);
+    public Timer.Task scheduleSelf() {
+        return Timer.instance().scheduleTask(this, taskScheduledIntervalSecond, taskScheduledIntervalSecond);
     }
 
     public abstract void doRun();
