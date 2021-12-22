@@ -221,14 +221,11 @@ public class GameScreen extends ApplicationScreen {
     public boolean isOutsideWorld(Vector2 position, float delta) {
         Vector2 worldSize = this.getWorldSize();
         Gdx.app.getApplicationLogger().debug("isOutsideWorld", "position = " + position + ", delta = " + delta + ", worldSize = " + worldSize);
-        return position.x < 0 + delta || position.x > worldSize.x - delta || position.y < 0 + delta || position.y > worldSize.y - delta;
+        return position.x < (0 + delta) || position.x > (worldSize.x - delta) || position.y < (0 + delta) || position.y > (worldSize.y - delta);
     }
 
     public Vector2 getWorldSize() {
-        Vector2 size = new Vector2();
-        size.x = viewport.getWorldWidth();
-        size.y = viewport.getWorldHeight();
-        return size;
+        return new Vector2(WORLD_WIDTH, WORLD_HEIGHT);
     }
 
     public ResolutionEntryVO getProjectOriginalResolution() {

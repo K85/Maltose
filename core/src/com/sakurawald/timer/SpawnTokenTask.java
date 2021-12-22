@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class SpawnTokenTask extends SpawnEntityTask {
 
     public SpawnTokenTask(GameScreen gameScreen) {
-        super(gameScreen, TokenComponent.class, 5, 1, 15);
+        super(gameScreen, TokenComponent.class, 5, 3, 1);
     }
 
     @Override
@@ -34,6 +34,7 @@ public class SpawnTokenTask extends SpawnEntityTask {
 
         // Create new token
         Gdx.app.log("SpawnTokenTask", "Spawning token at " + randomPosition);
+
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
         int entityID = ApplicationAssetManager.createEntityFromLibrary(sceneLoader, Libraries.TOKEN, "Default", randomPosition.x, randomPosition.y, new ArrayList<>(
         ) {
@@ -45,7 +46,6 @@ public class SpawnTokenTask extends SpawnEntityTask {
         // Add scripts
         ItemWrapper itemWrapper = new ItemWrapper(entityID, this.getGameScreen().getSceneLoader().getEngine());
         itemWrapper.addScript(new TokenScript(this.getGameScreen()));
-        itemWrapper.addScript(new DestroyedByBoundaryScript(this.getGameScreen()));
         itemWrapper.addScript(new CollisionDestroyScript(this.getGameScreen(), PlayerComponent.class, true, false));
     }
 
