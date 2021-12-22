@@ -1,8 +1,14 @@
 package com.sakurawald.logic.script;
 
+import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.sakurawald.logic.adapter.PhysicsContactAdapter;
+import com.sakurawald.logic.component.PlayerComponent;
+import com.sakurawald.logic.component.StoneComponent;
 import com.sakurawald.manager.ParticleManager;
 import com.sakurawald.screen.GameScreen;
 import com.sakurawald.util.MathUtils;
@@ -11,12 +17,17 @@ import com.talosvfx.talos.runtime.ParticleEffectInstance;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
 import lombok.Getter;
 
-public class StoneScript extends ApplicationScript {
+public class StoneScript extends ApplicationScript implements PhysicsContactAdapter {
+
 
     public static final float STONE_MAX_VELOCITY = 5;
 
     @Getter
     private static final ParticleEffectDescriptor fireParticleEffectDescriptor = ParticleManager.buildParticleEffectDescriptor("fire.p");
+
+    /* Mapper */
+    private ComponentMapper<StoneComponent> stoneMapper;
+    private ComponentMapper<PlayerComponent> playerMapper;
 
     @Getter
     private ParticleEffectInstance particleEffectInstance;
@@ -48,7 +59,6 @@ public class StoneScript extends ApplicationScript {
 
     @Override
     public void doAct(float delta) {
-
         /* Get the position of the stone */
         PhysicsBodyComponent physicsBodyComponent = this.getPhysicsBodyComponent();
         // Concurrency issue
@@ -60,6 +70,8 @@ public class StoneScript extends ApplicationScript {
         particleEffectInstance.update(delta);
     }
 
+
+
     @Override
     public void dispose() {
         particleEffectInstance.allowCompletion();
@@ -67,4 +79,17 @@ public class StoneScript extends ApplicationScript {
         this.getGameScreen().getParticleManager().getParticleEffectInstances().remove(this.particleEffectInstance);
     }
 
+    @Override
+    public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
+
+        StoneComponent stoneComponent = stoneMapper.get(this.getEntity());
+
+        /* Collide with: PlayerComponent */
+        PlayerComponent playerComponent = playerMapper.get(contactEntity);
+        if (playerComponent != null && !stoneComponent.ignored) {
+            Gdx.app.getApplicationLogger().debug("StoneScript", "beginContact: stone = " + stoneComponent);
+            stoneComponent.ignored = true;
+            playerComponent.leftLives--;
+        }
+    }
 }

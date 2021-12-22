@@ -52,21 +52,7 @@ public class PlayerScript extends ApplicationScript implements PhysicsContactAda
 //        if (mainItemComponent.tags.contains("platform"))
 //            playerComponent.touchedPlatforms++;
 
-        /* Collide with: StoneComponent */
-        StoneComponent stoneComponent = stoneComponentMapper.get(contactEntity);
-        if (stoneComponent != null && !stoneComponent.ignored) {
-            Gdx.app.getApplicationLogger().debug("PlayerScript", "beginContact: stone = " + stoneComponent);
-            stoneComponent.ignored = true;
-            this.getPlayerComponent().leftLives--;
-        }
 
-        /* Collide With: Token */
-        TokenComponent tokenComponent = tokenMapper.get(contactEntity);
-        if (tokenComponent != null && !tokenComponent.ignored) {
-            Gdx.app.getApplicationLogger().debug("PlayerScript", "Collide with token: " + getPlayerComponent().tokenCollected);
-            tokenComponent.ignored = true;
-            this.getPlayerComponent().tokenCollected += tokenComponent.value;
-        }
     }
 
     @Override

@@ -10,7 +10,6 @@ import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.physics.PhysicsContact;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
 
-// TODO refactor destryoed by entity
 public class DestroyedByBoundaryScript extends ApplicationScript implements PhysicsContactAdapter {
 
     protected ComponentMapper<BoundaryComponent> boundaryMapper;

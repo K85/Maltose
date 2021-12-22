@@ -12,6 +12,7 @@ import com.sakurawald.manager.ApplicationAssetManager;
 import com.sakurawald.screen.GameScreen;
 import com.sakurawald.util.MathUtils;
 import games.rednblack.editor.renderer.SceneLoader;
+import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
 
 import java.util.ArrayList;
@@ -34,6 +35,12 @@ public class SpawnStoneTask extends SpawnEntityTask {
             return;
         }
 
+        // Cancel spawn if player is too close
+        Vector2 playerPosition = getGameScreen().getPlayerManager().getSolePlayer().getPlayerItemWrapper().getComponent(PhysicsBodyComponent.class).body.getPosition();
+        if (randomPosition.dst(playerPosition) < 10) {
+            return;
+        }
+
         // Create new stone
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
         int entityID = ApplicationAssetManager.createEntityFromLibrary(sceneLoader, Libraries.STONE, "Default", randomPosition.x, randomPosition.y, new ArrayList<Class<?>>() {
@@ -46,9 +53,9 @@ public class SpawnStoneTask extends SpawnEntityTask {
         // Add Scripts
         ItemWrapper itemWrapper = new ItemWrapper(entityID, sceneLoader.getEngine());
 //        itemWrapper.addScript(new DestroyedByBoundaryScript(this.getGameScreen()));
+        itemWrapper.addScript(new StoneScript(this.getGameScreen()));
         itemWrapper.addScript(new CollisionDestroyeScript(this.getGameScreen(), StoneComponent.class, true, false));
         itemWrapper.addScript(new CollisionDestroyeScript(this.getGameScreen(), PlayerComponent.class, true, false));
-        itemWrapper.addScript(new StoneScript(this.getGameScreen()));
     }
 
 }

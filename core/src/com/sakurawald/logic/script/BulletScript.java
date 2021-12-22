@@ -1,17 +1,13 @@
 package com.sakurawald.logic.script;
 
-import com.artemis.ComponentMapper;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.sakurawald.logic.adapter.PhysicsContactAdapter;
 import com.sakurawald.logic.enums.GroupIndexes;
 import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
-
-import javax.swing.*;
 
 public class BulletScript extends ApplicationScript implements PhysicsContactAdapter {
 
@@ -37,13 +33,13 @@ public class BulletScript extends ApplicationScript implements PhysicsContactAda
     }
 
     @Override
-    public void dispose() {
+    public void doAct(float delta) {
+
+        // Remove this bullet if the velocity is zero
+        Body body = this.getPhysicsBodyComponent().body;
+        if (body != null && body.getLinearVelocity().epsilonEquals(0,0)) {
+            this.getEngine().delete(this.getEntity());
+        }
 
     }
-
-    @Override
-    public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-
-    }
-
 }

@@ -13,7 +13,7 @@ import lombok.Getter;
 public class Player {
 
     /* Constants */
-    public static final float PLAYER_MAX_VELOCITY = 1;
+    public static final float PLAYER_MAX_VELOCITY = 2;
 
     @Getter
     private final PlayerManager owner;

@@ -9,7 +9,7 @@ public class PlayerComponent extends PooledComponent {
     /* Physics Props */
     public int touchedPlatforms = 0;
 
-    /* Game Props */
+    /* Player Fields */
     public int tokenCollected = 0;
     public double startGameTimestamp = Calendar.getInstance().getTimeInMillis();
     public int leftLives = 3;
