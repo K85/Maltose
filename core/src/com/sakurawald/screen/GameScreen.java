@@ -94,7 +94,8 @@ public class GameScreen extends ApplicationScreen {
         Box2D.init();
 
         /* Camera and Viewport */
-        viewport = new ExtendViewport(0,  0, camera);
+        // the ExtendViewport should have a valid initialize value, or the Box2D physics engine will crash.
+        viewport = new ExtendViewport(1,  1, camera);
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
         /* Add System and Load Scene */
@@ -161,6 +162,7 @@ public class GameScreen extends ApplicationScreen {
         scoreBoard = new ScoreBoardHUD(this, new ExtendViewport(768, 576));
 
         /* Add Rectangle Boundary */
+        // TODO try to modify the resolution in hyperlap2d
         boundaryManager.createPolygonBoundary(new ArrayList<>() {
             {
                 this.add(new Vector2(0, 0));

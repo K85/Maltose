@@ -47,7 +47,9 @@ public class StoneScript extends ApplicationScript implements PhysicsContactAdap
     }
 
     @Override
-    public void doInit(int attachedEntityID) {
+    public void init(int attachedEntityID) {
+        super.init(attachedEntityID);
+
         // Construct the particle instance
         particleEffectInstance = fireParticleEffectDescriptor.createEffectInstance();
         particleEffectInstance.loopable = true;
@@ -59,6 +61,7 @@ public class StoneScript extends ApplicationScript implements PhysicsContactAdap
 
     @Override
     public void doAct(float delta) {
+
         /* Get the position of the stone */
         PhysicsBodyComponent physicsBodyComponent = this.getPhysicsBodyComponent();
         // Concurrency issue

@@ -10,6 +10,8 @@ import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.logic.component.TokenComponent;
 import com.sakurawald.screen.GameScreen;
 
+// TODO modify token's color to red
+
 public class TokenScript extends ApplicationScript implements PhysicsContactAdapter {
 
     /* Mapper */

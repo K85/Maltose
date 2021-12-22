@@ -61,21 +61,21 @@ public class PlayerManager {
     }
 
     public void processInstruction() {
+
         /* Select Instruction */
-        PlayerInstruction instruction = null;
-        if (PlayerControllerListener.pressedKeys.getOrDefault(Input.Keys.LEFT, false)) {
+        if (PlayerControllerListener.pressedKeys.getOrDefault(Input.Keys.H, false)) {
             this.distributeInstruction(PlayerInstruction.MOVE_LEFT);
         }
-        if (PlayerControllerListener.pressedKeys.getOrDefault(Input.Keys.RIGHT, false)) {
+        if (PlayerControllerListener.pressedKeys.getOrDefault(Input.Keys.L, false)) {
             this.distributeInstruction(PlayerInstruction.MOVE_RIGHT);
         }
-        if (PlayerControllerListener.pressedKeys.getOrDefault(Input.Keys.UP, false)) {
+        if (PlayerControllerListener.pressedKeys.getOrDefault(Input.Keys.K, false)) {
             this.distributeInstruction(PlayerInstruction.MOVE_UP);
         }
-        if (PlayerControllerListener.pressedKeys.getOrDefault(Input.Keys.DOWN, false)) {
+        if (PlayerControllerListener.pressedKeys.getOrDefault(Input.Keys.J, false)) {
             this.distributeInstruction(PlayerInstruction.MOVE_DOWN);
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
             this.distributeInstruction(PlayerInstruction.SHOOT);
         }
 

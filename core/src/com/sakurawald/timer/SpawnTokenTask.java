@@ -6,6 +6,7 @@ import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.logic.component.TokenComponent;
 import com.sakurawald.logic.entity.Libraries;
 import com.sakurawald.logic.script.CollisionDestroyeScript;
+import com.sakurawald.logic.script.DestroyedByBoundaryScript;
 import com.sakurawald.logic.script.TokenScript;
 import com.sakurawald.manager.ApplicationAssetManager;
 import com.sakurawald.screen.GameScreen;
@@ -46,6 +47,7 @@ public class SpawnTokenTask extends SpawnEntityTask {
         // Add scripts
         ItemWrapper itemWrapper = new ItemWrapper(entityID, this.getGameScreen().getSceneLoader().getEngine());
         itemWrapper.addScript(new TokenScript(this.getGameScreen()));
+        itemWrapper.addScript(new DestroyedByBoundaryScript(this.getGameScreen()));
         itemWrapper.addScript(new CollisionDestroyeScript(this.getGameScreen(), PlayerComponent.class, true, false));
     }
 

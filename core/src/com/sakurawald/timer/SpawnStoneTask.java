@@ -7,6 +7,7 @@ import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.logic.component.StoneComponent;
 import com.sakurawald.logic.entity.Libraries;
 import com.sakurawald.logic.script.CollisionDestroyeScript;
+import com.sakurawald.logic.script.DestroyedByBoundaryScript;
 import com.sakurawald.logic.script.StoneScript;
 import com.sakurawald.manager.ApplicationAssetManager;
 import com.sakurawald.screen.GameScreen;
@@ -37,13 +38,14 @@ public class SpawnStoneTask extends SpawnEntityTask {
 
         // Cancel spawn if player is too close
         Vector2 playerPosition = getGameScreen().getPlayerManager().getSolePlayer().getPlayerItemWrapper().getComponent(PhysicsBodyComponent.class).body.getPosition();
-        if (randomPosition.dst(playerPosition) < 10) {
+        // Please Note that if the safe distance is too large, no stones will be generated if the player is at the right place.
+        if (randomPosition.dst(playerPosition) < 1) {
             return;
         }
 
         // Create new stone
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
-        int entityID = ApplicationAssetManager.createEntityFromLibrary(sceneLoader, Libraries.STONE, "Default", randomPosition.x, randomPosition.y, new ArrayList<Class<?>>() {
+        int entityID = ApplicationAssetManager.createEntityFromLibrary(sceneLoader, Libraries.STONE, "Default", randomPosition.x, randomPosition.y, new ArrayList<>() {
             {
                 this.add(DeadlyObstacleComponent.class);
                 this.add(StoneComponent.class);
@@ -52,7 +54,7 @@ public class SpawnStoneTask extends SpawnEntityTask {
 
         // Add Scripts
         ItemWrapper itemWrapper = new ItemWrapper(entityID, sceneLoader.getEngine());
-//        itemWrapper.addScript(new DestroyedByBoundaryScript(this.getGameScreen()));
+        itemWrapper.addScript(new DestroyedByBoundaryScript(this.getGameScreen()));
         itemWrapper.addScript(new StoneScript(this.getGameScreen()));
         itemWrapper.addScript(new CollisionDestroyeScript(this.getGameScreen(), StoneComponent.class, true, false));
         itemWrapper.addScript(new CollisionDestroyeScript(this.getGameScreen(), PlayerComponent.class, true, false));

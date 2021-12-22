@@ -1,5 +1,7 @@
 package com.sakurawald.logic.stage;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -72,6 +74,12 @@ public class ScoreBoardHUD extends Stage {
     @Override
     public void act(float delta) {
         super.act(delta);
+
+        /* Quit ? */
+        if (Gdx.input.isKeyPressed(Input.Keys.Q) && Gdx.input.isKeyPressed(Input.Keys.NUM_1) && (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT))) {
+            Maltose.getInstance().setScreen(new MainMenuScreen());
+        }
+
 
         /* Check Component */
         PlayerComponent playerComponent = gameScreen.getPlayerManager().getSolePlayer().getPlayerItemWrapper().getComponent(PlayerComponent.class);

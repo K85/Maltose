@@ -27,6 +27,19 @@ public class DestroyedByBoundaryScript extends ApplicationScript implements Phys
     }
 
     @Override
+    public void doAct(float delta) {
+        /* Destroy when out of boundary */
+        if (this.getPhysicsBodyComponent() != null && this.getPhysicsBodyComponent().body != null) {
+            Vector2 position = this.getPhysicsBodyComponent().body.getPosition();
+            // Though the Boundary Object can destroy some objects, but it's possible that the Box2D miss some collisions !
+            if (this.getGameScreen().isOutsideWorld(position)) {
+                Gdx.app.getApplicationLogger().debug("BoundaryAutoDestroyScript", "Out of boundary auto destroy EntityID: " + this.getEntity());
+                this.getEngine().delete(this.getEntity());
+            }
+        }
+    }
+
+    @Override
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
 
         /* Collide with: Boundary */
@@ -45,7 +58,6 @@ public class DestroyedByBoundaryScript extends ApplicationScript implements Phys
 //            effectInstance.loopable = false;
 //            effectInstance.setPosition(position.x, position.y);
 //            this.getGameScreen().getParticleManager().submitParticleEffectInstance(effectInstance);
-
 
             this.getEngine().delete(this.getEntity());
         }

@@ -32,22 +32,8 @@ public abstract class ApplicationScript extends BasicScript {
     }
 
     @Override
-    public final void init(int attachedEntityID) {
+    public void init(int attachedEntityID) {
         super.init(attachedEntityID);
-
-        /* Avoid Multiple Calls (the ScriptSystem in HyperLap2D may call Script#init more than once) */
-        if (this.isInit) return;
-        else this.isInit = true;
-
-        /* Do init */
-//        this.physicsBodyComponent = this.physicsBodyMapper.get(attachedEntityID);
-//        this.physicsBodyComponent = getGameScreen().getSceneLoader().getEngine().getEntity(this.entity).getComponent(PhysicsBodyComponent.class);
-        this.doInit(attachedEntityID);
-    }
-
-
-    public void doInit(int attachedEntityID) {
-        // do nothing
     }
 
     @Override
