@@ -24,6 +24,7 @@ import com.sakurawald.timer.SpawnStoneTask;
 import com.sakurawald.timer.SpawnTokenTask;
 import games.rednblack.editor.renderer.SceneConfiguration;
 import games.rednblack.editor.renderer.SceneLoader;
+import games.rednblack.editor.renderer.data.ResolutionEntryVO;
 import games.rednblack.editor.renderer.utils.ComponentRetriever;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
 import lombok.Getter;
@@ -34,16 +35,13 @@ public class GameScreen extends ApplicationScreen {
 
     /* Constants */
 //    protected static final float STEP_TIME = 1 / FPS;
-    protected static final float VELOCITY_ITERATIONS = 6;
-    protected static final float POSITION_ITERATIONS = 2;
-    public final static float MAX_VELOCITY = 10;
 
     /* World Properties */
-    public final static float VIRTUAL_RESOLUTION_WIDTH = 1280;
-    public final static float VIRTUAL_RESOLUTION_HEIGHT = 720;
-    public final static float PPWU = 80.0f;
-    public final static float WORLD_WIDTH = VIRTUAL_RESOLUTION_WIDTH / PPWU;
-    public final static float WORLD_HEIGHT = VIRTUAL_RESOLUTION_HEIGHT / PPWU;
+    public float VIRTUAL_RESOLUTION_WIDTH;
+    public float VIRTUAL_RESOLUTION_HEIGHT;
+    public float PPWU;
+    public float WORLD_WIDTH;
+    public float WORLD_HEIGHT;
 
     /* SpriteBatch */
     private final SpriteBatch spriteBatch = new SpriteBatch();
@@ -88,8 +86,6 @@ public class GameScreen extends ApplicationScreen {
     /* Talos */
     @Getter
     private final ParticleManager particleManager = new ParticleManager(this);
-    private ParticleEffect particleEffect;
-
 
     @Override
     public void show() {
@@ -98,9 +94,7 @@ public class GameScreen extends ApplicationScreen {
         Box2D.init();
 
         /* Camera and Viewport */
-        viewport = new ExtendViewport(VIRTUAL_RESOLUTION_WIDTH / PPWU, VIRTUAL_RESOLUTION_HEIGHT / PPWU
-                , camera);
-
+        viewport = new ExtendViewport(0,  0, camera);
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
         /* Add System and Load Scene */
@@ -113,6 +107,19 @@ public class GameScreen extends ApplicationScreen {
         sceneLoader.loadScene("MainScene", viewport);
 
         rootItemWrapper = new ItemWrapper(sceneLoader.getRoot(), sceneLoader.getEngine());
+
+        /* Set World Constants */
+        ResolutionEntryVO resolutionEntryVO = this.getProjectOriginalResolution();
+        VIRTUAL_RESOLUTION_WIDTH = resolutionEntryVO.width;
+        VIRTUAL_RESOLUTION_HEIGHT = resolutionEntryVO.height;
+        PPWU = this.getProjectPPWU();
+        WORLD_WIDTH = VIRTUAL_RESOLUTION_WIDTH / PPWU;
+        WORLD_HEIGHT = VIRTUAL_RESOLUTION_HEIGHT / PPWU;
+
+        // Assign Viewport
+        ExtendViewport extendViewport = (ExtendViewport) viewport;
+        extendViewport.setMinWorldWidth(WORLD_WIDTH);
+        extendViewport.setMinWorldHeight(WORLD_HEIGHT);
 
         /* Add Components */
 
@@ -177,8 +184,6 @@ public class GameScreen extends ApplicationScreen {
 
     @Override
     public void render(float delta) {
-        System.out.println("input processor:" + Gdx.input.getInputProcessor());
-
         Gdx.app.getApplicationLogger().debug("GameScreen", "render");
         ScreenUtils.clear(1, 1, 1, 1);
 //        ScreenUtils.clear(0, 0, 0, 1);
@@ -227,7 +232,14 @@ public class GameScreen extends ApplicationScreen {
 
     public boolean isOutsideWorld(Vector2 position, float delta) {
         Gdx.app.getApplicationLogger().debug("isOutsideWorld", "position = " + position + ", delta = " + delta);
-        return position.x < 0 + delta || position.x > viewport.getWorldWidth() - delta || position.y < 0 + delta || position.y > viewport.getWorldHeight() - delta;
+        return position.x < 0 + delta || position.x > getWorldSize().x - delta || position.y < 0 + delta || position.y > getWorldSize().y - delta;
     }
 
+    public ResolutionEntryVO getProjectOriginalResolution() {
+        return this.getSceneLoader().getRm().getProjectVO().originalResolution;
+    }
+
+    public float getProjectPPWU() {
+        return this.getSceneLoader().getRm().getProjectVO().pixelToWorld;
+    }
 }

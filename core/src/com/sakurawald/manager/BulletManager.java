@@ -31,7 +31,7 @@ public class BulletManager {
         ItemWrapper playerItemWrapper = this.getGameScreen().getPlayerManager().getSolePlayer().getPlayerItemWrapper();
         PhysicsBodyComponent playerPhysicsBodyComponent = playerItemWrapper.getComponent(PhysicsBodyComponent.class);
         Body playerBody = playerPhysicsBodyComponent.body;
-        Vector2 bulletPosition = playerBody.getPosition().add(0, 2);
+        Vector2 bulletPosition = playerBody.getPosition().add(0, 0.2f);
 
         /* Create entity from library */
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();

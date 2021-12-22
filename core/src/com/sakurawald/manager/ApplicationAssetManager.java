@@ -2,9 +2,7 @@ package com.sakurawald.manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import games.rednblack.editor.renderer.SceneConfiguration;
 import games.rednblack.editor.renderer.SceneLoader;
@@ -12,7 +10,6 @@ import games.rednblack.editor.renderer.data.CompositeItemVO;
 import games.rednblack.editor.renderer.resources.AsyncResourceManager;
 import games.rednblack.editor.renderer.resources.ResourceManagerLoader;
 import lombok.Getter;
-import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 
@@ -25,7 +22,6 @@ public class ApplicationAssetManager {
     @Getter
     public static final AssetManager assetManager;
     @Getter
-    @Deprecated
     public static final AsyncResourceManager asyncResourceLoader;
     @Getter
     public static final TextureAtlas textureAtlas;

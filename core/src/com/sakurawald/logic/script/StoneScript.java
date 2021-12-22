@@ -54,7 +54,7 @@ public class StoneScript extends ApplicationScript implements PhysicsContactAdap
 
         // Add the particle effect to the particle manager
         Gdx.app.log("StoneParticleScript", "Adding particle effect instance: " + particleEffectInstance);
-        this.getGameScreen().getParticleManager().getParticleEffectInstances().add(particleEffectInstance);
+        this.getGameScreen().getParticleManager().submitParticleEffectInstance(particleEffectInstance);
     }
 
     @Override
@@ -70,13 +70,11 @@ public class StoneScript extends ApplicationScript implements PhysicsContactAdap
         particleEffectInstance.update(delta);
     }
 
-
-
     @Override
     public void dispose() {
         particleEffectInstance.allowCompletion();
         Gdx.app.getApplicationLogger().debug("StoneParticleScript", "Disposing particle effect instance: " + particleEffectInstance);
-        this.getGameScreen().getParticleManager().getParticleEffectInstances().remove(this.particleEffectInstance);
+        this.getGameScreen().getParticleManager().cancelParticleEffectInstance(particleEffectInstance);
     }
 
     @Override

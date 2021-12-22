@@ -33,10 +33,10 @@ public class PlayerScript extends ApplicationScript implements PhysicsContactAda
 
     @Override
     public void physicsBodyComponentInitialized() {
-        /* Set the player's collision filter */
-        Filter filter = new Filter();
-        filter.groupIndex = GroupIndexes.PLAYER_ALLIANCE_NEGATIVE;
-        this.getPhysicsBodyComponent().body.getFixtureList().forEach(fixture -> fixture.setFilterData(filter));
+//        /* Set the player's collision filter */
+//        Filter filter = new Filter();
+//        filter.groupIndex = GroupIndexes.PLAYER_ALLIANCE_NEGATIVE;
+//        this.getPhysicsBodyComponent().body.getFixtureList().forEach(fixture -> fixture.setFilterData(filter));
     }
 
     public PlayerComponent getPlayerComponent() {
@@ -51,7 +51,6 @@ public class PlayerScript extends ApplicationScript implements PhysicsContactAda
 //        PlayerComponent playerComponent = playerMapper.get();
 //        if (mainItemComponent.tags.contains("platform"))
 //            playerComponent.touchedPlatforms++;
-
 
     }
 

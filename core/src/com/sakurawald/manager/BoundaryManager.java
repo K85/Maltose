@@ -17,13 +17,20 @@ public class BoundaryManager {
 
     private static final Float BOUNDARY_THICKNESS = 0.01f;
 
+
+    public final float boundaryScale;
     public float boundaryRestitution = 0.5f;
 
     @Getter
     private final GameScreen gameScreen;
 
-    public BoundaryManager(GameScreen gameScreen) {
+    public BoundaryManager(GameScreen gameScreen, float boundaryScale) {
         this.gameScreen = gameScreen;
+        this.boundaryScale = boundaryScale;
+    }
+
+    public BoundaryManager(GameScreen gameScreen) {
+        this(gameScreen, 1f);
     }
 
     public void createPolygonBoundary(ArrayList<Vector2> points) {
@@ -44,10 +51,10 @@ public class BoundaryManager {
 
             PolygonShape polygonShape = new PolygonShape();
             Vector2[] vector2s = {
-                    startVector,
-                    endVector,
-                    endMovedVector,
-                    startMovedVector
+                    startVector.scl(boundaryScale),
+                    endVector.scl(boundaryScale),
+                    endMovedVector.scl(boundaryScale),
+                    startMovedVector.scl(boundaryScale)
             };
             polygonShape.set(vector2s);
 

@@ -22,7 +22,6 @@ public class ParticleManager {
     @Getter
     private final SpriteBatchParticleRenderer spriteBatchParticleRenderer = new SpriteBatchParticleRenderer();
 
-    @Getter
     private final ArrayList<ParticleEffectInstance> particleEffectInstances = new ArrayList<>();
 
     public ParticleManager(GameScreen gameScreen) {
@@ -36,8 +35,17 @@ public class ParticleManager {
         return new ParticleEffectDescriptor(fileHandle, textureAtlas);
     }
 
-    // TODO libgdx native particle system (use reset() to remove particle effect instance
+    public void submitParticleEffectInstance(ParticleEffectInstance particleEffectInstance) {
+        this.particleEffectInstances.add(particleEffectInstance);
+    }
+
+    public void cancelParticleEffectInstance(ParticleEffectInstance particleEffectInstance) {
+        this.particleEffectInstances.remove(particleEffectInstance);
+    }
+
     public static ParticleEffect buildParticleEffect() {
+
+
         throw new RuntimeException("Not implemented");
     }
 
@@ -50,7 +58,7 @@ public class ParticleManager {
 
         /* Render -> All the ParticleEffectInstance */
         Gdx.app.getApplicationLogger().debug("ParticleManager", "ParticleManager.process() -> particleEffectInstances.size() = " + particleEffectInstances.size());
-        for (ParticleEffectInstance particleEffectInstance : getParticleEffectInstances()) {
+        for (ParticleEffectInstance particleEffectInstance : this.particleEffectInstances) {
             Gdx.app.getApplicationLogger().debug("ParticleManager", "rendering particle effect: " + particleEffectInstance + ", isComplete = " + particleEffectInstance.isComplete());
             particleEffectInstance.render(spriteBatchParticleRenderer);
         }
