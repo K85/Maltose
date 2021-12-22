@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Camera;
 
 import games.rednblack.editor.renderer.components.TransformComponent;
 import games.rednblack.editor.renderer.components.ViewPortComponent;
+import lombok.Getter;
 import lombok.Setter;
 
 @All(ViewPortComponent.class)
@@ -17,15 +18,8 @@ public class CameraSystem extends IteratingSystem {
     protected ComponentMapper<ViewPortComponent> viewportMapper;
 
     @Setter
-    private int focusEntityID = -1;
-    private final float xMin, xMax, yMin, yMax;
-
-    public CameraSystem(float xMin, float xMax, float yMin, float yMax) {
-        this.xMin = xMin;
-        this.xMax = xMax;
-        this.yMin = yMin;
-        this.yMax = yMax;
-    }
+    public int focusEntityID = -1;
+    public float xMin, xMax, yMin, yMax;
 
     @Override
     protected void process(int entity) {

@@ -41,6 +41,8 @@ public class GameScreen extends ApplicationScreen {
     public float PPWU;
     public float WORLD_WIDTH;
     public float WORLD_HEIGHT;
+    // World scale is a value to scale the Box2D world size. (the boundary will also be scaled.)
+    public float WORLD_SCALE = 2.0f;
 
     /* SpriteBatch */
     private final SpriteBatch spriteBatch = new SpriteBatch();
@@ -97,12 +99,13 @@ public class GameScreen extends ApplicationScreen {
         Box2D.init();
 
         /* Camera and Viewport */
-        // the ExtendViewport should have a valid initialize value, or the Box2D physics engine will crash.
+        // the ExtendViewport should have a valid initialize value (here we set to 1), or the Box2D physics engine will crash.
         viewport = new ExtendViewport(1, 1, camera);
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
         /* Add System and Load Scene */
-        CameraSystem cameraSystem = new CameraSystem(5, 16, 5, 12);
+//        CameraSystem cameraSystem = new CameraSystem(5, 16, 5, 12);
+        CameraSystem cameraSystem = new CameraSystem();
         sceneConfiguration = new SceneConfiguration();
         sceneConfiguration.setResourceRetriever(ApplicationAssetManager.getAsyncResourceLoader());
         sceneConfiguration.addSystem(cameraSystem);
@@ -117,13 +120,18 @@ public class GameScreen extends ApplicationScreen {
         VIRTUAL_RESOLUTION_WIDTH = resolutionEntryVO.width;
         VIRTUAL_RESOLUTION_HEIGHT = resolutionEntryVO.height;
         PPWU = this.getProjectPPWU();
-        WORLD_WIDTH = VIRTUAL_RESOLUTION_WIDTH / PPWU;
-        WORLD_HEIGHT = VIRTUAL_RESOLUTION_HEIGHT / PPWU;
+        WORLD_WIDTH = (VIRTUAL_RESOLUTION_WIDTH / PPWU) * WORLD_SCALE;
+        WORLD_HEIGHT = (VIRTUAL_RESOLUTION_HEIGHT / PPWU) * WORLD_SCALE;
 
-        // Assign Viewport
+        // Assign Viewport and CameraSystem
         ExtendViewport extendViewport = (ExtendViewport) viewport;
-        extendViewport.setMinWorldWidth(WORLD_WIDTH);
-        extendViewport.setMinWorldHeight(WORLD_HEIGHT);
+        extendViewport.setMinWorldWidth(WORLD_WIDTH / WORLD_SCALE);
+        extendViewport.setMinWorldHeight(WORLD_HEIGHT / WORLD_SCALE);
+
+        cameraSystem.xMin = 5;
+        cameraSystem.xMax = WORLD_WIDTH;
+        cameraSystem.yMin = 5;
+        cameraSystem.yMax = WORLD_HEIGHT;
 
         /* Add Components */
 
