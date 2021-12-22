@@ -225,6 +225,9 @@ public class GameScreen extends ApplicationScreen {
     }
 
     public Vector2 getWorldSize() {
+        /* The Viewport#getWorldHeight isn't the Box2D world size.
+           We should get the Box2D world size from the ProjectVO.
+         */
         return new Vector2(WORLD_WIDTH, WORLD_HEIGHT);
     }
 
