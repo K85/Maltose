@@ -3,7 +3,6 @@ package com.sakurawald.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -83,7 +82,7 @@ public class GameScreen extends ApplicationScreen {
     @Getter
     private final BoundaryManager boundaryManager = new BoundaryManager(this);
 
-    /* Talos */
+    /* ParticleManager: Talos */
     @Getter
     private final ParticleManager particleManager = new ParticleManager(this);
 
@@ -95,7 +94,7 @@ public class GameScreen extends ApplicationScreen {
 
         /* Camera and Viewport */
         // the ExtendViewport should have a valid initialize value, or the Box2D physics engine will crash.
-        viewport = new ExtendViewport(1,  1, camera);
+        viewport = new ExtendViewport(1, 1, camera);
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
         /* Add System and Load Scene */
@@ -162,7 +161,6 @@ public class GameScreen extends ApplicationScreen {
         scoreBoard = new ScoreBoardHUD(this, new ExtendViewport(768, 576));
 
         /* Add Rectangle Boundary */
-        // TODO try to modify the resolution in hyperlap2d
         boundaryManager.createPolygonBoundary(new ArrayList<>() {
             {
                 this.add(new Vector2(0, 0));
@@ -176,10 +174,6 @@ public class GameScreen extends ApplicationScreen {
         new SpawnStoneTask(this).scheduleSelf();
         new SpawnTokenTask(this).scheduleSelf();
 
-//        particleEffect = ParticleManager.buildParticleEffect("fire");
-//        particleEffect.setPosition(1,1);
-//        particleEffect.start();
-
         /* Set InputProcessor */
         Gdx.input.setInputProcessor(new InputMultiplexer(new PlayerControllerListener(), scoreBoard));
     }
@@ -188,7 +182,6 @@ public class GameScreen extends ApplicationScreen {
     public void render(float delta) {
         Gdx.app.getApplicationLogger().debug("GameScreen", "render");
         ScreenUtils.clear(1, 1, 1, 1);
-//        ScreenUtils.clear(0, 0, 0, 1);
 
         /* Render -> Box2D World */
         this.viewport.apply();
@@ -208,17 +201,27 @@ public class GameScreen extends ApplicationScreen {
 
     @Override
     public void resize(int width, int height) {
-        // Update -> the viewport of GameScreen's camerr
+        // Update -> the viewport of GameScreen's camera
         this.viewport.update(width, height, true);
 
         // Update -> the viewport of HUDs
         this.scoreBoard.getViewport().update(width, height, true);
 
         // Update -> SceneLoader (notify the FBO to resize)
-        // batch.setProjectionMatrix(camera.combined);
         if (width != 0 && height != 0) {
             sceneLoader.resize(width, height);
         }
+    }
+
+
+    public boolean isOutsideWorld(Vector2 position) {
+        return isOutsideWorld(position, 0f);
+    }
+
+    public boolean isOutsideWorld(Vector2 position, float delta) {
+        Vector2 worldSize = this.getWorldSize();
+        Gdx.app.getApplicationLogger().debug("isOutsideWorld", "position = " + position + ", delta = " + delta + ", worldSize = " + worldSize);
+        return position.x < 0 + delta || position.x > worldSize.x - delta || position.y < 0 + delta || position.y > worldSize.y - delta;
     }
 
     public Vector2 getWorldSize() {
@@ -226,15 +229,6 @@ public class GameScreen extends ApplicationScreen {
         size.x = viewport.getWorldWidth();
         size.y = viewport.getWorldHeight();
         return size;
-    }
-
-    public boolean isOutsideWorld(Vector2 position) {
-        return isOutsideWorld(position, 0f);
-    }
-
-    public boolean isOutsideWorld(Vector2 position, float delta) {
-        Gdx.app.getApplicationLogger().debug("isOutsideWorld", "position = " + position + ", delta = " + delta);
-        return position.x < 0 + delta || position.x > getWorldSize().x - delta || position.y < 0 + delta || position.y > getWorldSize().y - delta;
     }
 
     public ResolutionEntryVO getProjectOriginalResolution() {

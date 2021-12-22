@@ -5,4 +5,4 @@ Quit: Q!
 
 === Game Rules ===
 Control your aircraft to avoid enemies and try to collect as many tokens as you can.
-You can shoot enemy aircraft by pressing the key S !
+You can shoot bullets by pressing the key S !

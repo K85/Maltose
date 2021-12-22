@@ -29,7 +29,6 @@ public class SpawnStoneTask extends SpawnEntityTask {
     public void spawnEntity() {
         // Generate random position and random velocity
         Vector2 randomPosition = MathUtils.getRandomPositionInWorld(this.getGameScreen());
-        Gdx.app.log("SpawnStoneTask", "Spawning stone at " + randomPosition);
 
         // Cancel spawn if outside of world bounds
         if (getGameScreen().isOutsideWorld(randomPosition)) {
@@ -44,6 +43,7 @@ public class SpawnStoneTask extends SpawnEntityTask {
         }
 
         // Create new stone
+        Gdx.app.log("SpawnStoneTask", "Spawning stone at " + randomPosition);
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
         int entityID = ApplicationAssetManager.createEntityFromLibrary(sceneLoader, Libraries.STONE, "Default", randomPosition.x, randomPosition.y, new ArrayList<>() {
             {

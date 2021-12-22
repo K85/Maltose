@@ -24,7 +24,13 @@ public class TokenScript extends ApplicationScript implements PhysicsContactAdap
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
         Gdx.app.getApplicationLogger().debug("TokenScript", "begin contact: contactEntity = " + contactEntity + ", contactFixture = " + contactFixture + ", ownFixture = " + ownFixture + ", this.Entity = " + this.getEntity());
 
-        TokenComponent tokenComponent = tokenMapper.get(this.getEntity());
+        TokenComponent tokenComponent;
+        try {
+            tokenComponent = tokenMapper.get(this.getEntity());
+        } catch (IndexOutOfBoundsException e) {
+            Gdx.app.getApplicationLogger().debug("TokenScript", "the token already be remove: " + this.getEntity());
+            return;
+        }
 
         /* Collide With: Player */
         PlayerComponent playerComponent = playerMapper.get(contactEntity);

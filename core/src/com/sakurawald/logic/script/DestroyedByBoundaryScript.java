@@ -45,6 +45,7 @@ public class DestroyedByBoundaryScript extends ApplicationScript implements Phys
             Gdx.app.getApplicationLogger().debug("DestroyedByBoundaryScript", "Boundary Auto Destroy EntityID: " + this.getEntity());
 
 //             TODO add some particle effect
+
 //            PhysicsBodyComponent physicsBodyComponent = physicsBodyMapper.get(contactEntity);
 //            Body body = physicsBodyComponent.body;
 //            Vector2 position = body.getPosition();
@@ -54,10 +55,11 @@ public class DestroyedByBoundaryScript extends ApplicationScript implements Phys
 //            effectInstance.loopable = false;
 //            effectInstance.setPosition(position.x, position.y);
 //            this.getGameScreen().getParticleManager().submitParticleEffectInstance(effectInstance);
+
             try {
                 this.getEngine().delete(this.getEntity());
             } catch (IndexOutOfBoundsException e) {
-                Gdx.app.getApplicationLogger().debug("DestroyedByBoundaryScript", "the Entity is already remove: " + this.getEntity());
+                Gdx.app.getApplicationLogger().debug("DestroyedByBoundaryScript", "the Entity is already removed: " + this.getEntity());
             }
 
         }

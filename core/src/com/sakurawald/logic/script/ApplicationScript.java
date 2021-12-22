@@ -9,7 +9,8 @@ import lombok.Getter;
 
 public abstract class ApplicationScript extends BasicScript {
 
-    boolean safeInitFlag = false;
+    /** the BasicScript#init may be called more than once, so we just use our oun flag to ensure the safeInit() works correctly */
+    private boolean safeInitFlag = false;
 
     /* GameScreen */
     @Getter
@@ -39,7 +40,7 @@ public abstract class ApplicationScript extends BasicScript {
         else this.safeInitFlag = true;
 
         // Do init.
-        Gdx.app.getApplicationLogger().debug("ApplicationScript", "init(): entityID = " + this.getEntity());
+        Gdx.app.getApplicationLogger().debug("ApplicationScript", "init() -> doInit(): entityID = " + this.getEntity());
         this.safeInit(item);
     }
 
@@ -58,6 +59,7 @@ public abstract class ApplicationScript extends BasicScript {
         }
 
         // Do act
+        Gdx.app.getApplicationLogger().debug("ApplicationScript", "act() -> doAct(): entityID = " + this.getEntity());
         this.doAct(delta);
     }
 

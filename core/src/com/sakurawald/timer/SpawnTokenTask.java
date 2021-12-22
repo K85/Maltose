@@ -27,18 +27,17 @@ public class SpawnTokenTask extends SpawnEntityTask {
         // Generate random position and random velocity
         Vector2 randomPosition = MathUtils.getRandomPositionInWorld(this.getGameScreen());
 
-        // Cancel spawn if outside the world
-        if (getGameScreen().isOutsideWorld(randomPosition)) {
+        // Cancel spawn if outside the world (also: the token will not be spawned near the boundary)
+        if (getGameScreen().isOutsideWorld(randomPosition, 1f)) {
             return;
         }
 
-        Gdx.app.log("SpawnTokenTask", "Spawning token at " + randomPosition);
-
         // Create new token
+        Gdx.app.log("SpawnTokenTask", "Spawning token at " + randomPosition);
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
         int entityID = ApplicationAssetManager.createEntityFromLibrary(sceneLoader, Libraries.TOKEN, "Default", randomPosition.x, randomPosition.y, new ArrayList<>(
         ) {
-            {
+           {
                 this.add(TokenComponent.class);
             }
         });

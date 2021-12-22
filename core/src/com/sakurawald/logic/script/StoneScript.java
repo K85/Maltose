@@ -74,9 +74,10 @@ public class StoneScript extends ApplicationScript implements PhysicsContactAdap
 
     @Override
     public void dispose() {
-        particleEffectInstance.allowCompletion();
-        Gdx.app.getApplicationLogger().debug("StoneParticleScript", "Disposing particle effect instance: " + particleEffectInstance);
-        this.getGameScreen().getParticleManager().cancelParticleEffectInstance(particleEffectInstance);
+        if (particleEffectInstance != null) {
+            Gdx.app.getApplicationLogger().debug("StoneParticleScript", "Disposing particle effect instance: " + particleEffectInstance);
+            this.getGameScreen().getParticleManager().cancelParticleEffectInstance(particleEffectInstance);
+        }
     }
 
     @Override
@@ -87,7 +88,7 @@ public class StoneScript extends ApplicationScript implements PhysicsContactAdap
         try {
             stoneComponent = stoneMapper.get(this.getEntity());
         } catch (IndexOutOfBoundsException e) {
-            Gdx.app.getApplicationLogger().error("StoneScript", "Could not find stone component for entity " + this.getEntity());
+            Gdx.app.getApplicationLogger().error("StoneScript", "the stone is already removed" + this.getEntity());
             return;
         }
 
