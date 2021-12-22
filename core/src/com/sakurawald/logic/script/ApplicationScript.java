@@ -1,6 +1,7 @@
 package com.sakurawald.logic.script;
 
 import com.artemis.ComponentMapper;
+import com.badlogic.gdx.Gdx;
 import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
 import games.rednblack.editor.renderer.scripts.BasicScript;
@@ -8,7 +9,7 @@ import lombok.Getter;
 
 public abstract class ApplicationScript extends BasicScript {
 
-    private boolean isInit = false;
+    boolean safeInitFlag = false;
 
     /* GameScreen */
     @Getter
@@ -32,8 +33,18 @@ public abstract class ApplicationScript extends BasicScript {
     }
 
     @Override
-    public void init(int attachedEntityID) {
-        super.init(attachedEntityID);
+    public final void init(int item) {
+        super.init(item);
+        if (this.safeInitFlag) return;
+        else this.safeInitFlag = true;
+
+        // Do init.
+        Gdx.app.getApplicationLogger().debug("ApplicationScript", "init(): entityID = " + this.getEntity());
+        this.safeInit(item);
+    }
+
+    public void safeInit(int item) {
+        // do nothing.
     }
 
     @Override
@@ -45,6 +56,7 @@ public abstract class ApplicationScript extends BasicScript {
                 this.physicsBodyComponentInitialized();
             }
         }
+
         // Do act
         this.doAct(delta);
     }
@@ -65,13 +77,12 @@ public abstract class ApplicationScript extends BasicScript {
     }
 
     @Override
-    public void reset() {
-        super.reset();
-        System.out.println("WARNING ApplicationScript reset() is called !");
-    }
-
-    @Override
     public void dispose() {
         // do nothing
+    }
+
+    /** is the Entity has dead in the ECS system */
+    public boolean isEntityDead() {
+        return this.getEntity() == -1;
     }
 }

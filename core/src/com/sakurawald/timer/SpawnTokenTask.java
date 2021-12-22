@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.logic.component.TokenComponent;
 import com.sakurawald.logic.entity.Libraries;
-import com.sakurawald.logic.script.CollisionDestroyeScript;
+import com.sakurawald.logic.script.CollisionDestroyScript;
 import com.sakurawald.logic.script.DestroyedByBoundaryScript;
 import com.sakurawald.logic.script.TokenScript;
 import com.sakurawald.manager.ApplicationAssetManager;
@@ -17,7 +17,6 @@ import games.rednblack.editor.renderer.utils.ItemWrapper;
 import java.util.ArrayList;
 
 public class SpawnTokenTask extends SpawnEntityTask {
-
 
     public SpawnTokenTask(GameScreen gameScreen) {
         super(gameScreen, TokenComponent.class, 5, 1, 15);
@@ -48,7 +47,7 @@ public class SpawnTokenTask extends SpawnEntityTask {
         ItemWrapper itemWrapper = new ItemWrapper(entityID, this.getGameScreen().getSceneLoader().getEngine());
         itemWrapper.addScript(new TokenScript(this.getGameScreen()));
         itemWrapper.addScript(new DestroyedByBoundaryScript(this.getGameScreen()));
-        itemWrapper.addScript(new CollisionDestroyeScript(this.getGameScreen(), PlayerComponent.class, true, false));
+        itemWrapper.addScript(new CollisionDestroyScript(this.getGameScreen(), PlayerComponent.class, true, false));
     }
 
 }

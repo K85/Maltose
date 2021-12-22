@@ -6,7 +6,7 @@ import com.sakurawald.logic.component.BulletComponent;
 import com.sakurawald.logic.component.StoneComponent;
 import com.sakurawald.logic.entity.Libraries;
 import com.sakurawald.logic.script.BulletScript;
-import com.sakurawald.logic.script.CollisionDestroyeScript;
+import com.sakurawald.logic.script.CollisionDestroyScript;
 import com.sakurawald.logic.script.DestroyedByBoundaryScript;
 import com.sakurawald.screen.GameScreen;
 import games.rednblack.editor.renderer.SceneLoader;
@@ -47,7 +47,7 @@ public class BulletManager {
         /* Add scripts */
         ItemWrapper itemWrapper = new ItemWrapper(entityID, sceneLoader.getEngine());
         itemWrapper.addScript(new DestroyedByBoundaryScript(this.getGameScreen()));
-        itemWrapper.addScript(new CollisionDestroyeScript(this.getGameScreen(), StoneComponent.class, false, true));
+        itemWrapper.addScript(new CollisionDestroyScript(this.getGameScreen(), StoneComponent.class, false, true));
         itemWrapper.addScript(new BulletScript(this.getGameScreen()));
     }
 }

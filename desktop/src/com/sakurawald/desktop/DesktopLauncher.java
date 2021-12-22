@@ -10,8 +10,8 @@ public class DesktopLauncher {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "Maltose";
         config.addIcon("icon.png", Files.FileType.Internal);
-        config.width = 1920;
-        config.height = 1440;
+        config.width = 1280;
+        config.height = 960;
         new LwjglApplication(new Maltose(), config);
     }
 }

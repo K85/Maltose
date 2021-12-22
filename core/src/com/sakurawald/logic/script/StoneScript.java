@@ -47,9 +47,7 @@ public class StoneScript extends ApplicationScript implements PhysicsContactAdap
     }
 
     @Override
-    public void init(int attachedEntityID) {
-        super.init(attachedEntityID);
-
+    public void safeInit(int attachedEntityID) {
         // Construct the particle instance
         particleEffectInstance = fireParticleEffectDescriptor.createEffectInstance();
         particleEffectInstance.loopable = true;
@@ -58,6 +56,7 @@ public class StoneScript extends ApplicationScript implements PhysicsContactAdap
         Gdx.app.log("StoneParticleScript", "Adding particle effect instance: " + particleEffectInstance);
         this.getGameScreen().getParticleManager().submitParticleEffectInstance(particleEffectInstance);
     }
+
 
     @Override
     public void doAct(float delta) {
@@ -82,8 +81,15 @@ public class StoneScript extends ApplicationScript implements PhysicsContactAdap
 
     @Override
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
+        Gdx.app.getApplicationLogger().debug("StoneScript", "begin contact: contactEntity = " + contactEntity + ", contactFixture = " + contactFixture + ", ownFixture = " + ownFixture + ", this.Entity = " + this.getEntity());
 
-        StoneComponent stoneComponent = stoneMapper.get(this.getEntity());
+        StoneComponent stoneComponent;
+        try {
+            stoneComponent = stoneMapper.get(this.getEntity());
+        } catch (IndexOutOfBoundsException e) {
+            Gdx.app.getApplicationLogger().error("StoneScript", "Could not find stone component for entity " + this.getEntity());
+            return;
+        }
 
         /* Collide with: PlayerComponent */
         PlayerComponent playerComponent = playerMapper.get(contactEntity);
@@ -92,5 +98,6 @@ public class StoneScript extends ApplicationScript implements PhysicsContactAdap
             stoneComponent.ignored = true;
             playerComponent.leftLives--;
         }
+
     }
 }

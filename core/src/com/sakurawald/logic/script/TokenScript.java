@@ -10,8 +10,6 @@ import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.logic.component.TokenComponent;
 import com.sakurawald.screen.GameScreen;
 
-// TODO modify token's color to red
-
 public class TokenScript extends ApplicationScript implements PhysicsContactAdapter {
 
     /* Mapper */
@@ -24,7 +22,8 @@ public class TokenScript extends ApplicationScript implements PhysicsContactAdap
 
     @Override
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-        Gdx.app.getApplicationLogger().log("TokenScript", "beginContact: contactEntity = " + contactEntity + ", contactFixture = " + contactFixture.getBody().getPosition() + ", ownFixture = " + ownFixture.getBody().getPosition());
+        Gdx.app.getApplicationLogger().debug("TokenScript", "begin contact: contactEntity = " + contactEntity + ", contactFixture = " + contactFixture + ", ownFixture = " + ownFixture + ", this.Entity = " + this.getEntity());
+
         TokenComponent tokenComponent = tokenMapper.get(this.getEntity());
 
         /* Collide With: Player */

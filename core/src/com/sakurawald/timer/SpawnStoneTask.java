@@ -6,7 +6,7 @@ import com.sakurawald.logic.component.DeadlyObstacleComponent;
 import com.sakurawald.logic.component.PlayerComponent;
 import com.sakurawald.logic.component.StoneComponent;
 import com.sakurawald.logic.entity.Libraries;
-import com.sakurawald.logic.script.CollisionDestroyeScript;
+import com.sakurawald.logic.script.CollisionDestroyScript;
 import com.sakurawald.logic.script.DestroyedByBoundaryScript;
 import com.sakurawald.logic.script.StoneScript;
 import com.sakurawald.manager.ApplicationAssetManager;
@@ -54,10 +54,9 @@ public class SpawnStoneTask extends SpawnEntityTask {
 
         // Add Scripts
         ItemWrapper itemWrapper = new ItemWrapper(entityID, sceneLoader.getEngine());
-        itemWrapper.addScript(new DestroyedByBoundaryScript(this.getGameScreen()));
         itemWrapper.addScript(new StoneScript(this.getGameScreen()));
-        itemWrapper.addScript(new CollisionDestroyeScript(this.getGameScreen(), StoneComponent.class, true, false));
-        itemWrapper.addScript(new CollisionDestroyeScript(this.getGameScreen(), PlayerComponent.class, true, false));
+        itemWrapper.addScript(new CollisionDestroyScript(this.getGameScreen(), PlayerComponent.class, true, false));
+        itemWrapper.addScript(new DestroyedByBoundaryScript(this.getGameScreen()));
     }
 
 }

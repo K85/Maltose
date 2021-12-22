@@ -3,19 +3,12 @@ package com.sakurawald.logic.script;
 import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.sakurawald.logic.adapter.PhysicsContactAdapter;
 import com.sakurawald.logic.component.BoundaryComponent;
-import com.sakurawald.manager.ParticleManager;
 import com.sakurawald.screen.GameScreen;
-import com.talosvfx.talos.runtime.ParticleEffectDescriptor;
-import com.talosvfx.talos.runtime.ParticleEffectInstance;
 import games.rednblack.editor.renderer.components.physics.PhysicsBodyComponent;
-import games.rednblack.editor.renderer.physics.PhysicsContact;
-import games.rednblack.editor.renderer.utils.ItemWrapper;
-import net.dermetfan.gdx.physics.box2d.PositionController;
 
 public class DestroyedByBoundaryScript extends ApplicationScript implements PhysicsContactAdapter {
 
@@ -28,6 +21,7 @@ public class DestroyedByBoundaryScript extends ApplicationScript implements Phys
 
     @Override
     public void doAct(float delta) {
+
         /* Destroy when out of boundary */
         if (this.getPhysicsBodyComponent() != null && this.getPhysicsBodyComponent().body != null) {
             Vector2 position = this.getPhysicsBodyComponent().body.getPosition();
@@ -42,11 +36,13 @@ public class DestroyedByBoundaryScript extends ApplicationScript implements Phys
     @Override
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
 
+        Gdx.app.getApplicationLogger().debug("DestroyedByBoundaryScript", "beginContact: contactEntity = " + contact + ", contactFixture = " + contact + ", ownFixture = " + ownFixture);
+
         /* Collide with: Boundary */
         BoundaryComponent boundaryComponent = boundaryMapper.get(contactEntity);
         if (boundaryComponent != null) {
 
-            Gdx.app.getApplicationLogger().debug("BoundaryAutoDestroyScript", "Boundary Auto Destroy EntityID: " + this.getEntity());
+            Gdx.app.getApplicationLogger().debug("DestroyedByBoundaryScript", "Boundary Auto Destroy EntityID: " + this.getEntity());
 
 //             TODO add some particle effect
 //            PhysicsBodyComponent physicsBodyComponent = physicsBodyMapper.get(contactEntity);
@@ -58,8 +54,12 @@ public class DestroyedByBoundaryScript extends ApplicationScript implements Phys
 //            effectInstance.loopable = false;
 //            effectInstance.setPosition(position.x, position.y);
 //            this.getGameScreen().getParticleManager().submitParticleEffectInstance(effectInstance);
+            try {
+                this.getEngine().delete(this.getEntity());
+            } catch (IndexOutOfBoundsException e) {
+                Gdx.app.getApplicationLogger().debug("DestroyedByBoundaryScript", "the Entity is already remove: " + this.getEntity());
+            }
 
-            this.getEngine().delete(this.getEntity());
         }
 
     }

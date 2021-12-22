@@ -10,7 +10,6 @@ import com.ray3k.stripe.scenecomposer.SceneComposerStageBuilder;
 import com.sakurawald.manager.ApplicationAssetManager;
 import lombok.Getter;
 
-// TODO Scene2D refactor
 public abstract class Scene2DScreen extends ApplicationScreen {
 
     /* Constants */
@@ -97,7 +96,7 @@ public abstract class Scene2DScreen extends ApplicationScreen {
 
     @Override
     public void hide() {
-        // Let hide equals close !
+        // Let hide equals close() !
         this.dispose();
     }
 

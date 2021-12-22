@@ -45,8 +45,7 @@ public class PlayerScript extends ApplicationScript implements PhysicsContactAda
 
     @Override
     public void beginContact(int contactEntity, Fixture contactFixture, Fixture ownFixture, Contact contact) {
-        Gdx.app.getApplicationLogger().log("beginContact", "beginContact: contactEntity = " + contactEntity + ", contactFixture = " + contactFixture.getBody().getPosition() + ", ownFixture = " + ownFixture.getBody().getPosition());
-
+        Gdx.app.getApplicationLogger().debug("PlayerScript", "begin contact: contactEntity = " + contactEntity + ", contactFixture = " + contactFixture + ", ownFixture = " + ownFixture + ", this.Entity = " + this.getEntity());
 //        MainItemComponent mainItemComponent = mainItemMapper.get(contactEntity);
 //        PlayerComponent playerComponent = playerMapper.get();
 //        if (mainItemComponent.tags.contains("platform"))
