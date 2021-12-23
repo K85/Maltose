@@ -50,7 +50,7 @@ public class GameScreen extends ApplicationScreen {
     /* Camera and Viewport */
     private final OrthographicCamera camera = new OrthographicCamera();
     @Getter
-    private Viewport viewport;
+    private ExtendViewport viewport;
 
     /* Graphics */
     @Getter
@@ -104,7 +104,6 @@ public class GameScreen extends ApplicationScreen {
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
         /* Add System and Load Scene */
-//        CameraSystem cameraSystem = new CameraSystem(5, 16, 5, 12);
         CameraSystem cameraSystem = new CameraSystem();
         sceneConfiguration = new SceneConfiguration();
         sceneConfiguration.setResourceRetriever(ApplicationAssetManager.getAsyncResourceLoader());
@@ -124,7 +123,7 @@ public class GameScreen extends ApplicationScreen {
         WORLD_HEIGHT = (VIRTUAL_RESOLUTION_HEIGHT / PPWU) * WORLD_SCALE;
 
         // Assign Viewport and CameraSystem
-        ExtendViewport extendViewport = (ExtendViewport) viewport;
+        ExtendViewport extendViewport = viewport;
         extendViewport.setMinWorldWidth(WORLD_WIDTH / WORLD_SCALE);
         extendViewport.setMinWorldHeight(WORLD_HEIGHT / WORLD_SCALE);
 

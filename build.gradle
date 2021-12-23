@@ -13,7 +13,9 @@ buildscript {
     dependencies {
 
     }
+
 }
+
 
 allprojects {
     apply plugin: "eclipse"
@@ -45,9 +47,11 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
 
-    tasks.withType( JavaCompile ).configureEach {
-        options.forkOptions.jvmArgs.addAll( ['--add-opens', 'jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED'] )
+    tasks.withType(JavaCompile).configureEach {
+        options.forkOptions.jvmArgs.addAll(['--add-opens', 'jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED'])
     }
+
+
 }
 
 

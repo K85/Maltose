@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sakurawald.Maltose;
 import com.sakurawald.logic.component.PlayerComponent;
@@ -78,8 +79,8 @@ public class ScoreBoardHUD extends Stage {
         /* Quit ? */
         if (Gdx.input.isKeyPressed(Input.Keys.Q) && Gdx.input.isKeyPressed(Input.Keys.NUM_1) && (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT))) {
             Maltose.getInstance().setScreen(new MainMenuScreen());
+            return;
         }
-
 
         /* Check Component */
         PlayerComponent playerComponent = gameScreen.getPlayerManager().getSolePlayer().getPlayerItemWrapper().getComponent(PlayerComponent.class);

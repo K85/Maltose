@@ -35,5 +35,4 @@ public class CameraSystem extends IteratingSystem {
             }
         }
     }
-
 }
