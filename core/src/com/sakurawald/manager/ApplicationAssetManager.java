@@ -63,6 +63,17 @@ public class ApplicationAssetManager {
         return createEntityFromCompositeVO(sceneLoader, compositeItemVO, initComponents);
     }
 
+    // Load Composite Item from HyperLap2D's Library and add component
+    public static int createEntityFromLibrary(SceneLoader sceneLoader, String libraryName, String layer, float posX, float posY) {
+        Gdx.app.getApplicationLogger().debug("ApplicationAssetManager", "Creating Entity from Library: " + libraryName + " Layer: " + layer);
+        /* Load Composite from Library */
+        CompositeItemVO compositeItemVO = sceneLoader.loadVoFromLibrary(libraryName);
+        compositeItemVO.layerName = layer;
+        compositeItemVO.x = posX;
+        compositeItemVO.y = posY;
+        return createEntityFromCompositeVO(sceneLoader, compositeItemVO);
+    }
+
     public static int createEntityFromCompositeVO(SceneLoader sceneLoader, CompositeItemVO compositeItemVO, ArrayList<Class<?>> initComponents) {
         /* Create the Entity */
         int entityID = sceneLoader.getEntityFactory().createEntity(sceneLoader.getRoot(), compositeItemVO);
@@ -73,6 +84,14 @@ public class ApplicationAssetManager {
         for (Class componentClass : initComponents) {
             sceneLoader.getEngine().edit(entityID).create(componentClass);
         }
+        return entityID;
+    }
+
+
+    public static int createEntityFromCompositeVO(SceneLoader sceneLoader, CompositeItemVO compositeItemVO) {
+        /* Create the Entity */
+        int entityID = sceneLoader.getEntityFactory().createEntity(sceneLoader.getRoot(), compositeItemVO);
+        sceneLoader.getEntityFactory().initAllChildren(entityID, compositeItemVO.composite);
         return entityID;
     }
 }

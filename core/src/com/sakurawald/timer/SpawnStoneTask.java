@@ -45,12 +45,7 @@ public class SpawnStoneTask extends SpawnEntityTask {
         // Create new stone
         Gdx.app.log("SpawnStoneTask", "Spawning stone at " + randomPosition);
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
-        int entityID = ApplicationAssetManager.createEntityFromLibrary(sceneLoader, Libraries.STONE, "Default", randomPosition.x, randomPosition.y, new ArrayList<>() {
-            {
-                this.add(DeadlyObstacleComponent.class);
-                this.add(StoneComponent.class);
-            }
-        });
+        int entityID = ApplicationAssetManager.createEntityFromLibrary(sceneLoader, Libraries.STONE, "Default", randomPosition.x, randomPosition.y);
 
         // Add Scripts
         ItemWrapper itemWrapper = new ItemWrapper(entityID, sceneLoader.getEngine());

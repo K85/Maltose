@@ -37,11 +37,7 @@ public class BulletManager {
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
 
         int entityID = ApplicationAssetManager.createEntityFromLibrary(sceneLoader, Libraries.BULLET,
-                "Default", bulletPosition.x, bulletPosition.y, new ArrayList<>() {
-                    {
-                        this.add(BulletComponent.class);
-                    }
-                });
+                "Default", bulletPosition.x, bulletPosition.y);
         sceneLoader.getEngine().process();
 
         /* Add scripts */

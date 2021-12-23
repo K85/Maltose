@@ -36,12 +36,7 @@ public class SpawnTokenTask extends SpawnEntityTask {
         Gdx.app.log("SpawnTokenTask", "Spawning token at " + randomPosition);
 
         SceneLoader sceneLoader = this.getGameScreen().getSceneLoader();
-        int entityID = ApplicationAssetManager.createEntityFromLibrary(sceneLoader, Libraries.TOKEN, "Default", randomPosition.x, randomPosition.y, new ArrayList<>(
-        ) {
-           {
-                this.add(TokenComponent.class);
-            }
-        });
+        int entityID = ApplicationAssetManager.createEntityFromLibrary(sceneLoader, Libraries.TOKEN, "Default", randomPosition.x, randomPosition.y);
 
         // Add scripts
         ItemWrapper itemWrapper = new ItemWrapper(entityID, this.getGameScreen().getSceneLoader().getEngine());

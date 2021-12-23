@@ -38,11 +38,7 @@ public class PlayerManager {
                 , "Default"
                 , position.x
                 , position.y
-                , new ArrayList<>() {
-                    {
-                        this.add(PlayerComponent.class);
-                    }
-                });
+                );
 
         // Call ECS system to process
         this.getGameScreen().getSceneLoader().getEngine().process();

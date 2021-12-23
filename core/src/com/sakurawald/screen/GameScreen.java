@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sakurawald.logic.bean.Player;
 import com.sakurawald.logic.bean.PlayerControllerListener;
 import com.sakurawald.logic.component.*;
@@ -108,6 +107,12 @@ public class GameScreen extends ApplicationScreen {
         sceneConfiguration = new SceneConfiguration();
         sceneConfiguration.setResourceRetriever(ApplicationAssetManager.getAsyncResourceLoader());
         sceneConfiguration.addSystem(cameraSystem);
+        sceneConfiguration.addTagTransmuter(Tags.PLAYER, PlayerComponent.class);
+        sceneConfiguration.addTagTransmuter(Tags.BULLET, BulletComponent.class);
+        sceneConfiguration.addTagTransmuter(Tags.BOUNDARY, BoundaryComponent.class);
+        sceneConfiguration.addTagTransmuter(Tags.DEADLY_OBSTACLE, DeadlyObstacleComponent.class);
+        sceneConfiguration.addTagTransmuter(Tags.TOKEN, TokenComponent.class);
+        sceneConfiguration.addTagTransmuter(Tags.STONE, StoneComponent.class);
 
         sceneLoader = ApplicationAssetManager.buildSceneLoader(sceneConfiguration);
         sceneLoader.loadScene("MainScene", viewport);
@@ -136,27 +141,21 @@ public class GameScreen extends ApplicationScreen {
 
         // PlayerComponent
         ComponentRetriever.addMapper(PlayerComponent.class);
-        sceneLoader.addComponentByTagName(Tags.PLAYER, PlayerComponent.class);
 
         // BulletComponent
         ComponentRetriever.addMapper(BulletComponent.class);
-        sceneLoader.addComponentByTagName(Tags.BULLET, BulletComponent.class);
 
         // DeadlyObstacleComponent
         ComponentRetriever.addMapper(DeadlyObstacleComponent.class);
-        sceneLoader.addComponentByTagName(Tags.DEADLY_OBSTACLE, DeadlyObstacleComponent.class);
 
         // StoneComponent
         ComponentRetriever.addMapper(StoneComponent.class);
-        sceneLoader.addComponentByTagName(Tags.STONE, StoneComponent.class);
 
         // BoundaryComponent
         ComponentRetriever.addMapper(BoundaryComponent.class);
-        sceneLoader.addComponentByTagName(Tags.BOUNDARY, BoundaryComponent.class);
 
         // TokenComponent
         ComponentRetriever.addMapper(TokenComponent.class);
-        sceneLoader.addComponentByTagName(Tags.TOKEN, TokenComponent.class);
 
         /* Add Scripts */
 
