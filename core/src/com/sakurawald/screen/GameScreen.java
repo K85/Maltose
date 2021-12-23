@@ -109,7 +109,6 @@ public class GameScreen extends ApplicationScreen {
         sceneConfiguration.addSystem(cameraSystem);
         sceneConfiguration.addTagTransmuter(Tags.PLAYER, PlayerComponent.class);
         sceneConfiguration.addTagTransmuter(Tags.BULLET, BulletComponent.class);
-        sceneConfiguration.addTagTransmuter(Tags.BOUNDARY, BoundaryComponent.class);
         sceneConfiguration.addTagTransmuter(Tags.DEADLY_OBSTACLE, DeadlyObstacleComponent.class);
         sceneConfiguration.addTagTransmuter(Tags.TOKEN, TokenComponent.class);
         sceneConfiguration.addTagTransmuter(Tags.STONE, StoneComponent.class);

@@ -68,7 +68,11 @@ public class BoundaryManager {
 
             /* Create the Entity */
             ApplicationAssetManager.createEntityFromCompositeVO(getGameScreen().getSceneLoader(),
-                    placeholderComposite);
+                    placeholderComposite, new ArrayList<>() {
+                        {
+                            this.add(BoundaryComponent.class);
+                        }
+                    });
         }
     }
 
